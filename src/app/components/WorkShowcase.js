@@ -6,7 +6,7 @@ export default function WorkShowcase(props) {
 
   const { ref, inView} = useInView({
     triggerOnce: true,
-    threshold: 0.5,
+    threshold: 0.2,
   });
 
   return (

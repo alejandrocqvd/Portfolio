@@ -1,13 +1,18 @@
-
+"use client"
 import React from 'react';
 import WorkShowcase from './WorkShowcase';
+import { useInView } from "react-intersection-observer";
 
 const WorkShowcaseSection = () => {
+  const { ref, inView} = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
   return (
     <section>
       <div className="flex flex-col justify-center items-center w-8/12">
-        <p className="text-7xl font-bold text-center mb-20 mt-12">My Work</p>
+        <p ref={ref} className={`text-7xl font-bold text-center mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
         <WorkShowcase 
           title="CGC on Campus" 
           subtitle="2024 | UCalgary Club's Website" 

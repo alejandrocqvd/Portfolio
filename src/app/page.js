@@ -1,10 +1,8 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-
-// Dynamically import components that use Intersection Observer to avoid SSR issues
-const WhoAmISection = dynamic(() => import("./components/WhoAmISection"), { ssr: false });
-const SkillsSection = dynamic(() => import('./components/SkillsSection'), { ssr: false });
-const WorkShowcaseSection = dynamic(() => import('./components/WorkShowcaseSection'), { ssr: false });
+import WhoAmISection from './components/WhoAmISection';
+import SkillsSection from './components/SkillsSection';
+import WorkShowcaseSection from './components/WorkShowcaseSection';
 
 export default function Home() {
   return (
