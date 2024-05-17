@@ -33,6 +33,31 @@ h1 {
   font-family: 'Notable', sans-serif;
 }
 
+section {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 100%;
+}
+
+.section-hidden {
+  opacity: 0;
+  filter: blur(1px);
+  transition: opacity 0.7s ease-in-out, filter 0.7s ease-in-out;
+}
+
+.section-visible {
+  opacity: 1;
+  filter: blur(0);
+  transition: opacity 0.7s ease-in-out, filter 0.7s ease-in-out;
+}
+
+@media(prefers-reduced-motion) {
+  .section-hidden {
+    transition: none;
+  }
+}
+
 .landing-page-bg {
   background-image: url("../../public/GALAXYCOVER.png");
 }
