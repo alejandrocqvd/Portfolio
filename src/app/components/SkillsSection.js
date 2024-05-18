@@ -41,7 +41,7 @@ const SkillsSection = () => {
             <SkillBox skillName="Photoshop" skillImage="/photoshop-logo.png" bgColour="bg-[#630909]" rounded="1" />
             <SkillBox skillName="Bash" skillImage="/bash-logo.png" bgColour="bg-[#811607]" rounded="0" />
             <SkillBox skillName="Git" skillImage="/git-logo.png" bgColour="bg-[#a12405]" rounded="0" />
-            <SkillBox skillName="MongoDB" skillImage="/mongodb-logo.png" bgColour="bg-[#c03103]" rounded="0" />
+            <SkillBox skillName="MongoDB" skillImage="/mongoDB-logo.png" bgColour="bg-[#c03103]" rounded="0" />
             <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#db3c02]" rounded="2" />
           </div>
         </div>
