@@ -10,7 +10,7 @@ const SkillsSection = () => {
   });
 
   return (
-    <section ref={ref} className={inView ? 'section-visible' : 'section-hidden'}>
+    <section ref={ref} className={`relative -top-12 ${inView ? 'section-visible' : 'section-hidden'}`}>
       <p className="text-7xl font-bold text-center mb-20">My Skills</p>
       <div className="flex flex-row justify-center items-center w-8/12 border-l-4 border-r-4 rounded-md md:px-24">
         <div className="flex flex-col justify-center items-center text-left w-full">

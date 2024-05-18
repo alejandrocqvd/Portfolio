@@ -69,6 +69,38 @@ section {
   border-radius: 5px;
 }
 
+.flex-none {
+  flex: none; /* Prevents flex items from growing or shrinking */
+}
+
+.word-list {
+  animation: moveWords 10s linear infinite
+}
+
+@keyframes moveWords {
+  0% {
+    transform: translateX(100%); /* Start off-screen to the right */
+  }
+  100% {
+    transform: translateX(-100%); /* Move off-screen to the left */
+  }
+}
+
+.letter {
+  display: inline-block;
+  padding: 0 2px;
+  font-size: 24px; /* Adjust as needed */
+  color: #333; /* Adjust as needed */
+  opacity: 0;
+  animation: fadeMove 10s linear infinite;
+}
+
+@keyframes fadeMove {
+  5%, 90% {
+    opacity: 1;
+  }
+}
+
 .skill-box {
   position: relative;
   flex: 1 1 0;
@@ -107,6 +139,7 @@ section {
   transition: opacity 0.3s;
   color: rgb(240, 235, 235);
   font-weight: 800;
+  text-shadow: 2px 2px 5px rgba(109, 109, 109, 0.8); /* Adjust the shadow strength here */
 }
 
 .skill-box:hover .skill-text {
@@ -146,13 +179,24 @@ section {
   left: 0;
   background: rgb(240, 235, 235);
   visibility: hidden;
-  transition: all 0.2s ease-in-out;
+  transition: width 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .hover-underline-animation:hover::after {
   visibility: visible;
   width: 100%;
 }
+
+.navbar {
+  transition: background-color 0.4s ease-in-out; 
+}
+
+.navbar.scrolled {
+  background-color: rgba(36, 35, 39, 0.7);
+  backdrop-filter: blur(20px);
+}
+
+
 
 @layer utilities {
   .text-balance {
