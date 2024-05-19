@@ -196,7 +196,11 @@ section {
   backdrop-filter: blur(20px);
 }
 
-
+@media (min-width: 3500px) {
+  html {
+    font-size: 200%;
+  }
+}
 
 @layer utilities {
   .text-balance {
