@@ -28,6 +28,7 @@ const WorkShowcaseSection = () => {
           techStack="React, Vite, Node.js, TypeScript, MySQL, TailwindCSS"
           image="/mihistoria-img.PNG"
           reversed={true}
+          link="https://mihistoria.vercel.app/"
         />
         <WorkShowcase 
           title="Malware Terminal" 
