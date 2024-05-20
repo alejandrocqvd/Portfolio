@@ -33,6 +33,10 @@ h1 {
   font-family: 'Notable', sans-serif;
 }
 
+p {
+  font-family: 'Red Hat Display', sans-serif;
+}
+
 section {
   display: grid;
   place-items: center;
