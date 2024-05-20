@@ -12,7 +12,7 @@ const WhoAmISection = () => {
     <section ref={ref} className={`relative -top-36 ${inView ? 'section-visible' : 'section-hidden'}`}>
       <p className="text-5xl md:text-7xl font-bold text-center mb-10 md:mb-20 mt-12">Who Am I?</p>
       <div className="flex flex-col md:flex-row justify-center items-center w-9/12 md:w-8/12">
-        <img src="/portrait.png" className="h-24 md:h-96 w-auto object-cover white-box-shadow md:flex-1 mb-10 md:mb-0 md:mr-8" alt="Portrait" />
+        <img src="/portrait.png" className="h-96 w-auto object-cover white-box-shadow md:flex-1 mb-10 md:mb-0 md:mr-8" alt="Portrait" />
         <div className="flex flex-col justify-center items-center md:flex-1 md:ml-8">
           <p className="text-xl">
             I am a full time student currently enrolled in Computer Science at 
