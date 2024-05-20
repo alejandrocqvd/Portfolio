@@ -138,7 +138,6 @@ section {
   opacity: 0;
   transition: opacity 0.3s;
   color: rgb(240, 235, 235);
-  font-weight: 800;
   text-shadow: 2px 2px 5px rgba(109, 109, 109, 0.8); /* Adjust the shadow strength here */
 }
 
@@ -199,6 +198,13 @@ section {
 @media (min-width: 3500px) {
   html {
     font-size: 200%;
+  }
+}
+
+@media (max-width: 1130px) {
+  .navbar.scrolled {
+    background-color: rgba(36, 35, 39, 1);
+    backdrop-filter: blur(0px);
   }
 }
 

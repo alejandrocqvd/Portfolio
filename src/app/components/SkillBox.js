@@ -6,7 +6,7 @@ export default function SkillBox(props) {
       <div className="blur-container">
         <img className="skill-image h-full w-full" src={skillImage} alt={skillName} />
       </div>
-      <p className="skill-text text-md drop-shadow-2xl">{skillName}</p>
+      <p className="skill-text font-normal md:font-bold text-sm md:text-md drop-shadow-2xl">{skillName}</p>
     </div>
   );
 }
