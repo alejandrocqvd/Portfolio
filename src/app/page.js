@@ -1,8 +1,8 @@
-import Navbar from './components/Navbar';
-import WhoAmISection from './components/WhoAmISection';
-import SkillsSection from './components/SkillsSection';
-import WorkShowcaseSection from './components/WorkShowcaseSection';
-import ContactSection from './components/ContactSection';
+import Navbar from '../components/Navbar';
+import WhoAmISection from '../components/WhoAmISection';
+import SkillsSection from '../components/SkillsSection';
+import WorkShowcaseSection from '../components/WorkShowcaseSection';
+import ContactSection from '../components/ContactSection';
 
 export default function Home() {
   return (
