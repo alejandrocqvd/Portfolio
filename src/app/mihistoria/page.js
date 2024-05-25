@@ -47,7 +47,7 @@ export default function MiHistoria() {
         <p className="text-lg mt-4 w-8/12">
           MiHistoria is a social media web application I designed and developed to continue developing the skills I learnt from working on DinoDB. 
           On MiHistoria, each user gets one, and only one post, and in that post they write their life story. Here, users can like, comment on, and 
-          save others' stories, fostering a sense of community and engagement. Additionally, users have the option to write their stories anonymously or publicly, 
+          save others&apos; stories, fostering a sense of community and engagement. Additionally, users have the option to write their stories anonymously or publicly, 
           providing flexibility and privacy as desired.
         </p>
 
