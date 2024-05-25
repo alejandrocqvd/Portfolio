@@ -14,6 +14,15 @@ const WorkShowcaseSection = () => {
       <div className="flex flex-col justify-center items-center w-9/12 md:w-8/12">
         <p ref={ref} className={`text-5xl md:text-7xl font-bold text-center mb-16 md:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
         <WorkShowcase 
+          title="WSBenchmarks" 
+          subtitle="2024 | Stock Performance Analysis Web App" 
+          description="In Nullus Inc., we are in the process of designing and developing a NextJS web application used for comparing 
+          WealthSimple stock purchases to the VFV using the Wealthica API. The goal is to help users assess their stock performance against the market."
+          techStack="D3.js, NextJS, React, TailwindCSS"
+          image="/WIP.png"
+          reversed={true}
+        />
+        <WorkShowcase 
           title="CGC on Campus" 
           subtitle="2024 | UCalgary Club's Website" 
           description="In a team, design and develop a user-friendly and informational website for Canadian Global Care on Campus club."
@@ -28,7 +37,8 @@ const WorkShowcaseSection = () => {
           techStack="React, Vite, Node.js, TypeScript, MySQL, TailwindCSS"
           image="/mihistoria-img.PNG"
           reversed={true}
-          link="https://mihistoria.vercel.app/"
+          link="/mihistoria"
+          page={true}
         />
         <WorkShowcase 
           title="Malware Terminal" 
@@ -45,6 +55,8 @@ const WorkShowcaseSection = () => {
           techStack="React, Node.js, JavaScript, TypeScript, MySQL, TailwindCSS"
           image="/dinodb-img.PNG"
           reversed={true}
+          link="/dinodb"
+          page={true}
         />
         <WorkShowcase 
           title="Sorting Visualizer" 
@@ -69,6 +81,8 @@ const WorkShowcaseSection = () => {
           techStack="Java, Swing"
           image="/greenhouse-simulator-img.PNG"
           reversed={true}
+          link="/greenhouse-simulator"
+          page={true}
         />
       </div>
     </section>

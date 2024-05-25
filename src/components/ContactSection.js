@@ -9,7 +9,7 @@ export default function ContactSection() {
               <div>
                 <div className="flex flex-col text-md md:text-2xl font-medium text-center md:text-right">
                     <p>alejandrocqvd@gmail.com</p>
-                    <a href="" target="_blank" className="mt-4 hover-underline w-auto hover:text-[#666666]">CV</a>
+                    <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="mt-4 hover-underline w-auto hover:text-[#666666]">CV</a>
                     <a href="https://github.com/alejandrocqvd" target="_blank" className="mt-4 hover:text-[#666666]">Github</a>
                     <a href="https://www.linkedin.com/in/alejandro-cardona-023282264" target="_blank" className="mt-4 hover:text-[#666666]">LinkedIn</a>
                     <a href="https://www.instagram.com/alejandrocqvd/" target="_blank" className="mt-4 hover:text-[#666666]">Instagram</a> 
