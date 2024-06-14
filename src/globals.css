@@ -65,7 +65,8 @@ section {
 }
 
 .landing-page-bg {
-  background-image: url("../public/GALAXYCOVER.png");
+  background-image: url("../public/Banner.png");
+  background-color: rgb(26, 25, 29);
 }
 
 .white-box-shadow {
