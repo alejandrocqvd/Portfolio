@@ -28,7 +28,7 @@ const WorkShowcaseSection = () => {
           description="In a team, design and develop a user-friendly and informational website for Canadian Global Care on Campus club."
           techStack="React, Vite, TailwindCSS"
           image="/cgconcampus-img.PNG"
-          link="https://cgconcampus.vercel.app/"
+          link="https://cgconcampus.ca/"
         />
         <WorkShowcase 
           title="MiHistoria" 
