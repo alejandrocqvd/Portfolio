@@ -15,7 +15,7 @@ const WorkShowcaseSection = () => {
         <p ref={ref} className={`text-5xl md:text-7xl font-bold text-center mb-16 md:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
         <WorkShowcase 
           title="WSBenchmarks" 
-          subtitle="2024 | Stock Performance Analysis Web App" 
+          subtitle="2024 | Investment Performance Analysis Web App" 
           description="In Nullus Inc., we are in the process of designing and developing a NextJS web application used for comparing 
           stock purchases to the VFV or the broader market, with the goal being help users assess their investment performance."
           techStack="D3.js, JavaScript, NextJS, React, TailwindCSS"
