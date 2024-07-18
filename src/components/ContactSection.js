@@ -12,7 +12,7 @@ export default function ContactSection() {
                     <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="mt-4 hover-underline w-auto hover:text-[#666666]">CV</a>
                     <a href="https://github.com/alejandrocqvd" target="_blank" className="mt-4 hover:text-[#666666]">Github</a>
                     <a href="https://www.linkedin.com/in/alejandro-cardona-023282264" target="_blank" className="mt-4 hover:text-[#666666]">LinkedIn</a>
-                    <a href="https://www.instagram.com/alejandrocqvd/" target="_blank" className="mt-4 hover:text-[#666666]">Instagram</a> 
+                    <a href="https://www.instagram.com/arepandro/" target="_blank" className="mt-4 hover:text-[#666666]">Instagram</a> 
                 </div>
               </div>
             </div>
