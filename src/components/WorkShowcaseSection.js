@@ -17,8 +17,8 @@ const WorkShowcaseSection = () => {
           title="WSBenchmarks" 
           subtitle="2024 | Stock Performance Analysis Web App" 
           description="In Nullus Inc., we are in the process of designing and developing a NextJS web application used for comparing 
-          WealthSimple stock purchases to the VFV using the Wealthica API. The goal is to help users assess their stock performance against the market."
-          techStack="D3.js, NextJS, React, TailwindCSS"
+          stock purchases to the VFV or the broader market, with the goal being help users assess their investment performance."
+          techStack="D3.js, JavaScript, NextJS, React, TailwindCSS"
           image="/WIP.png"
           reversed={true}
         />

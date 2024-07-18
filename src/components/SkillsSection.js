@@ -33,7 +33,7 @@ const SkillsSection = () => {
             <SkillBox skillName="Swing" skillImage="/swing-logo.png" bgColour="bg-[#1b38ad]" rounded="0" />
             <SkillBox skillName="NextJS" skillImage="/nextjs-logo.png" bgColour="bg-[#223fc8]" rounded="0" />
             <SkillBox skillName="NumPy" skillImage="/numpy-logo.png" bgColour="bg-[#2947e5]" rounded="0" />
-            <SkillBox skillName="Express" skillImage="/express-logo.png" bgColour="bg-[#304eff]" rounded="2" />
+            <SkillBox skillName="Express.js" skillImage="/express-logo.png" bgColour="bg-[#304eff]" rounded="2" />
           </div>
 
           <p className="text-xl md:text-2xl font-bold w-full mb-6 text-center md:text-left">OTHER TOOLS</p>
