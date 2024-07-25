@@ -25,7 +25,9 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="CGC on Campus" 
           subtitle="2024 | UCalgary Club's Website" 
-          description="In a team, design and develop a user-friendly and informational website for Canadian Global Care on Campus club."
+          description="In a team of two, we designed, developed, and continually maintain an informational website for 
+          Canadian Global Care on Campus, a club at our university. Hosted on Vercel, our website has helped generate 
+          hundreds of new impressions for our club and its mission."
           techStack="React, Vite, TailwindCSS"
           image="/cgconcampus-img.PNG"
           link="https://cgconcampus.ca/"
@@ -33,7 +35,10 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="MiHistoria" 
           subtitle="2024 | Social Media Web App" 
-          description="To further develop the skills I learnt from developing DinoDB, I wanted to make a social media web app where each user gets one and only post, and in that post, they share their life story."
+          description="To further develop the skills I learnt from developing DinoDB, I wanted to build a social media 
+          web app where each user gets one and only post, and in that post, they share their life story. Using 
+          TinyMCE's rich text editor, users can make their stories visually appealing and highly personalized with the 
+          use of formatting and multimedia elements."
           techStack="React, Vite, Node.js, TypeScript, MySQL, TailwindCSS"
           image="/mihistoria-img.PNG"
           reversed={true}
@@ -43,7 +48,10 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="Malware Terminal" 
           subtitle="2023 | Educational & Interactive Terminal Website" 
-          description="For my cybersecurity class, I came up with an idea for my group to design and develop an interactive terminal-like website to educate those interested in everything there is about malware."
+          description="For my cybersecurity class, I came up with an idea for my group to design and develop an 
+          interactive terminal-like website to educate those interested in everything there is about malware, 
+          and if the users are brave enough, they can download a suspicious package on the terminal and see how 
+          it affects their system."
           techStack="HTML, CSS, JavaScript"
           image="/malware-terminal-img.PNG"
           link="https://alejandrocqvd.github.io/CPSC-329-Terminal/"
@@ -51,7 +59,9 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="DinoDB" 
           subtitle="2023 | UCalgary Extracurricular Database" 
-          description="In a team for my databases class, we designed and developed a sophisticated database for UCalgary's extracurricular activities to bring all necessary information in one place."
+          description="In a team of 3 for my databases class, we designed and developed a sophisticated database for 
+          UCalgary's extracurricular activities to bring all necessary information in one place. In DinoDB, students 
+          and executives can create and join various clubs, programs, events, and volunteering opportunities."
           techStack="React, Node.js, JavaScript, TypeScript, MySQL, TailwindCSS"
           image="/dinodb-img.PNG"
           reversed={true}
@@ -61,7 +71,9 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="Sorting Visualizer" 
           subtitle="2023 | Interactive Visualizer for Sorting Algorithms" 
-          description="Learn each sorting algorithm in depth and solidify JavaScript skills by developing an interactive web app where users can see the process of each sorting algorithm, step-by-step."
+          description="The goal of designing the visualizer was to learn each sorting algorithm in depth and 
+          solidify JavaScript skills by developing an interactive web app where users can see the process of 
+          each sorting algorithm, step-by-step. Includes algorithms from bubble-sort to quick-sort, and of course, bogo-sort."
           techStack="HTML, CSS, JavaScript"
           image="/sorting-visualizer-img.PNG"
           link="https://alejandrocqvd.github.io/Sorting-Algorithm-Visualizer/"
@@ -77,7 +89,10 @@ const WorkShowcaseSection = () => {
         <WorkShowcase 
           title="Greenhouse Simulator" 
           subtitle="2023 | Multithreaded Greenhouse Simulator" 
-          description="Design a greenhouse simulator that uses Java's multithreading capabilities to continuously monitor the environment's temperature, soil moisture, and humidity."
+          description="Designed a greenhouse simulator that uses Java's multithreading capabilities to 
+          continuously monitor the environment's temperature, soil moisture, and humidity. Furthermore, 
+          users can save old simulations as files and load them later using Java's file reading and writing 
+          capabilities."
           techStack="Java, Swing"
           image="/greenhouse-simulator-img.PNG"
           reversed={true}
