@@ -12,17 +12,19 @@ const WhoAmISection = () => {
     <section ref={ref} className={`relative -top-36 ${inView ? 'section-visible' : 'section-hidden'}`}>
       <p className="text-5xl md:text-7xl font-bold text-center mb-10 md:mb-20 mt-12">Who Am I?</p>
       <div className="flex flex-col md:flex-row justify-center items-center w-9/12 md:w-8/12">
-        <img src="/portrait.png" className="h-96 w-auto object-cover white-box-shadow md:flex-1 mb-10 md:mb-0 md:mr-8" alt="Portrait" />
+        <img src="/portrait.png" className="h-[28rem] w-auto object-cover white-box-shadow md:flex-1 mb-10 md:mb-0 md:mr-8" alt="Portrait" />
         <div className="flex flex-col justify-center items-center md:flex-1 md:ml-8">
-          <p className="text-xl">
+          <p className="text-lg">
             I am a full time student currently enrolled in Computer Science at 
-            <span className="font-bold text-red-700"> UCalgary 🦖.</span>
+            <span className="font-bold text-red-700 whitespace-nowrap"> UCalgary 🦖.</span>
             <br /><br />
             Choosing computer science was a difficult decision to make coming from a family full 
             of doctors where the only right path was medicine. But ever since I took my first 
-            programming class,
-            <br />
-            <span className="font-bold text-red-700">I was hooked.</span>
+            programming class, I was hooked. My main interests are software engineering, game development, 
+            and virtual reality.
+            <br /><br />
+            When I'm not smashing my head against a wall trying to fix a bug caused by a misspelt 
+            variable name, I enjoy powerlifting, story games, and crushing TV shows in a single day (no breaks).
             <br /><br />
             Before, I was intimidated at the competitiveness of this field, but as Jim Carrey puts it:
             <br /><br />
