@@ -18,7 +18,7 @@ const WorkShowcaseSection = () => {
           subtitle="2024 | Investment Performance Analysis Web App" 
           description="In Nullus Inc., we are in the process of designing and developing a NextJS web application used for comparing 
           stock purchases to the VFV or the broader market, with the goal being help users assess their investment performance."
-          techStack="D3.js, JavaScript, NextJS, React, TailwindCSS"
+          techStack="D3.js, Encore, Go, NextJS, PostgreSQL, React, TailwindCSS, TypeScript"
           image="/WIP.png"
           reversed={true}
         />
