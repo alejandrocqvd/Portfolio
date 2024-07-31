@@ -17,12 +17,13 @@ const SkillsSection = () => {
           <p className="text-xl md:text-2xl font-bold w-full mb-6 text-center md:text-left">LANGUAGES</p>
           <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-12 md:px-8">
             <SkillBox skillName="Python" skillImage="/python-logo.png" bgColour="bg-[#8a650c]" rounded="1" />
-            <SkillBox skillName="Java" skillImage="/java-logo.png" bgColour="bg-[#a78214]" rounded="0" />
-            <SkillBox skillName="JavaScript" skillImage="/javascript-logo.png" bgColour="bg-[#b69219]" rounded="0" />
-            <SkillBox skillName="HTML" skillImage="/html-logo.png" bgColour="bg-[#c5a21e]" rounded="0" />
-            <SkillBox skillName="CSS" skillImage="/css-logo.png" bgColour="bg-[#d3b022]" rounded="0" />
-            <SkillBox skillName="TypeScript" skillImage="/typescript-logo.png" bgColour="bg-[#e1bf26]" rounded="0" />
-            <SkillBox skillName="C" skillImage="/c-logo.png" bgColour="bg-[#efcd2b]" rounded="0" />
+            <SkillBox skillName="Java" skillImage="/java-logo.png" bgColour="bg-[#987310]" rounded="0" />
+            <SkillBox skillName="JavaScript" skillImage="/javascript-logo.png" bgColour="bg-[#a58014]" rounded="0" />
+            <SkillBox skillName="HTML" skillImage="/html-logo.png" bgColour="bg-[#b49019]" rounded="0" />
+            <SkillBox skillName="CSS" skillImage="/css-logo.png" bgColour="bg-[#c3a01e]" rounded="0" />
+            <SkillBox skillName="TypeScript" skillImage="/typescript-logo.png" bgColour="bg-[#d2b023]" rounded="0" />
+            <SkillBox skillName="C" skillImage="/c-logo.png" bgColour="bg-[#e0bf27]" rounded="0" />
+            <SkillBox skillName="Go" skillImage="/golang-logo.png" bgColour="bg-[#f0cf2c]" rounded="0" />
             <SkillBox skillName="Assembly" skillImage="/assembly-logo.png" bgColour="bg-[#ffde30]" rounded="2" />
           </div>
 
@@ -33,16 +34,18 @@ const SkillsSection = () => {
             <SkillBox skillName="Swing" skillImage="/swing-logo.png" bgColour="bg-[#1b38ad]" rounded="0" />
             <SkillBox skillName="NextJS" skillImage="/nextjs-logo.png" bgColour="bg-[#223fc8]" rounded="0" />
             <SkillBox skillName="NumPy" skillImage="/numpy-logo.png" bgColour="bg-[#2947e5]" rounded="0" />
-            <SkillBox skillName="Express.js" skillImage="/express-logo.png" bgColour="bg-[#304eff]" rounded="2" />
+            <SkillBox skillName="Express.js" skillImage="/express-logo.png" bgColour="bg-[#304eff]" rounded="0" />
+            <SkillBox skillName="Encore" skillImage="/encore-logo.png" bgColour="bg-[#3856ff]" rounded="2" />
           </div>
 
           <p className="text-xl md:text-2xl font-bold w-full mb-6 text-center md:text-left">OTHER TOOLS</p>
           <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-4 md:px-8">
             <SkillBox skillName="Photoshop" skillImage="/photoshop-logo.png" bgColour="bg-[#630909]" rounded="1" />
-            <SkillBox skillName="Bash" skillImage="/bash-logo.png" bgColour="bg-[#811607]" rounded="0" />
-            <SkillBox skillName="Git" skillImage="/git-logo.png" bgColour="bg-[#a12405]" rounded="0" />
-            <SkillBox skillName="MongoDB" skillImage="/mongoDB-logo.png" bgColour="bg-[#c03103]" rounded="0" />
-            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#db3c02]" rounded="2" />
+            <SkillBox skillName="Bash" skillImage="/bash-logo.png" bgColour="bg-[#771208]" rounded="0" />
+            <SkillBox skillName="Git" skillImage="/git-logo.png" bgColour="bg-[#901d06]" rounded="0" />
+            <SkillBox skillName="MongoDB" skillImage="/mongoDB-logo.png" bgColour="bg-[#af2a04]" rounded="0" />
+            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#c63403]" rounded="0" />
+            <SkillBox skillName="PostgreSQL" skillImage="/postgre-logo.png" bgColour="bg-[#db3c02]" rounded="2" />
           </div>
         </div>
       </div>
