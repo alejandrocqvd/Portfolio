@@ -75,7 +75,7 @@ section {
 }
 
 .flex-none {
-  flex: none; /* Prevents flex items from growing or shrinking */
+  flex: none;
 }
 
 .word-list {
@@ -84,18 +84,18 @@ section {
 
 @keyframes moveWords {
   0% {
-    transform: translateX(100%); /* Start off-screen to the right */
+    transform: translateX(100%);
   }
   100% {
-    transform: translateX(-100%); /* Move off-screen to the left */
+    transform: translateX(-100%);
   }
 }
 
 .letter {
   display: inline-block;
   padding: 0 2px;
-  font-size: 24px; /* Adjust as needed */
-  color: #333; /* Adjust as needed */
+  font-size: 24px;
+  color: #333;
   opacity: 0;
   animation: fadeMove 10s linear infinite;
 }
@@ -143,7 +143,7 @@ section {
   opacity: 0;
   transition: opacity 0.3s;
   color: rgb(240, 235, 235);
-  text-shadow: 2px 2px 5px rgba(109, 109, 109, 0.8); /* Adjust the shadow strength here */
+  text-shadow: 2px 2px 5px rgba(109, 109, 109, 0.8);
 }
 
 .skill-box:hover .skill-text {

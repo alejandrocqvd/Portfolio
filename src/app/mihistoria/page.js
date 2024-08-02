@@ -1,3 +1,5 @@
+import SkillBox from '../../components/SkillBox';
+
 export default function MiHistoria() {
   return (
     <div className="w-full justify-center items-center">
@@ -44,13 +46,49 @@ export default function MiHistoria() {
             Your browser does not support videos.
         </video>
 
-        <p className="text-lg mt-4 w-11/12 md:w-8/12">
-          MiHistoria is a social media web application I designed and developed to continue developing the skills I learnt from working on DinoDB. 
-          On MiHistoria, each user gets one, and only one post, and in that post they write their life story. Here, users can like, comment on, and 
-          save others&apos; stories, fostering a sense of community and engagement. Additionally, users have the option to write their stories anonymously or publicly, 
-          providing flexibility and privacy as desired.
-        </p>
+        <div className="text-lg mt-4 w-11/12 md:w-8/12">
+          <p className="text-4xl font-bold my-4 text-center">What is MiHistoria?</p>
+          <p>
+            MiHistoria is a social media web application where each user is given one chance to 
+            share their entire life story in a single post. Here, users can use TinyMCE&apos;s
+            rich text editor to write and format their stories, allowing them to express themselves 
+            with the desired level of detail and creativity.<br></br><br></br> Additionally, users can:
+          </p>
 
+          <ul className="list-disc list-inside mt-6">
+            <li className="md:ml-6 mb-4">
+              <strong>Engage with Others&apos; Stories:</strong> Like, comment on, and save stories 
+              from other users, fostering a sense of community and connection.
+            </li>
+            <li className="md:ml-6 mb-4">
+              <strong>Choose Your Privacy:</strong> Write stories anonymously or publicly, providing 
+              flexibility and privacy according to their comfort level.
+            </li>
+            <li className="md:ml-6 mb-4">
+              <strong>Explore Human Experiences:</strong> Read a diverse collection of personal narratives 
+              from people around the world.
+            </li>
+          </ul>
+
+          <p className="text-4xl font-bold mt-12 mb-6 text-center">Project Goals</p>
+          <p>
+            After completing DinoDB, I wanted to solidify my understanding of various modern web development 
+            technologies and practices. I focused on building and integrating RESTful APIs for my server-client 
+            interactions and made these APIs handle CRUD operations, user authentication, and data management. 
+            Additionally, working on MiHistoria allowed me to get comfortable with TypeScript and TailwindCSS.
+          </p>
+
+          <p className="text-4xl font-bold mt-12 mb-6 text-center">Tech Stack</p>
+          <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-4">
+            <SkillBox skillName="React" skillImage="/react-logo.png" bgColour="bg-[#4c0098]" rounded="1" />
+            <SkillBox skillName="Vite" skillImage="/vite-logo.png" bgColour="bg-[#550086]" rounded="0" />
+            <SkillBox skillName="TypeScript" skillImage="/typescript-logo.png" bgColour="bg-[#5f0073]" rounded="0" />
+            <SkillBox skillName="TailwindCSS" skillImage="/tailwind-logo.png" bgColour="bg-[#69005f]" rounded="0" />
+            <SkillBox skillName="Node.js" skillImage="/nodejs-logo.png" bgColour="bg-[#72014e]" rounded="0" />
+            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#7a013e]" rounded="2" />
+          </div>
+          
+        </div>
       </div>
     </div>
   );
