@@ -2,12 +2,12 @@ export default function ContactSection() {
   return (
     <>
         <div id="contact"></div>
-        <div className="flex flex-col w-screen md:w-full justify-center items-center bg-[#242327]">
-            <div className="w-9/12 md:w-8/12 pt-14 mb-6 md:px-16">
-            <div className="flex flex-col md:flex-row w-full justify-center items-center md:items-start mb-14">
-              <p className="text-3xl md:text-4xl font-bold flex-1 text-center md:text-left mb-8 md:mb-0">Get in touch</p>
+        <div className="flex flex-col w-screen xl:w-full justify-center items-center bg-[#242327]">
+            <div className="w-9/12 xl:w-8/12 pt-14 mb-6 xl:px-16">
+            <div className="flex flex-col xl:flex-row w-full justify-center items-center xl:items-start mb-14">
+              <p className="text-3xl xl:text-4xl font-bold flex-1 text-center xl:text-left mb-8 xl:mb-0">Get in touch</p>
               <div>
-                <div className="flex flex-col text-md md:text-2xl font-medium text-center md:text-right">
+                <div className="flex flex-col text-md xl:text-2xl font-medium text-center xl:text-right">
                     <p>alejandrocqvd@gmail.com</p>
                     <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="mt-4 hover-underline w-auto hover:text-[#666666]">CV</a>
                     <a href="https://github.com/alejandrocqvd" target="_blank" className="mt-4 hover:text-[#666666]">Github</a>
@@ -16,7 +16,7 @@ export default function ContactSection() {
                 </div>
               </div>
             </div>
-            <p className="text-sm md:text-lg text-center">Designed and Developed by Alejandro Cardona</p>
+            <p className="text-sm xl:text-lg text-center">Designed and Developed by Alejandro Cardona</p>
             </div>
       </div>
     </>

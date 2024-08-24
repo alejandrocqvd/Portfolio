@@ -11,8 +11,8 @@ const WorkShowcaseSection = () => {
 
   return (
     <section>
-      <div className="flex flex-col justify-center items-center w-9/12 md:w-8/12">
-        <p ref={ref} className={`text-5xl md:text-7xl font-bold text-center mb-16 md:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
+      <div className="flex flex-col justify-center items-center w-9/12 xl:w-8/12">
+        <p ref={ref} className={`text-5xl xl:text-7xl font-bold text-center mb-16 xl:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
         <WorkShowcase 
           title="WSBenchmarks" 
           subtitle="2024 | Investment Performance Analysis Web App" 
