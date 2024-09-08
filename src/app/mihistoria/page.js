@@ -79,7 +79,7 @@ export default function MiHistoria() {
             <br></br><br></br>
             <span className="font-bold">DISCLAIMER: </span> Because my backend is hosted on SupaBase, I had to switch the SQL 
             code to work with PostgreSQL instead of MySQL and also had to change the way image uploading is handled, switching from 
-            using Multer to store the images locally in my repository to using the storage from SupaBase. This has not been implemented yet, \
+            using Multer to store the images locally in my repository to using the storage from SupaBase. This has not been implemented yet, 
             therefore image uploading / viewing is still in progress for the hosted app!
           </p>
 
