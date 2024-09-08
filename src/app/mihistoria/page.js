@@ -76,6 +76,11 @@ export default function MiHistoria() {
             technologies and practices. I focused on building and integrating RESTful APIs for my server-client 
             interactions and made these APIs handle CRUD operations, user authentication, and data management. 
             Additionally, working on MiHistoria allowed me to get comfortable with TypeScript and TailwindCSS.
+            <br></br><br></br>
+            <span className="font-bold">DISCLAIMER: </span> Because my backend is hosted on SupaBase, I had to switch the SQL 
+            code to work with PostgreSQL instead of MySQL and also had to change the way image uploading is handled, switching from 
+            using Multer to store the images locally in my repository to using the storage from SupaBase. This has not been implemented yet, \
+            therefore image uploading / viewing is still in progress for the hosted app!
           </p>
 
           <p className="text-4xl font-bold mt-12 mb-6 text-center">Tech Stack</p>
