@@ -41,11 +41,12 @@ const SkillsSection = () => {
           <p className="text-xl xl:text-2xl font-bold w-full mb-6 text-center xl:text-left">OTHER TOOLS</p>
           <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-4 xl:px-8">
             <SkillBox skillName="Photoshop" skillImage="/photoshop-logo.png" bgColour="bg-[#630909]" rounded="1" />
-            <SkillBox skillName="Bash" skillImage="/bash-logo.png" bgColour="bg-[#771208]" rounded="0" />
-            <SkillBox skillName="Git" skillImage="/git-logo.png" bgColour="bg-[#901d06]" rounded="0" />
-            <SkillBox skillName="MongoDB" skillImage="/mongoDB-logo.png" bgColour="bg-[#af2a04]" rounded="0" />
-            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#c63403]" rounded="0" />
-            <SkillBox skillName="PostgreSQL" skillImage="/postgre-logo.png" bgColour="bg-[#db3c02]" rounded="2" />
+            <SkillBox skillName="Bash" skillImage="/bash-logo.png" bgColour="bg-[#761108]" rounded="0" />
+            <SkillBox skillName="Git" skillImage="/git-logo.png" bgColour="bg-[#841707]" rounded="0" />
+            <SkillBox skillName="MongoDB" skillImage="/mongoDB-logo.png" bgColour="bg-[#992005]" rounded="0" />
+            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#a92704]" rounded="0" />
+            <SkillBox skillName="PostgreSQL" skillImage="/postgre-logo.png" bgColour="bg-[#be3002]" rounded="0" />
+            <SkillBox skillName="Supabase" skillImage="/supabase-logo.png" bgColour="bg-[#cf3700]" rounded="2" />
           </div>
         </div>
       </div>
