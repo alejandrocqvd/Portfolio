@@ -11,13 +11,13 @@ export default function WorkShowcase(props) {
   });
 
   const sectionContent = (
-    <div className={`flex ${reversed ? "xl:flex-row-reverse" : "xl:flex-row"} w-full flex-col justify-center items-center mb-24 xl:mb-32`}>
-      <img src={image} alt={title} className={`xl:flex-1 h-36 xl:h-72 w-auto m-auto mb-10 xl:mb-0 object-cover white-box-shadow ${reversed ? "xl:ml-8" : "xl:mr-8"}`} />
-      <div className={`flex flex-col xl:flex-1 h-full justify-center text-md xl:text-lg ${reversed ? "xl:mr-8" : "xl:ml-8"}`}>
+    <div className={`flex ${reversed ? "2xl:flex-row-reverse" : "2xl:flex-row"} w-full flex-col justify-center items-center mb-24 2xl:mb-32`}>
+      <img src={image} alt={title} className={`2xl:flex-1 h-36 xl:h-72 w-auto m-auto mb-10 2xl:mb-0 object-cover white-box-shadow ${reversed ? "2xl:ml-8" : "2xl:mr-8"}`} />
+      <div className={`flex flex-col 2xl:flex-1 h-full justify-center text-md 2xl:text-lg ${reversed ? "2xl:mr-8" : "2xl:ml-8"}`}>
         {link && !page ? (
-          <a href={link} target="_blank"><p className="text-2xl xl:text-4xl font-bold mb-2 hover:underline">{title}</p></a>
+          <a href={link} target="_blank"><p className="text-2xl 2xl:text-4xl font-bold mb-2 hover:underline">{title}</p></a>
         ) : (
-          <p className="text-2xl xl:text-4xl font-bold mb-2 hover:underline">{title}</p>
+          <p className="text-2xl 2xl:text-4xl font-bold mb-2 hover:underline">{title}</p>
         )}
         <p>{subtitle}<br /><br /></p>
         <p><span className="font-bold"></span>{description}<br /><br /></p>
