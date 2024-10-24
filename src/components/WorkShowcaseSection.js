@@ -11,7 +11,7 @@ const WorkShowcaseSection = () => {
 
   return (
     <section>
-      <div className="flex flex-col justify-center items-center w-9/12 xl:w-8/12">
+      <div className="flex flex-col justify-center items-center w-9/12 xl:w-8/12 max-w-7xl">
         <p ref={ref} className={`text-5xl xl:text-7xl font-bold text-center mb-16 xl:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
         <WorkShowcase 
           title="WSBenchmarks" 
