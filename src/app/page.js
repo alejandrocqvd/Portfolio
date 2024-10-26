@@ -3,6 +3,8 @@ import WhoAmISection from '../components/WhoAmISection';
 import SkillsSection from '../components/SkillsSection';
 import WorkShowcaseSection from '../components/WorkShowcaseSection';
 import ContactSection from '../components/ContactSection';
+import HeroSection from '@/components/HeroSection';
+import CircularText from '@/components/CircularText';
 
 export default function Home() {
   return (
@@ -14,7 +16,8 @@ export default function Home() {
         <h1 className="text-4xl md:text-8xl">ALEJANDRO</h1>
         <h1 className="text-4xl md:text-8xl mt-4 mb-10">CARDONA</h1>
         <div className="w-96 overflow-hidden relative whitespace-nowrap">
-          <p className="font-bold text-md md:text-lg">Student & Developer</p>
+          {/* <p className="font-bold text-md md:text-lg">Student & Developer</p> */}
+          <CircularText />
         </div>
       </div>
 
