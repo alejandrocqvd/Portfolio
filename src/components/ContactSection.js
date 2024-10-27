@@ -36,7 +36,7 @@ export default function ContactSection() {
               </div>
             </div>
           </div>
-          <p className="text-sm xl:text-lg text-center">Designed and Developed by Alejandro Cardona</p>
+          <p className="text-sm xl:text-base text-center">Portfolio of Alejandro Cardona - Last Updated: October 2024</p>
         </div>
       </div>
     </>
