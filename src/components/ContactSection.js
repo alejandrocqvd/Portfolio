@@ -1,3 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
+"use client"
+import { FaEnvelope, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { HiDocumentText } from "react-icons/hi"; // For the CV icon
+
 export default function ContactSection() {
   return (
     <>
@@ -8,11 +13,26 @@ export default function ContactSection() {
             <p className="text-3xl xl:text-4xl font-bold flex-1 text-center xl:text-left mb-8 xl:mb-0">Get in touch</p>
             <div>
               <div className="flex flex-col text-md xl:text-2xl font-medium text-center xl:text-right">
-                <a href="mailto:alejandrocqvd@gmail.com" className="hover:text-[#666666]">alejandrocqvd@gmail.com</a>
-                <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="mt-4 hover-underline w-auto hover:text-[#666666]">CV</a>
-                <a href="https://github.com/alejandrocqvd" target="_blank" className="mt-4 hover:text-[#666666]">Github</a>
-                <a href="https://www.linkedin.com/in/alejandro-cardonaq" target="_blank" className="mt-4 hover:text-[#666666]">LinkedIn</a>
-                <a href="https://www.instagram.com/arepandro/" target="_blank" className="mt-4 hover:text-[#666666]">Instagram</a> 
+                <a href="mailto:alejandrocqvd@gmail.com" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                  <span>alejandrocqvd@gmail.com</span>
+                  <FaEnvelope className="ml-4" />
+                </a>
+                <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                  <span>CV</span>
+                  <HiDocumentText className="ml-4" />
+                </a>
+                <a href="https://github.com/alejandrocqvd" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                  <span>Github</span>
+                  <FaGithub className="ml-4" />
+                </a>
+                <a href="https://www.linkedin.com/in/alejandro-cardonaq" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                  <span>LinkedIn</span>
+                  <FaLinkedin className="ml-4" />
+                </a>
+                <a href="https://www.instagram.com/arepandro/" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                  <span>Instagram</span>
+                  <FaInstagram className="ml-4" />
+                </a> 
               </div>
             </div>
           </div>
