@@ -23,8 +23,7 @@ const WhoAmISection = () => {
             programming class, I was hooked. My main interests are software engineering, game development, 
             and virtual reality.
             <br /><br />
-            When I&apos;m not smashing my head against a wall trying to fix a bug caused by a misspelt 
-            variable name, I enjoy powerlifting, story games, and crushing TV shows in a single day (no breaks).
+            Alongside this, I co-founded <a href="https://www.nullus.ca/" target="_blank" className="hover:underline">Nullus Inc.</a>, where we empower individuals, clubs, and companies through innovative web development solutions.
             <br /><br />
             Before, I was intimidated at the competitiveness of this field, but as Jim Carrey puts it:
             <br /><br />
