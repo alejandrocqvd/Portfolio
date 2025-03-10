@@ -12,7 +12,7 @@ const WhoAmISection = () => {
     <section ref={ref} className={`relative -top-36 ${inView ? 'section-visible' : 'section-hidden'}`}>
       <p className="text-5xl xl:text-7xl font-bold text-center mb-10 xl:mb-20 mt-12">Who Am I?</p>
       <div className="flex flex-col xl:flex-row justify-center items-center w-9/12 xl:w-8/12 max-w-7xl">
-        <img src="/portrait.png" className="h-[28rem] w-auto object-cover white-box-shadow xl:flex-1 mb-10 xl:mb-0 xl:mr-8" alt="Portrait" />
+        <img src="/portrait.png" className="h-[28rem] w-auto md:w-3/4 xl:w-auto object-cover white-box-shadow xl:flex-1 mb-10 xl:mb-0 xl:mr-8" alt="Portrait" />
         <div className="flex flex-col justify-center items-center xl:flex-1 xl:ml-8">
           <p className="text-lg">
             I am a full time student currently enrolled in Computer Science at 
@@ -23,8 +23,7 @@ const WhoAmISection = () => {
             programming class, I was hooked. My main interests are software engineering, game development, 
             and virtual reality.
             <br /><br />
-            When I&apos;m not smashing my head against a wall trying to fix a bug caused by a misspelt 
-            variable name, I enjoy powerlifting, story games, and crushing TV shows in a single day (no breaks).
+            Alongside this, I co-founded <a href="https://www.nullus.ca/" target="_blank" className="hover:underline">Nullus Inc.</a>, where we empower individuals, clubs, and companies through innovative web development solutions.
             <br /><br />
             Before, I was intimidated at the competitiveness of this field, but as Jim Carrey puts it:
             <br /><br />

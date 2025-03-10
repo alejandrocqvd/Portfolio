@@ -215,6 +215,18 @@ section {
   }
 }
 
+@media (max-width: 1820px) {
+  html {
+    font-size: 80%;
+  }
+}
+
+/* @media (max-width: 1300px) {
+  html {
+    font-size: 50%;
+  }
+} */
+
 @media (max-width: 1130px) {
   .navbar.scrolled {
     background-color: rgba(36, 35, 39, 1);
