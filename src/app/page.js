@@ -17,7 +17,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-8xl mt-4 mb-10">CARDONA</h1>
         <div className="w-96 overflow-hidden relative whitespace-nowrap">
           {/* <p className="font-bold text-md md:text-lg">Student & Developer</p> */}
-          <CircularText />
+          {/* <CircularText /> */}
         </div>
       </div>
 

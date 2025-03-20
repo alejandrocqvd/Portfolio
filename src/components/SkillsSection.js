@@ -54,7 +54,7 @@ const SkillsSection = () => {
   return (
     <section ref={ref} className={`relative -top-12 ${inView ? 'section-visible' : 'section-hidden'}`}>
       <p className="text-5xl xl:text-7xl font-bold text-center mb-16 xl:mb-20">My Skills</p>
-      <div className="flex flex-row justify-center items-center w-9/12 xl:w-8/12 xl:border-l-4 xl:border-r-4 rounded-md xl:px-24 max-w-7xl">
+      <div className="flex flex-row justify-center items-center w-9/12 xl:w-8/12  rounded-md xl:px-24 max-w-7xl">
         <div className="flex flex-col justify-center items-center text-left w-full">
           {skillCategories.map((category, index) => (
             <div
