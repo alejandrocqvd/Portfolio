@@ -74,7 +74,7 @@ section {
 }
 
 .landing-page-bg {
-  background-image: url("../public/Banner.png");
+  /* background-image: url("../public/hero/Banner.png"); */
   background-color: rgb(26, 25, 29);
 }
 
@@ -205,15 +205,15 @@ section {
 }
 
 .navbar.scrolled {
-  background-color: rgba(36, 35, 39, 0.7);
+  background-color: rgba(36, 35, 39, 0.95);
   backdrop-filter: blur(20px);
 }
-
+/* 
 @media (min-width: 3500px) {
   html {
     font-size: 200%;
   }
-}
+} */
 
 @media (max-width: 1820px) {
   html {

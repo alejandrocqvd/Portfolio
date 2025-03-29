@@ -17,7 +17,7 @@ export default function ContactSection() {
                   <span>alejandrocqvd@gmail.com</span>
                   <FaEnvelope className="ml-4" />
                 </a>
-                <a href="/Alejandro-Cardona-Resume.pdf" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
+                <a href="/misc/Alejandro-Cardona-Resume.pdf" target="_blank" className="flex items-center justify-center xl:justify-end mt-4 hover:text-[#666666]">
                   <span>CV</span>
                   <HiDocumentText className="ml-4" />
                 </a>

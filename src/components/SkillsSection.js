@@ -1,7 +1,23 @@
 "use client";
 import React from 'react';
-import SkillBox from './SkillBox';
 import { useInView } from "react-intersection-observer";
+
+// =====================================================================================================
+
+const SkillBox = (props) => {
+  const { skillName, skillImage, bgColour, rounded } = props;
+  
+  return (
+    <div className={`skill-box h-12 xl:h-16 w-full ${bgColour} ${rounded == 1 ? "rounded-l-lg" : (rounded == 2 ? "rounded-r-lg" : "") }`}>
+      <div className="blur-container">
+        <img className="skill-image h-full w-full" src={skillImage} alt={skillName} />
+      </div>
+      <p className="skill-text font-normal xl:font-bold text-sm xl:text-md drop-shadow-2xl">{skillName}</p>
+    </div>
+  );
+}
+
+// =====================================================================================================
 
 const SkillsSection = () => {
   const { ref, inView } = useInView({
@@ -14,39 +30,39 @@ const SkillsSection = () => {
     {
       title: "LANGUAGES",
       skills: [
-        { skillName: "Python", skillImage: "/python-logo.png", bgColour: "bg-[#8a650c]", rounded: "1" },
-        { skillName: "Java", skillImage: "/java-logo.png", bgColour: "bg-[#987310]", rounded: "0" },
-        { skillName: "JavaScript", skillImage: "/javascript-logo.png", bgColour: "bg-[#a58014]", rounded: "0" },
-        { skillName: "HTML", skillImage: "/html-logo.png", bgColour: "bg-[#b49019]", rounded: "0" },
-        { skillName: "CSS", skillImage: "/css-logo.png", bgColour: "bg-[#c3a01e]", rounded: "0" },
-        { skillName: "TypeScript", skillImage: "/typescript-logo.png", bgColour: "bg-[#d2b023]", rounded: "0" },
-        { skillName: "C", skillImage: "/c-logo.png", bgColour: "bg-[#e0bf27]", rounded: "0" },
-        { skillName: "Go", skillImage: "/golang-logo.png", bgColour: "bg-[#f0cf2c]", rounded: "0" },
-        { skillName: "Assembly", skillImage: "/assembly-logo.png", bgColour: "bg-[#ffde30]", rounded: "2" },
+        { skillName: "Python", skillImage: "/skills/python-logo.png", bgColour: "bg-[#8a650c]", rounded: "1" },
+        { skillName: "Java", skillImage: "/skills/java-logo.png", bgColour: "bg-[#987310]", rounded: "0" },
+        { skillName: "JavaScript", skillImage: "/skills/javascript-logo.png", bgColour: "bg-[#a58014]", rounded: "0" },
+        { skillName: "HTML", skillImage: "/skills/html-logo.png", bgColour: "bg-[#b49019]", rounded: "0" },
+        { skillName: "CSS", skillImage: "/skills/css-logo.png", bgColour: "bg-[#c3a01e]", rounded: "0" },
+        { skillName: "TypeScript", skillImage: "/skills/typescript-logo.png", bgColour: "bg-[#d2b023]", rounded: "0" },
+        { skillName: "C", skillImage: "/skills/c-logo.png", bgColour: "bg-[#e0bf27]", rounded: "0" },
+        { skillName: "Go", skillImage: "/skills/golang-logo.png", bgColour: "bg-[#f0cf2c]", rounded: "0" },
+        { skillName: "Assembly", skillImage: "/skills/assembly-logo.png", bgColour: "bg-[#ffde30]", rounded: "2" },
       ],
     },
     {
       title: "LIBRARIES AND FRAMEWORKS",
       skills: [
-        { skillName: "React", skillImage: "/react-logo.png", bgColour: "bg-[#0b2870]", rounded: "1" },
-        { skillName: "Tailwind", skillImage: "/tailwind-logo.png", bgColour: "bg-[#13308f]", rounded: "0" },
-        { skillName: "Swing", skillImage: "/swing-logo.png", bgColour: "bg-[#1b38ad]", rounded: "0" },
-        { skillName: "NextJS", skillImage: "/nextjs-logo.png", bgColour: "bg-[#223fc8]", rounded: "0" },
-        { skillName: "NumPy", skillImage: "/numpy-logo.png", bgColour: "bg-[#2947e5]", rounded: "0" },
-        { skillName: "Express.js", skillImage: "/express-logo.png", bgColour: "bg-[#304eff]", rounded: "0" },
-        { skillName: "Encore", skillImage: "/encore-logo.png", bgColour: "bg-[#3856ff]", rounded: "2" },
+        { skillName: "React", skillImage: "/skills/react-logo.png", bgColour: "bg-[#0b2870]", rounded: "1" },
+        { skillName: "Tailwind", skillImage: "/skills/tailwind-logo.png", bgColour: "bg-[#13308f]", rounded: "0" },
+        { skillName: "Swing", skillImage: "/skills/swing-logo.png", bgColour: "bg-[#1b38ad]", rounded: "0" },
+        { skillName: "NextJS", skillImage: "/skills/nextjs-logo.png", bgColour: "bg-[#223fc8]", rounded: "0" },
+        { skillName: "NumPy", skillImage: "/skills/numpy-logo.png", bgColour: "bg-[#2947e5]", rounded: "0" },
+        { skillName: "Express.js", skillImage: "/skills/express-logo.png", bgColour: "bg-[#304eff]", rounded: "0" },
+        { skillName: "Encore", skillImage: "/skills/encore-logo.png", bgColour: "bg-[#3856ff]", rounded: "2" },
       ],
     },
     {
       title: "OTHER TOOLS",
       skills: [
-        { skillName: "Photoshop", skillImage: "/photoshop-logo.png", bgColour: "bg-[#630909]", rounded: "1" },
-        { skillName: "Bash", skillImage: "/bash-logo.png", bgColour: "bg-[#761108]", rounded: "0" },
-        { skillName: "Git", skillImage: "/git-logo.png", bgColour: "bg-[#841707]", rounded: "0" },
-        { skillName: "MongoDB", skillImage: "/mongoDB-logo.png", bgColour: "bg-[#992005]", rounded: "0" },
-        { skillName: "MySQL", skillImage: "/mysql-logo.png", bgColour: "bg-[#a92704]", rounded: "0" },
-        { skillName: "PostgreSQL", skillImage: "/postgre-logo.png", bgColour: "bg-[#be3002]", rounded: "0" },
-        { skillName: "Supabase", skillImage: "/supabase-logo.png", bgColour: "bg-[#cf3700]", rounded: "2" },
+        { skillName: "Photoshop", skillImage: "/skills/photoshop-logo.png", bgColour: "bg-[#630909]", rounded: "1" },
+        { skillName: "Bash", skillImage: "/skills/bash-logo.png", bgColour: "bg-[#761108]", rounded: "0" },
+        { skillName: "Git", skillImage: "/skills/git-logo.png", bgColour: "bg-[#841707]", rounded: "0" },
+        { skillName: "MongoDB", skillImage: "/skills/mongoDB-logo.png", bgColour: "bg-[#992005]", rounded: "0" },
+        { skillName: "MySQL", skillImage: "/skills/mysql-logo.png", bgColour: "bg-[#a92704]", rounded: "0" },
+        { skillName: "PostgreSQL", skillImage: "/skills/postgre-logo.png", bgColour: "bg-[#be3002]", rounded: "0" },
+        { skillName: "Supabase", skillImage: "/skills/supabase-logo.png", bgColour: "bg-[#cf3700]", rounded: "2" },
       ],
     },
   ];

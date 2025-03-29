@@ -18,6 +18,10 @@ module.exports = {
       backgroundImage: {
         'gradient': 'linear-gradient(90deg, rgba(102,0,204,1) 0%, rgba(179,0,89,1) 100%)',
       },
+      screens: {
+        '3xl': '1800px',
+        '4xl': '3000px',
+      },
     },
   },
   plugins: [],
