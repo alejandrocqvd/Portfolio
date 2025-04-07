@@ -6,7 +6,7 @@ function NavLink({ href, children }) {
   return (
     <a
       href={href}
-      className="block m-2 md:m-5 mx-1 md:mx-6 box-border text-center no-underline hover-underline-animation"
+      className="block m-2 md:m-5 mx-1 md:mx-8 box-border text-center no-underline hover-underline-animation"
     >
       {children}
     </a>
