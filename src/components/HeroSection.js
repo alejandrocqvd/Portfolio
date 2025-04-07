@@ -27,13 +27,13 @@ export default function HeroSection() {
       <div className="w-full h-[1.25px] 4xl:h-[3px] bg-white my-4"></div>
       <div className="flex justify-center sm:justify-end w-full">
         <p className="lg:w-1/3 pt-3 text-justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-          enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-          nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-          in reprehenderit in voluptate velit esse cillum dolore eu fugiat 
-          nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-          sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Born 2004 in Fort McMurray, Canada. My early experiences with 
+          technology led me to develop a relationship where I aspire to be 
+          on the forefront of tech and to apply it in the real world to achieve 
+          real results. Inspired by the remarkable achievements in software 
+          engineering and virtual reality, I am committed to pursuing a career 
+          that not only challenges me to continuously refine my skills, but 
+          also allows me to experiment with and shape the future of technology.
         </p>
       </div>
     </div>
