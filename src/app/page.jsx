@@ -1,9 +1,9 @@
 import Navbar from '../components/Navbar';
-import WhoAmISection from '../components/WhoAmISection';
-import SkillsSection from '../components/SkillsSection';
-import WorkShowcaseSection from '../components/WorkShowcaseSection';
-import ContactSection from '../components/ContactSection';
-import HeroSection from '@/components/HeroSection';
+import About from '../components/About';
+import Skills from '../components/Skills';
+import Work from '../components/Work';
+import Contact from '../components/Contact';
+import Hero from '@/components/Hero';
 import CircularText from '@/components/CircularText';
 
 export default function Home() {
@@ -12,19 +12,19 @@ export default function Home() {
       <Navbar />
 
       <div id="home"></div>
-      <HeroSection />
+      <Hero />
 
       <div id="about" className="relative -top-40 -z-10 h-32 md:h-28"></div>
-      <WhoAmISection />
+      <About />
 
       <div id="skills" className="relative -top-10 -z-10 h-20 md:h-40"></div>
-      <SkillsSection />
+      <Skills />
       <p className="text-sm md:mt-4">I can also play one (1) song on bass</p>
       
       <div id="projects" className="h-32 md:h-48"></div>
-      <WorkShowcaseSection />
+      <Work />
 
-      <ContactSection />
+      <Hero />
     </div>
   );
 }
