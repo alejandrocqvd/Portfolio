@@ -184,6 +184,18 @@ section {
   align-items: center;
 }
 
+.no-blur-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .skill-image {
   scale: 90%;
   position: absolute;

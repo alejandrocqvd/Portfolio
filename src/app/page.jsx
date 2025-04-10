@@ -24,7 +24,7 @@ export default function Home() {
       <div id="projects" className="h-32 md:h-48"></div>
       <Work />
 
-      <Hero />
+      <Contact />
     </div>
   );
 }

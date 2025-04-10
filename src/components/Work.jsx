@@ -2,23 +2,32 @@
 import React from 'react';
 import { useInView } from "react-intersection-observer";
 import Link from 'next/link';
+import { MiniSkillBox } from './ui/MiniSkillBox';
 
 // =====================================================================================================
 
 const projects = [
   {
-    title: "WSBenchmarks",
-    subtitle: "2024 | Investment Performance Analysis Web App",
-    description: "Currently in the process of designing and developing a NextJS web application used for comparing stock purchases to the VFV or the broader market, with the goal being help users assess their investment performance.",
-    techStack: "D3.js, Encore, Go, NextJS, PostgreSQL, React, TailwindCSS, TypeScript",
-    image: "/work/WIP.png",
+    title: "IDEA MR Room Planner",
+    subtitle: "2025 | Mixed Reality Room Planner",
+    description: "Mixed reality app that allows users to visualize and plan out their living spaces with life-sized 3D furniture models, in real time. The app features hand tracking, giving users the freedom to grab, move, and arrange over 100+ pieces of distinct furniture pieces as they would naturally.",
+    techStack: "C#, Meta XR SDK, Unity",
+    image: "/work/idea-mr-room-planner-img.png",
     reversed: true,
   },
+  // {
+  //   title: "WSBenchmarks",
+  //   subtitle: "2024 | Investment Performance Analysis Web App",
+  //   description: "Currently in the process of designing and developing a NextJS web application used for comparing stock purchases to the VFV or the broader market, with the goal being help users assess their investment performance.",
+  //   techStack: "D3.js, Encore, Go, NextJS, PostgreSQL, React, TailwindCSS, TypeScript",
+  //   image: "/work/WIP.png",
+  //   reversed: true,
+  // },
   {
     title: "CGC on Campus",
     subtitle: "2024 | UCalgary Club's Website",
     description: "In a team of two, we designed, developed, and continually maintain an informational website for Canadian Global Care on Campus, a club at our university. Hosted on Vercel, our website has helped generate hundreds of new impressions for our club and its mission.",
-    techStack: "React, Vite, TailwindCSS",
+    techStack: ["React", "Vite", "Tailwind"],
     image: "/work/cgconcampus-img.PNG",
     link: "https://cgconcampus.ca/",
   },
@@ -26,7 +35,7 @@ const projects = [
     title: "MiHistoria",
     subtitle: "2024 | Social Media Web App",
     description: "To further develop the skills I learnt from developing DinoDB, I wanted to build a social media web app where each user gets one and only post, and in that post, they share their life story. Using TinyMCE's rich text editor, users can make their stories visually appealing and highly personalized with the use of formatting and multimedia elements.",
-    techStack: "React, Vite, Node.js, TypeScript, MySQL, TailwindCSS",
+    techStack: ["React", "Vite", "Node.js", "TypeScript", "MySQL", "Tailwind"],
     image: "/work/mihistoria-img.PNG",
     reversed: true,
     link: "/mihistoria",
@@ -36,7 +45,7 @@ const projects = [
     title: "Malware Terminal",
     subtitle: "2023 | Educational & Interactive Terminal Website",
     description: "For my cybersecurity class, I came up with an idea for my group to design and develop an interactive terminal-like website to educate those interested in everything there is about malware, and if the users are brave enough, they can download a suspicious package on the terminal and see how it affects their system.",
-    techStack: "HTML, CSS, JavaScript",
+    techStack: ["HTML", "CSS", "JavaScript"],
     image: "/work/malware-terminal-img.PNG",
     link: "https://alejandrocqvd.github.io/CPSC-329-Terminal/",
   },
@@ -44,7 +53,7 @@ const projects = [
     title: "DinoDB",
     subtitle: "2023 | UCalgary Extracurricular Database",
     description: "In a team of 3 for my databases class, we designed and developed a sophisticated database for UCalgary's extracurricular activities to bring all necessary information in one place. In DinoDB, students and executives can create and join various clubs, programs, events, and volunteering opportunities.",
-    techStack: "React, Node.js, JavaScript, TypeScript, MySQL, TailwindCSS",
+    techStack: ["React", "Node.js", "JavaScript", "TypeScript", "MySQL", "Tailwind"],
     image: "/work/dinodb-img.PNG",
     reversed: true,
     link: "/dinodb",
@@ -54,7 +63,7 @@ const projects = [
     title: "Sorting Visualizer",
     subtitle: "2023 | Interactive Visualizer for Sorting Algorithms",
     description: "The goal of designing the visualizer was to learn each sorting algorithm in depth and solidify JavaScript skills by developing an interactive web app where users can see the process of each sorting algorithm, step-by-step. Includes algorithms from bubble-sort to quick-sort, and of course, bogo-sort.",
-    techStack: "HTML, CSS, JavaScript",
+    techStack: ["HTML", "CSS", "JavaScript"],
     image: "/work/sorting-visualizer-img.PNG",
     link: "https://alejandrocqvd.github.io/Sorting-Algorithm-Visualizer/",
   },
@@ -62,7 +71,7 @@ const projects = [
     title: "Greenhouse Simulator",
     subtitle: "2023 | Multithreaded Greenhouse Simulator",
     description: "Designed a greenhouse simulator that uses Java's multithreading capabilities to continuously monitor the environment's temperature, soil moisture, and humidity. Furthermore, users can save old simulations as files and load them later using Java's file reading and writing capabilities.",
-    techStack: "Java, Swing",
+    techStack: ["Java", "Swing"],
     image: "/work/greenhouse-simulator-img.PNG",
     reversed: true,
     link: "/greenhouse-simulator",
@@ -75,6 +84,11 @@ const projects = [
 const WorkShowcase = (props) => {
   const { title, subtitle, description, techStack, image, reversed, link, page } = props;
 
+  // Normalize techStack to always be an array.
+  const techArray = Array.isArray(techStack)
+  ? techStack 
+  : techStack.split(',').map((tech) => tech.trim());
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.2,
@@ -85,15 +99,25 @@ const WorkShowcase = (props) => {
       <div className="flex md:flex-1 justify-center items-center">
         <img src={image} alt={title} className={`h-auto md:h-72 w-full md:w-auto m-auto mb-10 md:mb-0 object-cover white-box-shadow ${reversed ? "md:ml-8" : "md:mr-8"}`} />
       </div>
-      <div className={`flex flex-col md:flex-1 h-full w-auto md:w-auto justify-center text-md xl:text-lg ${reversed ? "md:mr-8" : "md:ml-8"}`}>
+      <div className={`flex flex-col md:flex-1 h-full w-auto md:w-full justify-center text-md xl:text-lg ${reversed ? "md:mr-8" : "md:ml-8"}`}>
         {link && !page ? (
           <a href={link} target="_blank"><p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p></a>
         ) : (
           <p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p>
         )}
         <p>{subtitle}<br /><br /></p>
-        <p><span className="font-bold"></span>{description}<br /><br /></p>
-        <p><span className="font-bold">TECH STACK: </span>{techStack}</p>
+        <p><span className="font-bold text-justify"></span>{description}<br /><br /></p>
+        <div className="flex flex-row w-auto border-2 rounded-xl py-1 bg-[#242327]">
+          {techArray.map((tech, index) => (
+            <MiniSkillBox 
+              key={index}
+              skillName={tech}
+              skillImage={`/skills/${tech.toLowerCase()}-logo.png`}
+              bgColour="bg-gray-200"
+              rounded={ index === 0 ? 1 : (index === techStack.length - 1 ? 2 : 0) }
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
