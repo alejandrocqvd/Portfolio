@@ -31,13 +31,14 @@ const SkillsSection = () => {
       title: "LANGUAGES",
       skills: [
         { skillName: "Python", skillImage: "/skills/python-logo.png", bgColour: "bg-[#8a650c]", rounded: "1" },
-        { skillName: "Java", skillImage: "/skills/java-logo.png", bgColour: "bg-[#987310]", rounded: "0" },
-        { skillName: "JavaScript", skillImage: "/skills/javascript-logo.png", bgColour: "bg-[#a58014]", rounded: "0" },
-        { skillName: "HTML", skillImage: "/skills/html-logo.png", bgColour: "bg-[#b49019]", rounded: "0" },
-        { skillName: "CSS", skillImage: "/skills/css-logo.png", bgColour: "bg-[#c3a01e]", rounded: "0" },
-        { skillName: "TypeScript", skillImage: "/skills/typescript-logo.png", bgColour: "bg-[#d2b023]", rounded: "0" },
-        { skillName: "C", skillImage: "/skills/c-logo.png", bgColour: "bg-[#e0bf27]", rounded: "0" },
-        { skillName: "Go", skillImage: "/skills/golang-logo.png", bgColour: "bg-[#f0cf2c]", rounded: "0" },
+        { skillName: "Java", skillImage: "/skills/java-logo.png", bgColour: "bg-[#9d780e]", rounded: "0" },
+        { skillName: "JavaScript", skillImage: "/skills/javascript-logo.png", bgColour: "bg-[#ae890f]", rounded: "0" },
+        { skillName: "HTML", skillImage: "/skills/html-logo.png", bgColour: "bg-[#c39e11]", rounded: "0" },
+        { skillName: "CSS", skillImage: "/skills/css-logo.png", bgColour: "bg-[#c7a211]", rounded: "0" },
+        { skillName: "TypeScript", skillImage: "/skills/typescript-logo.png", bgColour: "bg-[#d3ae12]", rounded: "0" },
+        { skillName: "C", skillImage: "/skills/c-logo.png", bgColour: "bg-[#ddb813]", rounded: "0" },
+        { skillName: "C++", skillImage: "/skills/cpp-logo.png", bgColour: "bg-[#efca15]", rounded: "0" },
+        { skillName: "Go", skillImage: "/skills/golang-logo.png", bgColour: "bg-[#f8d316]", rounded: "0" },
         { skillName: "Assembly", skillImage: "/skills/assembly-logo.png", bgColour: "bg-[#ffde30]", rounded: "2" },
       ],
     },
@@ -45,12 +46,13 @@ const SkillsSection = () => {
       title: "LIBRARIES AND FRAMEWORKS",
       skills: [
         { skillName: "React", skillImage: "/skills/react-logo.png", bgColour: "bg-[#0b2870]", rounded: "1" },
-        { skillName: "Tailwind", skillImage: "/skills/tailwind-logo.png", bgColour: "bg-[#13308f]", rounded: "0" },
-        { skillName: "Swing", skillImage: "/skills/swing-logo.png", bgColour: "bg-[#1b38ad]", rounded: "0" },
-        { skillName: "NextJS", skillImage: "/skills/nextjs-logo.png", bgColour: "bg-[#223fc8]", rounded: "0" },
-        { skillName: "NumPy", skillImage: "/skills/numpy-logo.png", bgColour: "bg-[#2947e5]", rounded: "0" },
-        { skillName: "Express.js", skillImage: "/skills/express-logo.png", bgColour: "bg-[#304eff]", rounded: "0" },
-        { skillName: "Encore", skillImage: "/skills/encore-logo.png", bgColour: "bg-[#3856ff]", rounded: "2" },
+        { skillName: "Tailwind", skillImage: "/skills/tailwind-logo.png", bgColour: "bg-[#0f2c7d]", rounded: "0" },
+        { skillName: "Swing", skillImage: "/skills/swing-logo.png", bgColour: "bg-[#133089]", rounded: "0" },
+        { skillName: "NextJS", skillImage: "/skills/nextjs-logo.png", bgColour: "bg-[#173495]", rounded: "0" },
+        { skillName: "NumPy", skillImage: "/skills/numpy-logo.png", bgColour: "bg-[#223fb9]", rounded: "0" },
+        { skillName: "Express.js", skillImage: "/skills/express-logo.png", bgColour: "bg-[#2947d0]", rounded: "0" },
+        { skillName: "Encore", skillImage: "/skills/encore-logo.png", bgColour: "bg-[#3250eb]", rounded: "0" },
+        { skillName: "OpenGL", skillImage: "/skills/opengl-logo.png", bgColour: "bg-[#3856ff]", rounded: "2" },
       ],
     },
     {
@@ -69,16 +71,17 @@ const SkillsSection = () => {
 
   return (
     <section ref={ref} className={`relative -top-12 ${inView ? 'section-visible' : 'section-hidden'}`}>
-      <p className="text-5xl xl:text-7xl font-bold text-center mb-16 xl:mb-20">My Skills</p>
-      <div className="flex flex-row justify-center items-center w-9/12 xl:w-8/12  rounded-md xl:px-24 max-w-7xl">
+      <p className="text-sm font-[150]">SKILLS</p>
+      <p className="text-5xl font-mono xl:text-6xl font-[300] text-left mb-12 mt-2">What I Use</p>
+      <div className="flex flex-row justify-center items-center w-10/12 xl:w-9/12 max-w-7xl rounded-md xl:px-24 ">
         <div className="flex flex-col justify-center items-center text-left w-full">
           {skillCategories.map((category, index) => (
             <div
               key={category.title}
               className={`w-full ${index < skillCategories.length - 1 ? 'mb-12' : 'mb-4'}`}
             >
-              <p className="text-xl xl:text-2xl font-bold w-full mb-6 text-center xl:text-left">{category.title}</p>
-              <div className="flex flex-row flex-nowrap content-center h-auto w-full xl:px-8">
+              <p className="text-xl font w-full mb-2 text-center xl:text-left">{category.title}</p>
+              <div className="flex flex-row flex-nowrap content-center h-auto w-full xl:px-0">
                 {category.skills.map((skill, i) => (
                   <SkillBox
                     key={skill.skillName}
@@ -86,9 +89,6 @@ const SkillsSection = () => {
                     skillImage={skill.skillImage}
                     bgColour={skill.bgColour}
                     rounded={skill.rounded}
-                    className={`transition-all duration-500 ${
-                      inView ? `slide-in-left delay-${i * 100}` : 'opacity-0'
-                    }`}
                     style={{ zIndex: -i }}
                   />
                 ))}

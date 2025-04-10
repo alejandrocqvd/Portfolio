@@ -87,9 +87,9 @@ const WorkShowcase = (props) => {
       </div>
       <div className={`flex flex-col md:flex-1 h-full w-auto md:w-auto justify-center text-md xl:text-lg ${reversed ? "md:mr-8" : "md:ml-8"}`}>
         {link && !page ? (
-          <a href={link} target="_blank"><p className="text-xl xl:text-4xl font-bold mb-2 hover:underline">{title}</p></a>
+          <a href={link} target="_blank"><p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p></a>
         ) : (
-          <p className="text-xl xl:text-4xl font-bold mb-2 hover:underline">{title}</p>
+          <p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p>
         )}
         <p>{subtitle}<br /><br /></p>
         <p><span className="font-bold"></span>{description}<br /><br /></p>
@@ -122,7 +122,10 @@ const WorkShowcaseSection = () => {
   return (
     <section>
       <div className="flex flex-col justify-center items-center w-9/12 xl:w-8/12 max-w-7xl">
-        <p ref={ref} className={`text-5xl xl:text-7xl font-bold text-center mb-16 xl:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>My Work</p>
+        <div ref={ref} className={` mb-16 xl:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>
+          <p className="text-sm font-[150] text-center">PROJECTS</p>
+          <p className="text-5xl font-mono xl:text-6xl font-[300] text-left mb-12 mt-2">My Work</p>
+        </div>
         {projects.map((project, index) => (
           <WorkShowcase 
             key={index}
