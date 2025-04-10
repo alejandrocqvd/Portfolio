@@ -10,14 +10,14 @@ const WhoAmISection = () => {
   });
 
   return (
-    <div className="w-full h-full relative pt-36 -top-44">
+    <div className="w-full h-full relative pt-10">
       <section
         ref={ref}
         className={`pt-10 relative -top-36 min-h-[700px] ${inView ? 'section-visible' : 'section-hidden'}`}
       >
-        <div className="flex flex-col xl:flex-row-reverse justify-center items-center w-10/12 xl:w-9/12 max-w-7xl h-full">
+        <div className="flex flex-col xl:flex-row justify-center items-center w-10/12 xl:w-9/12 max-w-7xl h-full">
           {/* Image Section */}
-          <div className="relative xl:flex-1 h-[180%] xl:ml-12 mb-10 xl:mb-0">
+          <div className="relative xl:flex-1 h-[150%] xl:mr-12 mb-10 xl:mb-0">
             <Image
               src="/work/WIP.png"
               alt="Portrait"
@@ -26,7 +26,7 @@ const WhoAmISection = () => {
             />
           </div>
           {/* Text Section */}
-          <div className="flex flex-col justify-center xl:flex-1 xl:mr-12 h-full">
+          <div className="flex flex-col justify-center xl:flex-1 xl:ml-12 h-full">
             <p className="text-sm font-[150]">ABOUT</p>
             <p className="text-5xl font-mono xl:text-6xl font-[300] text-left mb-12 mt-2">Who Am I?</p>
             <p className="text-lg text-justify">
