@@ -10,9 +10,9 @@ const projects = [
   {
     title: "IDEA MR Room Planner",
     subtitle: "2025 | Mixed Reality Room Planner",
-    description: "Mixed reality app that allows users to visualize and plan out their living spaces with life-sized 3D furniture models, in real time. The app features hand tracking, giving users the freedom to grab, move, and arrange over 100+ pieces of distinct furniture pieces as they would naturally.",
-    techStack: "C#, Meta XR SDK, Unity",
-    image: "/work/idea-mr-room-planner-img.png",
+    description: "Developed a mixed reality app that allows users to visualize and plan out their living spaces with life-sized 3D furniture models, in real time. The app features hand tracking, giving users the freedom to grab, move, and arrange over 100+ pieces of distinct furniture pieces as they would naturally.",
+    techStack: "C#, Meta-XR-SDK, Unity",
+    image: "/work/idea-mr-room-planner-img.PNG",
     reversed: true,
   },
   // {
@@ -105,16 +105,15 @@ const WorkShowcase = (props) => {
         ) : (
           <p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p>
         )}
-        <p>{subtitle}<br /><br /></p>
-        <p><span className="font-bold text-justify"></span>{description}<br /><br /></p>
-        <div className="flex flex-row w-auto border-2 rounded-xl py-1 bg-[#242327]">
+        <p className='text-base font-[300] text-[#858585] mb-4'>{subtitle}<br /><br /></p>
+        <p className='text-justify'><span className="font-bold text-justify"></span>{description}<br /><br /></p>
+        <div className="flex flex-row w-auto">
           {techArray.map((tech, index) => (
             <MiniSkillBox 
               key={index}
               skillName={tech}
               skillImage={`/skills/${tech.toLowerCase()}-logo.png`}
-              bgColour="bg-gray-200"
-              rounded={ index === 0 ? 1 : (index === techStack.length - 1 ? 2 : 0) }
+              rounded={ index === 0 ? 1 : (index === techArray.length - 1 ? 2 : 0) }
             />
           ))}
         </div>
@@ -147,7 +146,7 @@ const WorkShowcaseSection = () => {
     <section>
       <div className="flex flex-col justify-center items-center w-9/12 xl:w-8/12 max-w-7xl">
         <div ref={ref} className={` mb-16 xl:mb-20 mt-12 ${inView ? 'section-visible' : 'section-hidden'}`}>
-          <p className="text-sm font-[150] text-center">PROJECTS</p>
+          <p className="text-sm font-[300] text-center text-[#858585]">PROJECTS</p>
           <p className="text-5xl font-mono xl:text-6xl font-[300] text-left mb-12 mt-2">My Work</p>
         </div>
         {projects.map((project, index) => (

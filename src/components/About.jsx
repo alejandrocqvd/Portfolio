@@ -27,7 +27,7 @@ const WhoAmISection = () => {
           </div>
           {/* Text Section */}
           <div className="flex flex-col justify-center xl:flex-1 xl:ml-12 h-full">
-            <p className="text-sm font-[150]">ABOUT</p>
+            <p className="text-sm font-[300] text-left text-[#858585]">ABOUT</p>
             <p className="text-5xl font-mono xl:text-6xl font-[300] text-left mb-12 mt-2">Who Am I?</p>
             <p className="text-lg text-justify">
               I am a full time student currently enrolled in Computer Science at the University of Calgary.

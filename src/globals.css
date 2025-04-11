@@ -172,6 +172,15 @@ section {
   transition: background-color 0.3s;
 }
 
+.mini-skill-box {
+  position: relative;
+  /* flex: 1 1 0; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
 .blur-container {
   position: absolute;
   top: 0;
