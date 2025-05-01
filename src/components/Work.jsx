@@ -14,6 +14,8 @@ const projects = [
     techStack: "C#, Meta-XR-SDK, Unity",
     image: "/work/idea-mr-room-planner-img.PNG",
     reversed: true,
+    link: "/mr-room-planner",
+    page: true,
   },
   // {
   //   title: "WSBenchmarks",

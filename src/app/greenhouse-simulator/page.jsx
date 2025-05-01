@@ -1,15 +1,4 @@
-const SkillBox = (props) => {
-  const { skillName, skillImage, bgColour, rounded } = props;
-  
-  return (
-    <div className={`skill-box h-12 xl:h-16 w-full ${bgColour} ${rounded == 1 ? "rounded-l-lg" : (rounded == 2 ? "rounded-r-lg" : "") }`}>
-      <div className="blur-container">
-        <img className="skill-image h-full w-full" src={skillImage} alt={skillName} />
-      </div>
-      <p className="skill-text font-normal xl:font-bold text-sm xl:text-md drop-shadow-2xl">{skillName}</p>
-    </div>
-  );
-}
+import { SkillBox } from "@/components/ui/SkillBox";
 
 export default function GreenhouseSimulator() {
   return (
@@ -19,7 +8,7 @@ export default function GreenhouseSimulator() {
         <p className="font-bold text-4xl md:text-6xl text-center mb-8">Greenhouse Simulator</p>
 
         <video 
-          src="/greenhouse-simulator-demo.mp4" 
+          src="/work/greenhouse-simulator-demo.mp4" 
           alt="Greenhouse Simulator Demo"
           className="h-auto md:w-9/12 white-box-shadow rounded-xl my-8"
           controls 
@@ -45,8 +34,8 @@ export default function GreenhouseSimulator() {
 
           <p className="text-4xl font-bold mt-12 mb-6 text-center">Tech Stack</p>
           <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-4">
-            <SkillBox skillName="Java" skillImage="/java-logo.png" bgColour="bg-[#0016a2]" rounded="1" />
-            <SkillBox skillName="Swing" skillImage="/swing-logo.png" bgColour="bg-[#0019b9]" rounded="2" />
+            <SkillBox skillName="Java" skillImage="/skills/java-logo.png" bgColour="bg-[#0016a2]" rounded="1" />
+            <SkillBox skillName="Swing" skillImage="/skills/swing-logo.png" bgColour="bg-[#0019b9]" rounded="2" />
           </div>
 
         </div>

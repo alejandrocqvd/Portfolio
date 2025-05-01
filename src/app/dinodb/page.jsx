@@ -1,15 +1,4 @@
-const SkillBox = (props) => {
-  const { skillName, skillImage, bgColour, rounded } = props;
-  
-  return (
-    <div className={`skill-box h-12 xl:h-16 w-full ${bgColour} ${rounded == 1 ? "rounded-l-lg" : (rounded == 2 ? "rounded-r-lg" : "") }`}>
-      <div className="blur-container">
-        <img className="skill-image h-full w-full" src={skillImage} alt={skillName} />
-      </div>
-      <p className="skill-text font-normal xl:font-bold text-sm xl:text-md drop-shadow-2xl">{skillName}</p>
-    </div>
-  );
-}
+import { SkillBox } from "@/components/ui/SkillBox";
 
 export default function DinoDB() {
   return (
@@ -26,7 +15,7 @@ export default function DinoDB() {
           >
             <p className="text-md md:text-lg">GitHub</p>
             <img 
-              src="/github-logo.png" 
+              src="/skills/github-logo.png" 
               alt="GitHub logo" 
               className="h-6 w-auto object-cover" 
             />
@@ -35,7 +24,7 @@ export default function DinoDB() {
 
         <iframe 
           src="https://www.youtube.com/embed/t84lqLT7D94?autoplay=1&loop=1&mute=1" 
-          className=" h-96 md:w-9/12 white-box-shadow rounded-xl my-8"
+          className="h-96 md:w-9/12 white-box-shadow rounded-xl my-8"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen
@@ -65,12 +54,12 @@ export default function DinoDB() {
 
           <p className="text-4xl font-bold mt-12 mb-6 text-center">Tech Stack</p>
           <div className="flex flex-row flex-nowrap content-center h-auto w-full mb-4">
-            <SkillBox skillName="React" skillImage="/react-logo.png" bgColour="bg-[#6c0000]" rounded="1" />
-            <SkillBox skillName="JavaScript" skillImage="/javascript-logo.png" bgColour="bg-[#820303]" rounded="0" />
-            <SkillBox skillName="TypeScript" skillImage="/typescript-logo.png" bgColour="bg-[#940606]" rounded="0" />
-            <SkillBox skillName="TailwindCSS" skillImage="/tailwind-logo.png" bgColour="bg-[#a70909]" rounded="0" />
-            <SkillBox skillName="Node.js" skillImage="/nodejs-logo.png" bgColour="bg-[#ba0c0c]" rounded="0" />
-            <SkillBox skillName="MySQL" skillImage="/mysql-logo.png" bgColour="bg-[#cf0f0f]" rounded="2" />
+            <SkillBox skillName="React" skillImage="/skills/react-logo.png" bgColour="bg-[#6c0000]" rounded="1" />
+            <SkillBox skillName="JavaScript" skillImage="/skills/javascript-logo.png" bgColour="bg-[#820303]" rounded="0" />
+            <SkillBox skillName="TypeScript" skillImage="/skills/typescript-logo.png" bgColour="bg-[#940606]" rounded="0" />
+            <SkillBox skillName="TailwindCSS" skillImage="/skills/tailwind-logo.png" bgColour="bg-[#a70909]" rounded="0" />
+            <SkillBox skillName="Node.js" skillImage="/skills/node.js-logo.png" bgColour="bg-[#ba0c0c]" rounded="0" />
+            <SkillBox skillName="MySQL" skillImage="/skills/mysql-logo.png" bgColour="bg-[#cf0f0f]" rounded="2" />
           </div>
 
         </div>
