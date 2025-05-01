@@ -13,7 +13,7 @@ const WhoAmISection = () => {
     <div className="w-full h-full relative pt-10 px-6">
       <section
         ref={ref}
-        className={`pt-10 relative -top-60 lg:-top-36 min-h-[700px] ${inView ? 'section-visible' : 'section-hidden'}`}
+        className={`pt-10 relative -mb-32 lg:mb-0 -top-60 lg:-top-36 min-h-[700px] ${inView ? 'section-visible' : 'section-hidden'}`}
       >
         <div className="flex flex-col xl:flex-row justify-center items-center w-10/12 xl:w-9/12 max-w-7xl h-full">
           {/* Image Section */}
