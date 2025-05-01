@@ -163,6 +163,12 @@ section {
   }
 }
 
+@media (min-width: 320px) {
+  .xs\:flex {
+      display: flex;
+  }
+}
+
 .skill-box {
   position: relative;
   flex: 1 1 0;

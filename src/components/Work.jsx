@@ -101,21 +101,23 @@ const WorkShowcase = (props) => {
       </div>
       <div className={`flex flex-col md:flex-1 h-full w-auto md:w-full justify-center text-md xl:text-lg ${reversed ? "md:mr-8" : "md:ml-8"}`}>
         {link && !page ? (
-          <a href={link} target="_blank"><p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p></a>
+          <a href={link} target="_blank"><p className="text-2xl text-center xl:text-left xl:text-4xl font-mono mb-2 hover:underline">{title}</p></a>
         ) : (
-          <p className="text-xl xl:text-4xl font-mono mb-2 hover:underline">{title}</p>
+          <p className="text-2xl text-center xl:text-left xl:text-4xl font-mono mb-2 hover:underline">{title}</p>
         )}
-        <p className='text-base font-[300] text-[#858585] mb-4'>{subtitle}<br /><br /></p>
+        <p className='text-base text-center xl:text-left font-[300] text-[#858585] mb-4'>{subtitle}<br /><br /></p>
         <p className='text-justify'><span className="font-bold text-justify"></span>{description}<br /><br /></p>
-        <div className="flex flex-row w-auto">
-          {techArray.map((tech, index) => (
-            <MiniSkillBox 
-              key={index}
-              skillName={tech}
-              skillImage={`/skills/${tech.toLowerCase()}-logo.png`}
-              rounded={ index === 0 ? 1 : (index === techArray.length - 1 ? 2 : 0) }
-            />
-          ))}
+        <div className="flex justify-center md:justify-start mt-4 md:mt-0">
+          <div className="flex flex-row w-auto">
+            {techArray.map((tech, index) => (
+              <MiniSkillBox 
+                key={index}
+                skillName={tech}
+                skillImage={`/skills/${tech.toLowerCase()}-logo.png`}
+                rounded={ index === 0 ? 1 : (index === techArray.length - 1 ? 2 : 0) }
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
