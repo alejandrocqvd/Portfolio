@@ -277,11 +277,15 @@ section {
 
 .navbar {
   transition: background-color 0.4s ease-in-out; 
+  transition: border 0.4s ease-in-out;
+  border: 1px solid rgba(255, 255, 255, 0);
 }
 
 .navbar.scrolled {
-  background-color: rgba(36, 35, 39, 0.95);
+  background-color: rgba(36, 35, 39, 0.6);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 /* 
 @media (min-width: 3500px) {
