@@ -52,7 +52,7 @@ section {
 }
 
 .p-canvas-webgl {
-  transform: scaleY(-1);
+  transform: scaleY(1);
 }
 
 .scale-250 {
@@ -316,5 +316,47 @@ section {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@keyframes blink {
+  50% { opacity: 0 }
+}
+.animate-blink {
+  display: inline-block;
+  animation: blink 1s step-start infinite;
+}
+
+.fade-up-fast {
+  opacity: 0;
+  transform: translateY(80px);
+  animation: fadeUp 1.5s ease-out forwards;
+}
+
+.fade-up-normal {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 2s;
+}
+
+.fade-up-slow {
+  opacity: 0;
+  /* transform: translateY(100px); */
+  animation: fadeUp 1.5s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+.fade-into {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s ease-out forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

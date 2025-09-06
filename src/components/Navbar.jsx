@@ -99,12 +99,12 @@ export default function Navbar() {
     >
       <div className="flex w-full items-center justify-center gap-8">
         <div className="flex justify-between items-center text-sm">
-          <a className="flex justify-center items-center h-8 w-20 sm:w-28">
+          <div className="flex justify-center items-center h-8 w-20 sm:w-28">
+            <NavLink href="#about">Home</NavLink>
+          </div>
+          <div className="flex justify-center items-center h-8 w-20 sm:w-28">
             <NavLink href="#about">About</NavLink>
-          </a>
-          <a className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#about">Skills</NavLink>
-          </a>
+          </div>
         </div>
         <a href="#home" className="flex items-center justify-center">
           <Image 
@@ -117,12 +117,12 @@ export default function Navbar() {
           />  
         </a>
         <div className="flex justify-between items-center text-sm">
-          <a className="flex justify-center items-center h-8 w-20 sm:w-28">
+          <div className="flex justify-center items-center h-8 w-20 sm:w-28">
             <NavLink href="#projects">Projects</NavLink>
-          </a>
-          <a className="flex justify-center items-center h-8 w-20 sm:w-28">
+          </div>
+          <div className="flex justify-center items-center h-8 w-20 sm:w-28">
             <NavLink href="#contact">Contact</NavLink>
-          </a>
+          </div>
         </div>
       </div>
     </nav>

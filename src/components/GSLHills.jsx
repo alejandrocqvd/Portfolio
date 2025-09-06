@@ -167,13 +167,15 @@ void main(void) {
   float noise1 = cnoise(noisePosition * 0.08);
   float noise2 = cnoise(noisePosition * 0.06);
   float noise3 = cnoise(noisePosition * 0.4);
+  float baseHeight = 12.5;
   vec3 lastPosition = updatePosition + vec3(0.0,
-    noise1 * sin1 * 8.0 +
-    noise2 * sin1 * 8.0 +
-    noise3 * (abs(sin1) * 2.0 + 0.5) +
-    pow(sin1, 2.0) * 20.0,
-    0.0
-  );
+      baseHeight +
+      noise1 * sin1 * 8.0 +
+      noise2 * sin1 * 8.0 +
+      noise3 * (abs(sin1) * 2.0 + 0.5) +
+      pow(sin1, 2.0) * 20.0,
+      0.0
+    );
   
   vPosition = lastPosition;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(lastPosition, 1.0);
@@ -206,18 +208,23 @@ void main(void) {
     // Set up camera and renderer
     camera.position.set(0, 16, 128);
     camera.lookAt(new THREE.Vector3(0, 28, 0));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const { clientWidth, clientHeight } = renderer.domElement.parentElement;
+    renderer.setSize(clientWidth, clientHeight, false);
+    camera.aspect = clientWidth / Math.max(clientHeight, 1);
+    camera.updateProjectionMatrix();
     renderer.setClearColor(0x1a191d, 1.0);
 
     // Handle window resize
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      camera.aspect = width / height;
+      const parent = renderer.domElement.parentElement;
+      if (!parent) return;
+      const { clientWidth, clientHeight } = parent;
+      camera.aspect = clientWidth / Math.max(clientHeight, 1);
       camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      renderer.setSize(clientWidth, clientHeight, false);
     };
     window.addEventListener('resize', handleResize);
+    handleResize();
 
     // Animation loop
     const animate = () => {
@@ -238,8 +245,8 @@ void main(void) {
     <canvas
       id="canvas-webgl"
       ref={canvasRef}
-      className="p-canvas-webgl"
-      style={{ width: '100%', height: '100%' }}
+      className="p-canvas-webgl mx-auto "
+      style={{ width: '75%', height: '100%' }}
     />
   );
 };
