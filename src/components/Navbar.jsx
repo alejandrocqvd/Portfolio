@@ -41,10 +41,10 @@ export default function Navbar() {
       <div className="flex w-full items-center justify-center gap-8">
         <div className="flex justify-between items-center text-sm">
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#about">Home</NavLink>
+            <NavLink href="#about">About</NavLink>
           </div>
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#about">About</NavLink>
+            <NavLink href="#about">Career</NavLink>
           </div>
         </div>
         <a href="#home" className="flex items-center justify-center">
