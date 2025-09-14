@@ -245,8 +245,7 @@ void main(void) {
     <canvas
       id="canvas-webgl"
       ref={canvasRef}
-      className="p-canvas-webgl mx-auto "
-      style={{ width: '75%', height: '100%' }}
+      className="p-canvas-webgl mx-auto xl:w-3/4 h-full"
     />
   );
 };

@@ -14,7 +14,7 @@ export default function HeroSection() {
         <TypingName />
         <div className="w-full h-[1.25px] 4xl:h-[3px] bg-white my-10"></div>
         <div className="flex justify-center sm:justify-end w-full">
-          <p className="lg:w-1/2 text-justify fade-into text-sm">
+          <p className="lg:w-1/2 text-justify fade-into text-sm px-16 md:px-0">
             Born 2004 in Fort McMurray, Canada. My early experiences with 
             technology led me to develop a relationship where I aspire to be 
             on the forefront of tech and to apply it in the real world to achieve 

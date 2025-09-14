@@ -26,7 +26,7 @@ export default function TypingName() {
   }, []);
 
   return (
-    <p className="text-4xl md:text-5xl font-[250] text-center sm:text-left w-full font-mono fade-up-fast">
+    <p className="text-4xl md:text-5xl font-[250] text-center md:text-left w-full font-mono fade-up-fast">
       {displayed}
       <span className="animate-blink">|</span>
     </p>
