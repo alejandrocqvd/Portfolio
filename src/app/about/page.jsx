@@ -1,7 +1,16 @@
-import React from 'react'
+import React from 'react';
+import Navbar from '../../components/Navbar';
+import Contact from '../../components/Contact';
+import Timeline from '@/components/ui/Timeline';
 
-export const page = () => {
+const page = () => {
   return (
-    <div>page</div>
+    <div className="flex flex-col justify-center items-center">
+      <Navbar />
+      <Timeline />
+      <Contact />
+    </div>
   )
 }
+
+export default page;

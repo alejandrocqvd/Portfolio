@@ -2,19 +2,19 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-const photos = [
-    "/about/pizza.jpg",
-  "/about/grass.jpg",
-  "/about/back.jpg",
-  "/about/guitar.jpg",
-//   "/about/prague.jpg",
-];
-
-export default function PhotoRow() {
-  const [hovered, setHovered] = useState(0);
+export default function PhotoRow({
+  photos,
+  reversed = false,
+  defaultSelected = 0,
+}) {
+  const [hovered, setHovered] = useState(defaultSelected);
 
   return (
-    <div className="flex justify-center items-end h-96 gap-2 w-full max-w-6xl mx-auto relative -top-24">
+    <div
+      className={`flex justify-center ${
+        reversed ? "items-start" : "items-end"
+      } h-96 gap-2 w-full max-w-6xl mx-auto`}
+    >
       {photos.map((src, i) => (
         <div
           key={i}
@@ -24,7 +24,7 @@ export default function PhotoRow() {
           `}
           style={{ animationDelay: `${0.5 + i * 0.3}s` }}
           onMouseEnter={() => setHovered(i)}
-          onMouseLeave={() => setHovered(0)}
+          onMouseLeave={() => setHovered(defaultSelected)}
         >
           <div
             className={`
@@ -36,7 +36,7 @@ export default function PhotoRow() {
               src={src}
               alt={`Photo ${i + 1}`}
               fill
-              className="object-cover rounded-lg shadow-lg"
+              className="object-cover rounded-md shadow-lg"
             />
           </div>
         </div>

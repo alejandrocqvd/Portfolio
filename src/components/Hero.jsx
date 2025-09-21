@@ -7,7 +7,7 @@ import TypingName from './ui/TypingName'
 export default function HeroSection() {
   return (
     <section className="relative w-full overflow-hidden mb-20">
-      <div className="absolute inset-0 -z-10 pointer-events-none -translate-y-52">
+      <div className="absolute inset-0 -z-10 pointer-events-none -translate-y-72 md:-translate-y-52">
         <GLSLHills />
       </div>
       <div className="flex flex-col justify-end items-center max-w-5xl mx-auto w-full mb-8 pt-80">
@@ -22,6 +22,7 @@ export default function HeroSection() {
               of doctors where the only right path was medicine. But ever since I took my first 
               programming class, I was hooked. My main interests are software engineering, game development, 
               and virtual reality.
+              <br /><br />
               Alongside this, I co-founded <a href="https://www.nullus.ca/" target="_blank" className="hover:underline">Nullus Inc.</a>
               , where we empower individuals, clubs, and companies through innovative web development solutions.
             </p>
