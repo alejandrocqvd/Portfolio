@@ -14,30 +14,19 @@ const timeline = [
     ],
     color: "bg-blue-900",
   },
-  {
-    company: "UA-RAD",
-    role: "Software Engineer",
-    period: "2022 - Now",
-    description: [
-      "Designed site prototypes with Figma",
-      "Developed and maintained the UA-RAD website using React, TailwindCSS, and Next.js",
-      "Hosted and tracked site analytics with Vercel",
-    ],
-    color: "bg-blue-700",
-  },
-  {
+    {
     company: "Pason Systems",
     role: "Software Developer Intern",
-    period: "May 2025 - Aug 2026",
+    period: "May 2025 - Now",
     description: [
       "Part of the Griffin agile software team",
     ],
-    color: "bg-blue-500",
+    color: "bg-blue-400",
   },
-  {
+    {
     company: "Nullus",
     role: "Co-Founder & Software Developer",
-    period: "2024 - Now",
+    period: "Apr 2024 - Now",
     description: [
       "Co-founded Nullus Inc., a student-led software development startup",
       "Designed and developed sites for individuals, clubs, and businesses",
@@ -46,35 +35,54 @@ const timeline = [
     color: "bg-blue-300",
   },
   {
+    company: "UofA Robotics and Aerial Drones",
+    role: "Software Developer",
+    period: "Jul 2025 - Oct 2025",
+    description: [
+      "Developed and maintained the UA-RAD club website using React, TailwindCSS, and Next.js",
+      "Utilized ArduPilot to program and test autonomous drone flight missions",
+      "0 drones exploded",
+    ],
+    color: "bg-blue-600",
+  },
+  {
     company: "Canadian Global Care on Campus",
     role: "Web Developer",
     period: "2023 - 2025",
     description: [
       "Designed and developed a React-based website with TailwindCSS and Vite",
-      "Collaborated with team members and club executives to fetch requirements and feedback",
       "Promoted the site which led to a 30% increase in club event attendance",
+      "Entire box of leftover croissants taken home after event"
     ],
     color: "bg-blue-100",
   },
 ];
 
 const photos = [
-    "/about/pizza.jpg",
-    "/about/grass.jpg",
-    "/about/back.jpg",
-    "/about/guitar.jpg",
-    // "/about/prague.jpg",
+    "/about/vs.jpg",
+    "/about/uarad.jpg",
+    "/about/playgroundBuild.png",
+    "/about/speakingHD.png",
 ];
 
 const Timeline = () => {
   return (
-    <section className="flex flex-col justify-center items-start mt-32 md:mt-52 w-full mx-auto max-w-4xl">
+    <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl">
         <h2 className="font-mono text-left mx-auto w-full text-4xl mb-12 relative fade-up-normal px-6 md:mx-0">Timeline</h2>
-        <p className="text-sm text-justify fade-into px-6 md:mx-0">I&apos;ve had the pleasure of working at a few places yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap yap </p>
+        <p className="text-sm text-justify fade-into px-6 md:mx-0">
+          From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so 
+          many amazing teams that have taught me endless skills and lessons that I carry with me on 
+          the day-to-day.
+          <br></br><br></br>
+          Each role and experience has pushed me in different ways, helping me grow 
+          not just professionally, but as a person. I&apos;m grateful for the people who took the time 
+          to mentor me, challenge me, and trust me with real responsibility (and not just make me fetch 
+          coffee or something).
+        </p>
         <div className="flex flex-col xl:flex-row justify-center items-stretch w-full max-w-5xl h-full relative top-12">
             <PhotoRow className="mt-44 relative" photos={photos} reversed={true} defaultSelected={photos.length - 1} />
         </div>
-        <div className="flex flex-col items-start justify-center mx-auto mt-12 px-10 md:mx-0">
+        <div className="flex flex-col items-start justify-center mx-auto mt-12 px-10 md:mx-0 fade-into">
             <div className="relative border-l border-gray-600 pl-6">
                 {timeline.map((item, index) => (
                 <div key={index} className="mb-10 ml-4">

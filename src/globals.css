@@ -343,7 +343,14 @@ section {
 
 .fade-up-slow {
   opacity: 0;
-  /* transform: translateY(100px); */
+  transform: translateY(80px);
+  animation: fadeUp 1.5s ease-out forwards;
+  animation-delay: 1.25s;
+}
+
+.fade-up-slower {
+  opacity: 0;
+  transform: translateY(80px);
   animation: fadeUp 1.5s ease-out forwards;
   animation-delay: 1.5s;
 }
