@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import Contact from '../../components/Contact';
 import Image from 'next/image';
@@ -49,9 +51,9 @@ const FeaturedProject = () => {
 };
 
 // =========================================================================================
-const SmallCard = ({ title, subtitle, img }) => {
+const SmallCard = ({ title, subtitle, img, onClick }) => {
   return (
-    <div className="group flex flex-col rounded-md h-44 w-full overflow-hidden cursor-pointer">
+    <div onClick={onClick} className="group flex flex-col rounded-md h-44 w-full overflow-hidden cursor-pointer">
       <div className="relative w-full h-[55%] overflow-hidden">
         <Image
           src={img}
@@ -76,9 +78,9 @@ const SmallCard = ({ title, subtitle, img }) => {
 };
 
 // =========================================================================================
-const LargeCard = ({ title, subtitle, img }) => {
+const LargeCard = ({ title, subtitle, img, onClick }) => {
   return (
-    <div className="group flex flex-col rounded-md h-96 w-full overflow-hidden cursor-pointer">
+    <div onClick={onClick} className="group flex flex-col rounded-md h-96 w-full overflow-hidden cursor-pointer">
       <div className="relative w-full h-3/4 overflow-hidden">
         <Image
           src={img}
@@ -103,15 +105,37 @@ const LargeCard = ({ title, subtitle, img }) => {
 };
 
 // =========================================================================================
-const ProjectBentoBox = () => {
+const ProjectBentoBox = ({ onProjectClick }) => {
   return (
     <section className="w-full flex flex-col justify-center items-center mt-24">
       <div className="w-full flex flex-row gap-8">
         <div className="w-2/3">
-          <LargeCard subtitle="Software Development Company" title="Nullus" img="/work/nullus-img.png" />
+          <LargeCard 
+            subtitle="Software Development Company" 
+            title="Nullus" 
+            img="/work/nullus-img.png" 
+            onClick={() =>
+              onProjectClick({
+                title: "Nullus",
+                subtitle: "Software Development Company",
+                img: "/work/nullus-img.png",
+              })
+            }
+          />
         </div>        
         <div className="flex flex-col justify-between w-1/3 gap-8">
-          <SmallCard subtitle="Cross-Platform 311 App" title="Urban Signal" img="/work/urban-signal-img.png" />
+          <SmallCard  
+            subtitle="Cross-Platform 311 App" 
+            title="Urban Signal" 
+            img="/work/urban-signal-img.png" 
+            onClick={() =>
+              onProjectClick({
+                title: "Nullus",
+                subtitle: "Software Development Company",
+                img: "/work/nullus-img.png",
+              })
+            }
+          />
           <SmallCard subtitle="Educational Game Website" title="Malware Terminal" img="/work/malware-terminal-img.PNG" />
         </div>
       </div>
@@ -130,20 +154,58 @@ const ProjectBentoBox = () => {
 };
 
 // =========================================================================================
-const ProjectPopUp = () => {
-  <div>
-    
-  </div>
-}
+const ProjectPopUp = ({ project, onClose }) => {
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-6">
+      <div className="bg-black/90 border border-white/30 rounded-lg p-6 max-w-lg w-full relative">
+        
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-white/70 hover:text-white"
+        >
+          ✕
+        </button>
+
+        <h2 className="text-2xl font-mono mb-2">{project.title}</h2>
+        <p className="text-gray-300 mb-4">{project.subtitle}</p>
+
+        <div className="relative w-full h-56 mb-4">
+          <Image
+            src={project.img}
+            alt={project.title}
+            fill
+            className="object-cover rounded-md"
+          />
+        </div>
+
+        <p className="text-sm text-gray-400">
+          (Add more detailed description here if you want!)
+        </p>
+      </div>
+    </div>
+  );
+};
 
 // =========================================================================================
 const ProjectPage = () => {
+  const [activeProject, setActiveProject] = useState(null);
+
+  const openProject = (projectData) => {
+    setActiveProject(projectData);
+  };
+
+  const closeProject = () => {
+    setActiveProject(null);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center max-w-4xl mx-auto">
       <Navbar />
       <FeaturedProject />
-      <ProjectBentoBox />
-      <ProjectPopUp />
+      <ProjectBentoBox onProjectClick={openProject} />
+      {activeProject && (
+        <ProjectPopUp project={activeProject} onClose={closeProject} />
+      )}
       <Contact />
     </div>
   )
