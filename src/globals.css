@@ -176,7 +176,7 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s;
+  transition: background-color 0.5s;
 }
 
 .mini-skill-box {
@@ -226,7 +226,7 @@ section {
 .skill-text {
   position: absolute;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.5s;
   color: rgb(240, 235, 235);
   text-shadow: 2px 2px 5px rgba(109, 109, 109, 0.8);
 }
@@ -355,6 +355,13 @@ section {
   animation-delay: 1.5s;
 }
 
+.fade-up-slowest {
+  opacity: 0;
+  transform: translateY(80px);
+  animation: fadeUp 1.5s ease-out forwards;
+  animation-delay: 2s;
+}
+
 .fade-into {
   opacity: 0;
   transform: translateY(20px);
@@ -389,4 +396,78 @@ section {
     opacity: 0;
     transform: translateY(20px);
   }
+}
+
+.fade-blur-enter {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.fade-blur-enter-active {
+  opacity: 1;
+  backdrop-filter: blur(8px);
+}
+
+.fade-blur-exit {
+  opacity: 1;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.fade-blur-exit-active {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popupFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.popup-in {
+  animation: popupFadeIn 0.25s ease forwards;
+}
+
+.popup-out {
+  animation: popupFadeOut 0.25s ease forwards;
+}
+
+@keyframes popupScaleUp {
+  from {
+    transform: scale(0.96);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes popupScaleDown {
+  from {
+    transform: scale(1);  
+  }
+  to {
+    transform: scale(0.96);  
+  }
+}
+
+.scale-in {
+  animation: popupScaleUp 0.25s ease forwards;
+}
+
+.scale-out {
+  animation: popupScaleDown 0.25s ease forwards;
 }
