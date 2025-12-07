@@ -1,15 +1,16 @@
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 function NavLink({ href, children }) {
   return (
-    <a
+    <Link
       href={href}
       className="block m-2 md:m-5 mx-1 md:mx-8 box-border text-center no-underline hover-underline-animation"
     >
       {children}
-    </a>
+    </Link>
   );
 }
 
@@ -41,13 +42,14 @@ export default function Navbar() {
       <div className="flex w-full items-center justify-center gap-8">
         <div className="flex justify-between items-center text-sm">
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#about">Home</NavLink>
+            <NavLink href="/">Home</NavLink>
           </div>
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#about">About</NavLink>
+            <NavLink href="/about">About</NavLink>
           </div>
         </div>
-        <a href="#home" className="flex items-center justify-center">
+
+        <Link href="/" className="flex items-center justify-center">
           <Image 
             src="/misc/logo_white.svg" 
             alt="Logo"
@@ -56,13 +58,14 @@ export default function Navbar() {
             className="scale-100 md:hover:scale-105"
             priority
           />  
-        </a>
+        </Link>
+
         <div className="flex justify-between items-center text-sm">
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#projects">Projects</NavLink>
+            <NavLink href="/projects">Projects</NavLink>
           </div>
           <div className="flex justify-center items-center h-8 w-20 sm:w-28">
-            <NavLink href="#contact">Contact</NavLink>
+            <NavLink href="/contact">Contact</NavLink>
           </div>
         </div>
       </div>

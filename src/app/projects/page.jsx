@@ -11,14 +11,14 @@ const FeaturedProject = ({ onProjectClick }) => {
   return (
     <section className="flex flex-col md:flex-row justify-center items-center w-full mt-32 md:mt-44 px-8 md:px-0">
       <div className="flex flex-col justify-center items-start md:mr-9 flex-1 basis-1/2">
-        <p className="w-full mb-2 italic font-light text-gray-300 fade-up-normal">
+        <p className="w-full mb-2 italic font-light text-gray-300 fade-up-first">
           Featured Project
         </p>
-        <p className="w-full text-4xl font-mono mb-8 fade-up-normal">
+        <p className="w-full text-4xl font-mono mb-8 fade-up-first">
           IDEA Mixed Reality Room Planner
         </p>
         <div className="flex flex-row justify-between items-start w-full mb-8">
-          <p className="text-justify fade-up-normal">
+          <p className="text-justify fade-up-first">
             Mixed reality app that lets users to visualize and 
             plan out their living spaces with life-sized 3D furniture models, 
             in real time.
@@ -26,7 +26,7 @@ const FeaturedProject = ({ onProjectClick }) => {
         </div>
 
         <div className="w-full flex-row flex gap-4 mb-12 md:mb-0">
-          <button className="border border-white/20 fade-up-slow flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+          <button className="border border-white/20 fade-up-third flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
             onClick={() =>
               onProjectClick({
                 title: "IDEA Room Planner",
@@ -64,7 +64,7 @@ const FeaturedProject = ({ onProjectClick }) => {
                 "_blank"
               )
             }
-            className="border border-white/20 fade-up-slower flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+            className="border border-white/20 fade-up-fourth flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
           >
             <Github size={18} />
             GitHub
@@ -72,7 +72,7 @@ const FeaturedProject = ({ onProjectClick }) => {
         </div>
       </div>
 
-      <div className="flex-1 basis-1/2 md:ml-9 w-[120%] mdLw-full border-y-2 fade-up-slow border-white/20 md:border-none">
+      <div className="flex-1 basis-1/2 md:ml-9 w-[120%] mdLw-full border-y-2 fade-up-first border-white/20 md:border-none">
         <video
           src="/work/idea-mr-room-planner-demo.mp4"
           className="object-cover h-96 w-full rounded-md"
@@ -155,7 +155,7 @@ const LargeCard = ({ title, subtitle, img, onClick, side }) => {
 // =========================================================================================
 const ProjectBentoBox = ({ onProjectClick }) => {
   return (
-    <section className="w-full flex flex-col justify-center items-center mt-24 fade-up-slowest">
+    <section className="w-full flex flex-col justify-center items-center mt-24 fade-up-second">
       <div className="w-full flex flex-row gap-8">
         <div className="w-2/3">
 

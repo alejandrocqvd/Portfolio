@@ -14,7 +14,7 @@ export default function HeroSection() {
         <TypingName />
         <div className="w-full h-[1.25px] 4xl:h-[3px] bg-white my-10"></div>
         <div className="flex justify-center sm:justify-end w-full">
-          <div className="lg:w-1/2 text-justify fade-into text-sm px-16 md:px-0">
+          <div className="lg:w-1/2 text-justify fade-up-second-2 text-sm px-16 md:px-0">
             <p className="text-sm text-justify">
               I&apos;m a full time student currently enrolled in Computer Science at the University of Calgary.
               <br /><br />

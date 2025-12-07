@@ -15,7 +15,7 @@ export default function TypingName() {
         let baseDelay = 20;
 
         // make it progressively slower → add more delay as i increases
-        let delay = baseDelay + i * 7;
+        let delay = baseDelay + i * 6.5;
 
         i++;
         setTimeout(typeNextChar, delay);
