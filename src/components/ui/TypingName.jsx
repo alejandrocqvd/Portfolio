@@ -11,11 +11,8 @@ export default function TypingName() {
       if (i < text.length) {
         setDisplayed(text.slice(0, i + 1));
 
-        // base speed (fast at start)
         let baseDelay = 20;
-
-        // make it progressively slower → add more delay as i increases
-        let delay = baseDelay + i * 6.5;
+        let delay = baseDelay + i * 5.15;
 
         i++;
         setTimeout(typeNextChar, delay);

@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useRef } from 'react';
+
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions'
 
 function NavLink({ href, children }) {
   return (
@@ -15,29 +15,9 @@ function NavLink({ href, children }) {
 }
 
 export default function Navbar() {
-  const navbarRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const navbar = navbarRef.current;
-      if (!navbar) return;
-      if (window.scrollY > 0) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <nav
-      ref={navbarRef}
-      className="navbar fixed top-0 sm:my-4 w-screen sm:w-auto items-center py-4 px-2 md:px-6 text-center z-50 rounded-xl"
+      className="absolute top-0 sm:my-4 w-screen sm:w-auto items-center py-4 px-2 md:px-6 text-center z-50 rounded-xl left-1/2 -translate-x-1/2"
     >
       <div className="flex w-full items-center justify-center gap-8">
         <div className="flex justify-between items-center text-sm">

@@ -208,7 +208,7 @@ section {
 .fade-up-fast {
   opacity: 0;
   transform: translateY(80px);
-  animation: fadeUp 1.5s ease-out forwards;
+  animation: fadeUp 1s ease-out forwards;
 }
 
 .fade-up-first {
@@ -218,18 +218,46 @@ section {
   animation-delay: 0.5s;
 }
 
+.fade-up-first-2 {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+.fade-up-first-3 {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 0.9s;
+}
+
+.fade-up-first-4 {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 1s;
+}
+
 .fade-up-second {
   opacity: 0;
-  transform: translateY(80px);
-  animation: fadeUp 1.5s ease-out forwards;
+  transform: translateY(50px);
+  animation: fadeUp 0.75s ease-out forwards;
   animation-delay: 1.5s;
 }
 
 .fade-up-second-2 {
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeUp 1s ease-out forwards;
-  animation-delay: 1.75s;
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 1s;
+}
+
+.fade-up-second-3 {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 1s;
 }
 
 .fade-up-third {
@@ -272,6 +300,24 @@ section {
   to {
     opacity: 0;
     transform: translateY(20px);
+  }
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popupFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 

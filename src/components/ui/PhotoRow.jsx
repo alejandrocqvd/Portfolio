@@ -6,6 +6,7 @@ export default function PhotoRow({
   photos,
   reversed = false,
   defaultSelected = 0,
+  fade,
 }) {
   const [hovered, setHovered] = useState(defaultSelected);
 
@@ -19,10 +20,10 @@ export default function PhotoRow({
         <div
           key={i}
           className={`
-            relative flex-1 transition-all duration-300 ease-in-out fade-up-first
+            relative flex-1 transition-all duration-300 ease-in-out ${fade}
             ${hovered === i ? "flex-[2] z-10" : "flex-[1] z-0"}
           `}
-          style={{ animationDelay: `${0.5 + i * 0.3}s` }}
+          style={{ animationDelay: `${0.1 + i * 0.1}s` }}
           onMouseEnter={() => setHovered(i)}
           onMouseLeave={() => setHovered(defaultSelected)}
         >

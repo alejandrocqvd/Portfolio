@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import Navbar from '../../components/Navbar';
 import Contact from '../../components/Contact';
 import Image from 'next/image';
 import { Eye, Github } from "lucide-react";
@@ -26,7 +25,7 @@ const FeaturedProject = ({ onProjectClick }) => {
         </div>
 
         <div className="w-full flex-row flex gap-4 mb-12 md:mb-0">
-          <button className="border border-white/20 fade-up-third flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+          <button className="border border-white/20 fade-up-first-3 flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
             onClick={() =>
               onProjectClick({
                 title: "IDEA Room Planner",
@@ -64,7 +63,7 @@ const FeaturedProject = ({ onProjectClick }) => {
                 "_blank"
               )
             }
-            className="border border-white/20 fade-up-fourth flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+            className="border border-white/20 fade-up-first-4 flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
           >
             <Github size={18} />
             GitHub
@@ -72,7 +71,7 @@ const FeaturedProject = ({ onProjectClick }) => {
         </div>
       </div>
 
-      <div className="flex-1 basis-1/2 md:ml-9 w-[120%] mdLw-full border-y-2 fade-up-first border-white/20 md:border-none">
+      <div className="flex-1 basis-1/2 md:ml-9 w-[120%] mdLw-full border-y-2 fade-up-first border border-white/20 rounded-md">
         <video
           src="/work/idea-mr-room-planner-demo.mp4"
           className="object-cover h-96 w-full rounded-md"
@@ -246,8 +245,8 @@ const ProjectBentoBox = ({ onProjectClick }) => {
                 ],
                 images: [
                   "/work/malware-terminal-img.PNG",
-                  "/work/malware-terminal-img-2.PNG",
-                  "/work/malware-terminal-img-3.PNG"
+                  "/work/malware-terminal-img-2.png",
+                  "/work/malware-terminal-img-3.png"
                 ],
                 header: "What is Malware Terminal?",
                 description: `For my cybersecurity class, I came up with an idea for my group to design and develop an interactive terminal-like website to educate those interested in everything there is about malware.
@@ -282,8 +281,8 @@ const ProjectBentoBox = ({ onProjectClick }) => {
                 images: [
                   "/work/dinodb-demo.mp4",
                   "/work/dinodb-img.PNG",
-                  "/work/dinodb-img-2.PNG",
-                  "/work/dinodb-img-3.PNG"
+                  "/work/dinodb-img-2.png",
+                  "/work/dinodb-img-3.png"
                 ],
                 header: "What is DinoDB?",
                 description: `For my DBMS class, we were tasked with planning out, designing, and developing a web application. Although PHP was recommended for the frontend, but we wanted to broaden our skills by utilizing modern web technologies. 
@@ -347,10 +346,10 @@ const ProjectBentoBox = ({ onProjectClick }) => {
                 ],
                 images: [
                   "/work/mihistoria-demo.mp4",
-                  "/work/mihistoria-img-2.PNG",
-                  "/work/mihistoria-img-3.PNG",
-                  "/work/mihistoria-img-4.PNG",
-                  "/work/mihistoria-img-5.PNG"
+                  "/work/mihistoria-img-2.png",
+                  "/work/mihistoria-img-3.png",
+                  "/work/mihistoria-img-4.png",
+                  "/work/mihistoria-img-5.png"
                 ],
                 header: "What is MiHistoria?",
                 description: `MiHistoria is a social media web application where each user is given one chance to share their entire life story in a single post. Here, users can use TinyMCE's rich text editor to write and format their stories.
@@ -387,7 +386,6 @@ const ProjectPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center max-w-4xl mx-auto">
-      <Navbar />
       <FeaturedProject onProjectClick={openProject} />
       <ProjectBentoBox onProjectClick={openProject} />
       {activeProject && (
