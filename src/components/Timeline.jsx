@@ -9,7 +9,6 @@ const photos = [
     "/about/speakingHD.png",
 ];
 
-
 const timeline = [
   {
     company: "University of Calgary",
