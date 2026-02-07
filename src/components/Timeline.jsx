@@ -26,8 +26,8 @@ const timeline = [
     role: "Software Developer Intern",
     period: "May 2025 - Now",
     description: [
-      "Owned full-stack features across Java services and React frontends in a fast-moving Agile team",
-      "Kept releases stable by writing unit, integration, and end-to-end tests",
+      "Owned full-stack features across Java services and React frontends in my fast-moving Agile team",
+      "Wrote all the kinds of tests you can imagine (unit, integration, e2e, you name it)",
       "Shipped faster with CI/CD, automating builds, tests, and deployments",
     ],
     color: "bg-blue-600",
@@ -48,7 +48,7 @@ const timeline = [
     role: "Software Developer",
     period: "Jul 2025 - Oct 2025",
     description: [
-      "Developed and maintained the UA-RAD club website using React, TailwindCSS, and Next.js",
+      "Developed the UA-RAD club website using Nextjs, following a structured waterfall dev process",
       "Utilized ArduPilot to program and test autonomous drone flight missions",
       "0 drones exploded",
     ],
@@ -59,7 +59,7 @@ const timeline = [
     role: "Web Developer",
     period: "2023 - 2025",
     description: [
-      "Designed and developed a React-based website with TailwindCSS and Vite",
+      "Designed, developed, and maintained a React-based website with TailwindCSS and Vite",
       "Promoted the site which led to a 30% increase in club event attendance",
       "Entire box of leftover croissants taken home after event"
     ],
@@ -73,14 +73,16 @@ const Timeline = () => {
     <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl">
         <h2 className="font-mono text-left mx-auto w-full text-4xl mb-12 relative fade-up-first px-6 md:mx-0">Timeline</h2>
         <p className="text-sm text-justify fade-up-first px-6 md:mx-0">
-          From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of 
+          {/* From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of 
           many amazing teams that have taught me countless skills and lessons that I carry with me on 
           the day-to-day.
           <br></br><br></br>
           Each role and experience has pushed me in different ways, helping me grow professionally 
           and personally. I&apos;m grateful for the people who took the time 
           to mentor me, challenge me, and trust me with real responsibility (and not just make me fetch 
-          coffee or something).
+          coffee or something). */}
+          From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different teams, learning something new from each one. 
+          Forever grateful for the people who took the time to mentor me and trust me with real responsibility (and not just make me fetch coffee or something).
         </p>
         <div className="flex flex-col xl:flex-row justify-center items-stretch w-full max-w-5xl h-full relative top-12">
             <PhotoRow fade="fade-up-second" className="mt-44 relative" photos={photos} reversed={true} defaultSelected={photos.length - 1} />
@@ -110,7 +112,7 @@ const Timeline = () => {
                 ))}
             </div>
         </div>
-        <p className="text-sm w-full mx-auto text-center mt-12 px-6 md:mx-0">
+        <p className="text-sm w-full mx-auto text-center mt-12 px-6 md:mx-0 fade-up-second-2">
           To view my full experience, check out my CV <a href="/misc/Alejandro-Cardona-Resume.pdf" className="hover:underline" target="_blank" >here</a>.
         </p>
     </section>

@@ -178,7 +178,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
                 header: "What is Nullus?",
                 description: `I co-founded Nullus, a software development company focused on empowering individuals, clubs, and businesses with innovative web solutions, while providing students valuable experience in a collaborative team environment.
 
-                  We've served over 5+ clients and have been recognized as being one of the top website development companies in Calgary, by DesignRush.com. 
+                  We've served over 6+ clients and have been recognized as being one of the top website development companies in Calgary, by DesignRush.com. 
                   `,
                 techStack: [
                   { name: "React", image: "/skills/react-logo.png", bgColour: "bg-[#101010]", rounded: 1 },

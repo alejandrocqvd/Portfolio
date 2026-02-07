@@ -40,8 +40,8 @@ const About = () => {
   const photos = [
     "/about/back.jpg",
     "/about/grass.jpg",
+    "/about/dinner.jpg",
     "/about/mark.jpg",
-    "/about/guitar.jpg",
   ];
 
   return (
