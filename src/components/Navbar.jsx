@@ -35,7 +35,7 @@ export default function Navbar() {
             alt="Logo"
             width={36}
             height={36}
-            className="scale-200 sm:scale-100 md:hover:scale-105"
+            className="scale-125 sm:scale-100 md:hover:scale-105"
             priority
           />  
         </Link>
