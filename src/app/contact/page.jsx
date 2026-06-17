@@ -3,7 +3,7 @@ import Image from "next/image"
 import Contact from '../../components/Contact';
 import { ArrowUpRight, Mail, Github, Linkedin, FileText } from "lucide-react"
 
-import jiji from "../../public/about/jiji.png";
+import jiji from "../../../public/about/jiji.png";
 
 const contactLinks = [
   {
