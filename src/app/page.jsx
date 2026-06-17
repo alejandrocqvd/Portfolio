@@ -5,6 +5,11 @@ import PhotoRow from "@/components/ui/PhotoRow";
 import GLSLHills from '@/components/GSLHills';
 import TypingName from '@/components/ui/TypingName';
 
+import back2 from "../../public/about/back2.jpg";
+import grass from "../../public/about/grass.jpg";
+import dinner from "../../public/about/dinner.jpg";
+import mark from "../../public/about/mark.jpg";
+
 // ==============================================================================================================
 const Hero = () => {
   return (
@@ -37,12 +42,7 @@ const Hero = () => {
 
 // ==============================================================================================================
 const About = () => {
-  const photos = [
-    "/about/back.jpg",
-    "/about/grass.jpg",
-    "/about/dinner.jpg",
-    "/about/mark.jpg",
-  ];
+  const photos = [back2, grass, dinner, mark];
 
   return (
     <div className="w-full h-full relative">

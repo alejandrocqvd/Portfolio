@@ -43,7 +43,7 @@ export function Page() {
         </h2>
 
         <p className="text-sm text-left w-full md:mb-12 text-muted-foreground fade-up-first">
-          Feel free to reach out if you want to chat about anything. I'm always open to new opportunities and conversations :D
+          Feel free to reach out if you want to chat about anything. I&apos;m always open to new opportunities and conversations :D
         </p>
 
         <div className="flex flex-col md:flex-row gap-16 md:gap-16 w-full mb-20 h-[320px]">

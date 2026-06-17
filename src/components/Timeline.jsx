@@ -2,12 +2,12 @@
 import React from "react";
 import PhotoRow from "./ui/PhotoRow";
 
-const photos = [
-    "/about/vs.jpg",
-    "/about/uarad.jpg",
-    "/about/playgroundBuild.png",
-    "/about/speakingHD.png",
-];
+import vs from "../../public/about/vs.jpg";
+import uarad from "../../public/about/uarad.jpg";
+import playgroundBuild from "../../public/about/playgroundBuild.png";
+import speakingHD from "../../public/about/speakingHD.png";
+
+const photos = [uarad, playgroundBuild, speakingHD, vs];
 
 const timeline = [
   {

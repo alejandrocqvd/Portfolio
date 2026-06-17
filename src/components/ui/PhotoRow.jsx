@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 
@@ -37,6 +38,8 @@ export default function PhotoRow({
               src={src}
               alt={`Photo ${i + 1}`}
               fill
+              placeholder="blur"
+              sizes="(max-width: 768px) 100vw, 33vw"
               className="object-cover rounded-md shadow-lg"
             />
           </div>
