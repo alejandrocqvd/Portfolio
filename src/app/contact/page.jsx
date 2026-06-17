@@ -3,6 +3,8 @@ import Image from "next/image"
 import Contact from '../../components/Contact';
 import { ArrowUpRight, Mail, Github, Linkedin, FileText } from "lucide-react"
 
+import jiji from "../../public/about/jiji.png";
+
 const contactLinks = [
   {
     number: "01",
@@ -49,10 +51,11 @@ export function Page() {
         <div className="flex flex-col md:flex-row gap-16 md:gap-16 w-full mb-20 h-[320px]">
           <div className="md:w-2/5 md:h-full">
             <Image
-              src="/about/jiji.png"
+              src={jiji}
               alt="Jiji the black cat sitting on a laptop"
               width={400}
               height={400}
+              placeholder="blur"
               className="hidden md:block rounded-lg object-cover w-full h-full fade-up-first"
             />
           </div>
