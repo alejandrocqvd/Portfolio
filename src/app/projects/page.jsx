@@ -25,7 +25,7 @@ const FeaturedProject = ({ onProjectClick }) => {
         </div>
 
         <div className="w-full flex-row flex gap-4 mb-12 md:mb-0">
-          <button className="border border-white/20 fade-up-first-3 flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+          <button className="border border-white/20 fade-up-first flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
             onClick={() =>
               onProjectClick({
                 title: "IDEA Room Planner",
@@ -63,7 +63,7 @@ const FeaturedProject = ({ onProjectClick }) => {
                 "_blank"
               )
             }
-            className="border border-white/20 fade-up-first-4 flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
+            className="border border-white/20 fade-up-first flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
           >
             <Github size={18} />
             GitHub
@@ -86,11 +86,11 @@ const FeaturedProject = ({ onProjectClick }) => {
 };
 
 // =========================================================================================
-const SmallCard = ({ title, subtitle, img, onClick, side }) => {
+const SmallCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
   return (
     <div 
       onClick={onClick} 
-      className={`border border-white/20 group flex flex-col md:rounded-md h-44 w-full overflow-hidden cursor-pointer 
+      className={`border border-white/20 group flex flex-col md:rounded-md h-44 w-full overflow-hidden cursor-pointer ${fade}
         ${side === 'left' ? 'rounded-l-none md:rounded-l-md border-l-0 md:border-l' : 
           side === 'right' ? 'rounded-r-none md:rounded-r-md border-r-0 md:border-r' : ''
         }`}
@@ -119,12 +119,15 @@ const SmallCard = ({ title, subtitle, img, onClick, side }) => {
 };
 
 // =========================================================================================
-const LargeCard = ({ title, subtitle, img, onClick, side }) => {
+const LargeCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
   return (
-    <div onClick={onClick} className={`border border-white/20 group flex flex-col rounded-md h-96 w-full overflow-hidden cursor-pointer 
-    ${side === 'left' ? 'rounded-l-none md:rounded-l-md border-l-0 md:border-l' : 
-    side === 'right' ? 'rounded-r-none md:rounded-r-md border-r-0 md:border-r' : ''
-    }`}>
+    <div 
+      onClick={onClick} 
+      className={`border border-white/20 group flex flex-col rounded-md h-96 w-full overflow-hidden cursor-pointer ${fade}
+        ${side === 'left' ? 'rounded-l-none md:rounded-l-md border-l-0 md:border-l' : 
+        side === 'right' ? 'rounded-r-none md:rounded-r-md border-r-0 md:border-r' : ''
+        }`}
+    >
       <div className="relative w-full h-1/2 md:h-3/4 overflow-hidden">
         <Image
           src={img}
@@ -154,11 +157,12 @@ const LargeCard = ({ title, subtitle, img, onClick, side }) => {
 // =========================================================================================
 const ProjectBentoBox = ({ onProjectClick }) => {
   return (
-    <section className="w-full flex flex-col justify-center items-center mt-24 fade-up-second">
+    <section className="w-full flex flex-col justify-center items-center mt-24">
       <div className="w-full flex flex-row gap-8">
         <div className="w-2/3">
 
           <LargeCard 
+            fade="fade-in-1"
             subtitle="Software Development Company" 
             title="Nullus" 
             img="/work/nullus-img.png" 
@@ -196,6 +200,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
         <div className="flex flex-col justify-between w-1/3 gap-8">
 
           <SmallCard  
+          fade="fade-in-2"
             subtitle="Cross-Platform 311 App" 
             title="Urban Signal" 
             img="/work/urban-signal-img.png" 
@@ -231,6 +236,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
           />
 
           <SmallCard 
+            fade="fade-in-3"
             subtitle="Educational Game Website" 
             title="Malware Terminal" 
             img="/work/malware-terminal-img.PNG" 
@@ -271,6 +277,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
             title="DinoDB" 
             img="/work/dinodb-img.PNG" 
             side="left"
+            fade="fade-in-4"
             onClick={() =>
               onProjectClick({
                 title: "DinoDB",
@@ -305,6 +312,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
             title="Sorting Visualizer" 
             img="/work/sorting-visualizer-img.PNG" 
             side="left"
+            fade="fade-in-5"
             onClick={() =>
               onProjectClick({
                 title: "Sorting Visualizer",
@@ -336,6 +344,7 @@ const ProjectBentoBox = ({ onProjectClick }) => {
             title="MiHistoria" 
             img="/work/mihistoria-img.PNG" 
             side="right"
+            fade="fade-in-6"
             onClick={() =>
               onProjectClick({
                 title: "MiHistoria",

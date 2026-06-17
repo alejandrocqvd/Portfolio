@@ -39,7 +39,7 @@ const timeline = [
     description: [
       "Co-founded Nullus Inc., a student-led software development startup",
       "Designed and developed sites for individuals, clubs, and businesses",
-      "Served 6+ clients and reaching 1000+ users",
+      "Served 6+ clients and reaching 2000+ users",
     ],
     color: "bg-blue-500",
   },
