@@ -22,6 +22,7 @@ export default function PhotoRow({
           key={i}
           className={`
             relative flex-1 transition-all duration-300 ease-in-out ${fade}
+            ${i >= 2 ? "hidden md:block" : ""}
             ${hovered === i ? "flex-[2] z-10" : "flex-[1] z-0"}
           `}
           style={{ animationDelay: `${0.1 + i * 0.1}s` }}

@@ -87,13 +87,17 @@ const FeaturedProject = ({ onProjectClick }) => {
 
 // =========================================================================================
 const SmallCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
+  const sideClasses =
+    side === "left"
+      ? "rounded-l-none rounded-r-md md:rounded-l-md md:rounded-r-none border-l-0 md:border-l"
+      : side === "right"
+        ? "rounded-r-none rounded-l-md md:rounded-r-md md:rounded-l-none border-r-0 md:border-r"
+        : "rounded-md";
+
   return (
     <div 
       onClick={onClick} 
-      className={`border border-white/20 group flex flex-col md:rounded-md h-44 w-full overflow-hidden cursor-pointer ${fade}
-        ${side === 'left' ? 'rounded-l-none md:rounded-l-md border-l-0 md:border-l' : 
-          side === 'right' ? 'rounded-r-none md:rounded-r-md border-r-0 md:border-r' : ''
-        }`}
+      className={`border border-white/20 group flex flex-col h-44 w-full overflow-hidden cursor-pointer ${fade} ${sideClasses}`}
     >
       <div className="relative w-full h-[50%] md:h-[55%] overflow-hidden">
         <Image
