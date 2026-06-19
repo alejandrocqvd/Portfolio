@@ -17,7 +17,7 @@ function NavLink({ href, children }) {
 export default function Navbar() {
   return (
     <nav
-      className="absolute top-0 sm:my-4 w-screen sm:w-auto items-center py-4 px-2 md:px-6 text-center z-50 rounded-xl left-1/2 -translate-x-1/2"
+      className="absolute top-0 sm:my-4 w-screen items-center py-4 px-2 md:px-6 text-center z-50 rounded-xl left-1/2 -translate-x-1/2"
     >
       <div className="flex w-full items-center justify-center gap-8">
         <div className="flex justify-between items-center text-sm">

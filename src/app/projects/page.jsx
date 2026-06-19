@@ -89,9 +89,9 @@ const FeaturedProject = ({ onProjectClick }) => {
 const SmallCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
   const sideClasses =
     side === "left"
-      ? "rounded-l-none rounded-r-md md:rounded-l-md md:rounded-r-none border-l-0 md:border-l"
+      ? "rounded-l-none rounded-r-md md:rounded-l-md md:rounded-r-md border-l-0 md:border-l"
       : side === "right"
-        ? "rounded-r-none rounded-l-md md:rounded-r-md md:rounded-l-none border-r-0 md:border-r"
+        ? "rounded-r-none rounded-l-md md:rounded-r-md md:rounded-l-md border-r-0 md:border-r"
         : "rounded-md";
 
   return (
@@ -114,7 +114,7 @@ const SmallCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
         <p className="hidden md:flex text-xs text-gray-400 transition-opacity duration-300 group-hover:opacity-0">
           {subtitle}
         </p>
-        <p className="absolute text-xs mt-8 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+        <p className="hidden md:absolute text-xs mt-8 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
           See more →
         </p>
       </div>

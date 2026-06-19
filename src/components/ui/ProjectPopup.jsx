@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { Github, Globe } from "lucide-react";
 import { SkillBox } from '@/components/ui/SkillBox';
 
+const blurDataURL = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdiJyB4PScwJyB5PScwJz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPScxMicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbGw9JyMyMjInIGZpbHRlcj0ndXJsKCNiKScvPjwvc3ZnPg==";
+
 const ProjectPopUpMobile = ({ project, onClose }) => {
   const [index, setIndex] = useState(0);
 
@@ -23,13 +25,13 @@ const ProjectPopUpMobile = ({ project, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-6">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-start z-50 p-6">
       <div className="bg-black/90 border border-white/20 rounded-xl p-6 w-full max-w-xl relative shadow-xl">
         <button onClick={onClose} className="absolute top-4 right-5 text-white/70 hover:text-white text-xl">✕</button>
-        <h2 className="text-center text-3xl font-mono mb-1 tracking-wide">
+        <h2 className="text-center text-2xl font-mono mb-1 tracking-wide">
           {project.title}
         </h2>
-        <h2 className="text-center text-md tracking-wide mb-4 mt-3">
+        <h2 className="text-center text-sm tracking-wide mb-4 mt-3">
           {project.subtitle}
         </h2>
 
@@ -78,6 +80,8 @@ const ProjectPopUpMobile = ({ project, onClose }) => {
                     src={img}
                     alt={project.title}
                     fill
+                    placeholder="blur"
+                    blurDataURL={blurDataURL}
                     className="object-cover"
                   />
                 )}
@@ -114,10 +118,10 @@ const ProjectPopUpMobile = ({ project, onClose }) => {
           </div>
         </div>
 
-        <h2 className="text-center text-lg font-bold tracking-wide">
+        <h2 className="text-center text-md font-bold tracking-wide">
           {project.header}
         </h2>
-        <p className="text-gray-300 text-sm leading-relaxed mt-2 mx-8 text-justify">
+        <p className="text-gray-300 text-sm leading-relaxed mt-2 mx-4 text-justify">
           {project.description}
         </p>
 
@@ -201,6 +205,8 @@ const ProjectPopUpDesktop = ({ project, onClose }) => {
                           alt={project.title}
                           fill
                           className="object-cover"
+                          placeholder="blur"
+                          blurDataURL={blurDataURL}
                         />
                       )}
                     </div>
@@ -228,6 +234,8 @@ const ProjectPopUpDesktop = ({ project, onClose }) => {
                                     alt=""
                                     fill
                                     className="object-cover"
+                                    placeholder="blur"
+                                    blurDataURL={blurDataURL}
                                   />
                                 )}
                               </div>
