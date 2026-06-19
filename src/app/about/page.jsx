@@ -1,6 +1,6 @@
 import React from 'react';
-import Contact from '../../components/Contact';
-import Timeline from '@/components/Timeline';
+import Contact from '../../components/Footer';
+import Timeline from '@/app/about/Timeline';
 
 const page = () => {
   return (

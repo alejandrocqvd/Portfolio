@@ -1,9 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 "use client"
-import { FaEnvelope, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { HiDocumentText } from "react-icons/hi";
 
-export default function ContactSection() {
+export default function Footer() {
   return (
     <>
       <div id="contact"></div>

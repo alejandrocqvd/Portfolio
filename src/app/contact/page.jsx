@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import Contact from '../../components/Contact';
+import Contact from '../../components/Footer';
 import { ArrowUpRight, Mail, Github, Linkedin, FileText } from "lucide-react"
 
 import jiji from "../../../public/about/jiji.png";

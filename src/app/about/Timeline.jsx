@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import PhotoRow from "./PhotoRow";
+import PhotoRow from "@/components/PhotoRow";
 
-import vs from "../../public/about/vs.jpg";
-import uarad from "../../public/about/uarad.jpg";
-import playgroundBuild from "../../public/about/playgroundBuild.png";
-import speakingHD from "../../public/about/speakingHD.png";
+import vs from "@public/about/vs.jpg";
+import uarad from "@public/about/uarad.jpg";
+import playgroundBuild from "@public/about/playgroundBuild.png";
+import speakingHD from "@public/about/speakingHD.png";
 
 const photos = [uarad, playgroundBuild, speakingHD, vs];
 

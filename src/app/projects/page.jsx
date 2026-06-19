@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import Contact from '../../components/Contact';
+import Contact from '../../components/Footer';
 import Image from 'next/image';
 import { Eye, Github } from "lucide-react";
-import { ProjectPopUpContainer } from '@/components/ProjectPopup';
+import { ProjectPopUpContainer } from '@/app/projects/ProjectPopup';
 
 const FeaturedProject = ({ onProjectClick }) => {
   return (
@@ -114,7 +114,7 @@ const SmallCard = ({ title, subtitle, img, onClick, side, fade = "" }) => {
         <p className="hidden md:flex text-xs text-gray-400 transition-opacity duration-300 group-hover:opacity-0">
           {subtitle}
         </p>
-        <p className="hidden md:absolute text-xs mt-8 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
+        <p className="hidden md:block absolute text-xs mt-8 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
           See more →
         </p>
       </div>
