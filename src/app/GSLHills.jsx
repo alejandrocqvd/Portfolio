@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import '../globals.css'; // Make sure to include the CSS below
+import '../globals.css';
 
 const GLSLHills = () => {
   const canvasRef = useRef(null);
@@ -13,7 +13,6 @@ const GLSLHills = () => {
       canvas: canvas,
     });
     const scene = new THREE.Scene();
-    // scene.scale.z = -1;
     const camera = new THREE.PerspectiveCamera(
       45,
       window.innerWidth / window.innerHeight,
@@ -235,7 +234,6 @@ void main(void) {
     };
     animate();
 
-    // Cleanup on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
     };

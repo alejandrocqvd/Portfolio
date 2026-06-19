@@ -1,14 +1,11 @@
-import React from 'react';
-import Contact from '../../components/Footer';
-import Timeline from '@/app/about/Timeline';
+import Footer from "@/components/Footer";
+import Timeline from "@/app/about/Timeline";
 
-const page = () => {
+export default function AboutPage() {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <main className="flex flex-col items-center justify-center">
       <Timeline />
-      <Contact />
-    </div>
-  )
+      <Footer />
+    </main>
+  );
 }
-
-export default page;
