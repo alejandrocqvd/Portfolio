@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import PhotoRow from "./ui/PhotoRow";
+import PhotoRow from "./PhotoRow";
 
 import vs from "../../public/about/vs.jpg";
 import uarad from "../../public/about/uarad.jpg";

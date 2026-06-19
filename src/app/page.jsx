@@ -1,9 +1,9 @@
 "use client";
 
 import Contact from '@/components/Contact';
-import PhotoRow from "@/components/ui/PhotoRow";
+import PhotoRow from "@/components/PhotoRow";
 import GLSLHills from '@/components/GSLHills';
-import TypingName from '@/components/ui/TypingName';
+import TypingName from '@/components/TypingName';
 
 import back2 from "../../public/about/back2.jpg";
 import grass from "../../public/about/grass.jpg";

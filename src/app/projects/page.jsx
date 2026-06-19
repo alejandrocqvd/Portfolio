@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Contact from '../../components/Contact';
 import Image from 'next/image';
 import { Eye, Github } from "lucide-react";
-import { ProjectPopUpContainer } from '@/components/ui/ProjectPopup';
+import { ProjectPopUpContainer } from '@/components/ProjectPopup';
 
 const FeaturedProject = ({ onProjectClick }) => {
   return (
