@@ -24,7 +24,7 @@ const timelineItems = [
   },
   {
     company: "Pason Systems",
-    role: "Software Developer Intern",
+    role: "Software Engineer Intern",
     period: "May 2025 - Now",
     description: [
       "Owned full-stack features across Java services and React frontends in my fast-moving Agile team",
@@ -35,7 +35,7 @@ const timelineItems = [
   },
   {
     company: "Nullus",
-    role: "Co-Founder & Software Developer",
+    role: "Co-Founder & Software Engineer",
     period: "Apr 2024 - Now",
     description: [
       "Co-founded Nullus Inc., a student-led software development startup",
@@ -46,7 +46,7 @@ const timelineItems = [
   },
   {
     company: "UofA Robotics and Aerial Drones",
-    role: "Software Developer",
+    role: "Software Engineer",
     period: "Jul 2025 - Oct 2025",
     description: [
       "Developed the UA-RAD club website using Nextjs, following a structured waterfall dev process",
