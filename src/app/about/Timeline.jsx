@@ -25,7 +25,7 @@ const timelineItems = [
   {
     company: "Pason Systems",
     role: "Software Engineer Intern",
-    period: "May 2025 - Now",
+    period: "May 2025 - Aug 2026",
     description: [
       "Owned full-stack features across Java services and React frontends in my fast-moving Agile team",
       "Wrote all the kinds of tests you can imagine (unit, integration, e2e, you name it)",

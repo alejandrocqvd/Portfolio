@@ -4,7 +4,7 @@ Personal portfolio website built with Next.js, React, and Tailwind CSS.
 
 ## About
 
-I'm a Computer Science student at the University of Calgary with interests in software engineering, game development, and virtual reality. Alongside my studies, I work as a Software Developer Intern at Pason Systems and co-founded Nullus, a student-led software development startup.
+I'm a Computer Science student at the University of Calgary with interests in software engineering, game development, and virtual reality. Alongside my studies, I interend for 16 months at Pason Systems and co-founded Nullus, a student-led software development startup.
 
 This portfolio showcases my projects, experience, and technical skills through an interactive and responsive web experience.
 
