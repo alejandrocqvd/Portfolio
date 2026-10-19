@@ -1,24 +1,28 @@
 import Image from "next/image";
 
 // ==============================================================================================================
-function getRoundedClass(rounded) {
-  if (rounded === 1) return "rounded-l-lg";
-  if (rounded === 2) return "rounded-r-lg";
-  return "";
+function getRoundedClass(index, count) {
+  const first = index === 0 ? "rounded-l-lg" : "";
+  const last = index === count - 1 ? "rounded-r-lg" : "";
+  return `${first} ${last}`;
 }
 
 // ==============================================================================================================
-export default function SkillBox({
-  name,
-  image,
-  bgColour,
-  rounded,
-}) {
-  const roundedClass = getRoundedClass(rounded);
+// Shades the row dark to light, #101010 for the first box to #454545 for the last.
+function getShade(index, count) {
+  const t = count > 1 ? index / (count - 1) : 0;
+  const hex = Math.round(0x10 + t * (0x45 - 0x10))
+    .toString(16)
+    .padStart(2, "0");
+  return `#${hex}${hex}${hex}`;
+}
 
+// ==============================================================================================================
+export default function SkillBox({ name, image, index, count }) {
   return (
     <div
-      className={`skill-box h-12 w-full ${bgColour} ${roundedClass}`}
+      className={`skill-box h-12 w-full ${getRoundedClass(index, count)}`}
+      style={{ backgroundColor: getShade(index, count) }}
     >
       <div className="blur-container flex items-center justify-center h-full w-full">
         <Image

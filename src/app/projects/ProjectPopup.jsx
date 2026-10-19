@@ -124,13 +124,13 @@ function MobileTechStack({ techStack }) {
 
   return (
     <div className="flex flex-row mt-10">
-      {techStack.map((item) => (
+      {techStack.map((item, idx) => (
         <SkillBox
           key={item.name}
           name={item.name}
           image={item.image}
-          bgColour={item.bgColour}
-          rounded={item.rounded}
+          index={idx}
+          count={techStack.length}
         />
       ))}
     </div>
@@ -290,8 +290,8 @@ function DesktopTechStack({ techStack, hoveredSkill, setHoveredSkill }) {
           <SkillBox
             name={item.name}
             image={item.image}
-            bgColour={item.bgColour}
-            rounded={item.rounded}
+            index={idx}
+            count={techStack.length}
           />
         </div>
       ))}
