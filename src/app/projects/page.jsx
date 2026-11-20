@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import Footer from "@/components/Footer";
 import { Eye, Github } from "lucide-react";
 import { ProjectPopUpContainer } from "@/app/projects/ProjectPopup";
 import {
@@ -243,8 +242,6 @@ export default function ProjectPage() {
       {activeProject && (
         <ProjectPopUpContainer project={activeProject} onClose={closeProject} />
       )}
-
-      <Footer />
     </div>
   );
 }

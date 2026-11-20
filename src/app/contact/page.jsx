@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Footer from "@/components/Footer";
 import {
   ArrowUpRight,
   Mail,
@@ -137,8 +136,6 @@ export default function ContactPage() {
         <ContactHeader />
         <ContactContent />
       </section>
-
-      <Footer />
     </>
   );
 }

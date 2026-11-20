@@ -1,14 +1,110 @@
-"use client"
+import { Link } from "next-view-transitions";
+import { Clock3, Gamepad2, MapPin, Music2 } from "lucide-react";
+import Clock from "@/components/Clock";
+import DisplayToggle from "@/components/DisplayToggle";
+import { elsewhere, routes } from "@/lib/site";
+import { getLocation, getRecentGame, getRecentSong, getWeather } from "@/lib/now";
 
+const LAST_UPDATED = "November 2026";
+
+// ==============================================================================================================
+function NowItem({ icon: Icon, label, children }) {
+  return (
+    <li className="flex min-w-0 items-center gap-2.5">
+      <Icon size={14} className="shrink-0 text-muted" aria-hidden />
+      <span className="sr-only">{label}: </span>
+      <span className="truncate">{children}</span>
+    </li>
+  );
+}
+
+// ==============================================================================================================
+async function Now() {
+  const [location, weather, game, song] = await Promise.all([
+    getLocation(),
+    getWeather(),
+    getRecentGame(),
+    getRecentSong(),
+  ]);
+
+  return (
+    <ul aria-label="Right now" className="grid grid-cols-1 gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
+      <NowItem icon={MapPin} label="Location">
+        <span className="relative mr-2 inline-flex h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-accent" aria-hidden />
+        {location}
+        <span className="ml-2 text-muted" title={weather === null ? "Weather not connected yet" : undefined}>
+          {weather === null ? "—" : Math.round(weather)}°C
+        </span>
+      </NowItem>
+      <NowItem icon={Clock3} label="Local time">
+        <Clock />
+      </NowItem>
+      <NowItem icon={Gamepad2} label="Recent game">
+        {game ?? <span className="text-muted">No recent game</span>}
+      </NowItem>
+      <NowItem icon={Music2} label="Recent song">
+        {song ?? <span className="text-muted">No recent song</span>}
+      </NowItem>
+    </ul>
+  );
+}
+
+// ==============================================================================================================
+function LinkList({ label, children }) {
+  return (
+    <ul aria-label={label} className="flex flex-col gap-2 text-sm">
+      {children}
+    </ul>
+  );
+}
+
+// ==============================================================================================================
 export default function Footer() {
   return (
-    <>
-      <div id="contact"></div>
-      <div className="flex flex-col w-screen xl:w-full justify-center items-center">
-        <div className="w-9/12 xl:w-8/12 pt-14 mb-6 xl:px-16 max-w-7xl">
-          <p className="text-sm font-mono text-center fade-up-fourth-2">Portfolio of Alejandro Cardona - Last Updated: June 2026</p>
+    <footer className="mx-auto mt-24 w-full max-w-5xl px-6 pb-10 xl:px-0">
+      <div className="grid grid-cols-2 gap-10 border-t border-ink/10 pt-10 md:grid-cols-[1fr_auto_auto] md:gap-16">
+        <div className="col-span-2 flex flex-col gap-6 md:col-span-1">
+          <p className="max-w-sm text-sm text-muted">
+            Alejandro Cardona, software engineer and Computer Science student at the University of Calgary.
+          </p>
+          <Now />
         </div>
+
+        <LinkList label="Pages">
+          {routes.map((r) => (
+            <li key={r.href}>
+              <Link href={r.href} className="link text-muted hover:text-ink">
+                {r.label}
+              </Link>
+            </li>
+          ))}
+        </LinkList>
+
+        <LinkList label="Elsewhere">
+          {elsewhere.map((l) => {
+            const external = !l.href.startsWith("mailto:");
+            return (
+              <li key={l.label}>
+                <a
+                  href={l.href}
+                  {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+                  className="link text-muted hover:text-ink"
+                >
+                  {l.label}
+                </a>
+              </li>
+            );
+          })}
+        </LinkList>
       </div>
-    </>
+
+      <div className="mt-12 flex flex-col justify-between gap-2 text-xs text-muted sm:flex-row">
+        <div className="-ml-2 md:hidden">
+          <DisplayToggle />
+        </div>
+        <p>© 2026 Alejandro Cardona</p>
+        <p>Last updated {LAST_UPDATED}</p>
+      </div>
+    </footer>
   );
 }

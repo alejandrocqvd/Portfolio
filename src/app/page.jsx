@@ -1,8 +1,6 @@
 "use client";
 
-import Footer from "@/components/Footer";
 import PhotoRow from "@/components/PhotoRow";
-import GLSLHills from "@/app/GSLHills";
 import TypingName from "@/app/TypingName";
 
 import back2 from "@public/about/back2.jpg";
@@ -48,10 +46,6 @@ function HeroContent() {
 function Hero() {
   return (
     <section className="relative w-full overflow-hidden mb-20">
-      <div className="absolute inset-0 -z-10 pointer-events-none -translate-y-72 md:-translate-y-52">
-        <GLSLHills />
-      </div>
-
       <div className="flex flex-col justify-end items-center max-w-5xl mx-auto w-full mb-8 pt-80">
         <TypingName />
 
@@ -84,7 +78,6 @@ export default function HomePage() {
     <div className="flex flex-col justify-center items-center">
       <Hero />
       <About />
-      <Footer />
     </div>
   );
 }

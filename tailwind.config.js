@@ -1,23 +1,35 @@
 /** @type {import('tailwindcss').Config} */
+const token = (name) => `rgb(var(--c-${name}) / <alpha-value>)`;
+
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,jsx}",
+    "./src/app/**/*.{js,jsx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-        "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        paper: token("bg"),
+        surface: token("surface"),
+        ink: token("text"),
+        muted: token("muted"),
+        accent: token("accent"),
       },
-      backgroundImage: {
-        'gradient': 'linear-gradient(90deg, rgba(102,0,204,1) 0%, rgba(179,0,89,1) 100%)',
+      fontFamily: {
+        sans: ["var(--font-body)", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+      },
+      borderRadius: {
+        control: "8px",
+        media: "10px",
+        overlay: "16px",
+      },
+      transitionTimingFunction: {
+        out: "cubic-bezier(0.23, 1, 0.32, 1)",
       },
       screens: {
-        '3xl': '1800px',
-        '4xl': '3000px',
+        "3xl": "1800px",
+        "4xl": "3000px",
       },
     },
   },
