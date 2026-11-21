@@ -8,54 +8,98 @@ import { useTheme } from "@/lib/display";
 const PIXEL = 4;
 const ROWS = 48; // play area height (48 × 4 = 192 CSS px)
 const FLOOR = 41; // y of the floor
-const GRAVITY = 675; // px/s²
-const JUMP = 190; // px/s take-off speed
-const SHORT_HOP = 90; // releasing the key/tap early caps the upward speed here, for a small hop
-const SPEED = { start: 85, max: 205, gain: 2 }; // px/s at start, cap, px/s gained per second
 const CAT_X = 12;
 const EYES = "#D7E36B"; // Jiji's yellow-green
-const OBSTACLES = [
-  { kind: "cucumber", w: 5, h: 10 },
-  { kind: "cucumber", w: 6, h: 14 },
-  { kind: "cucumbers", w: 12, h: 11 },
-  { kind: "vacuum", w: 18, h: 6, after: 100 }, // only once the score passes `after`
+
+// Rules, after the classic offline runner: speed climbs every frame to a cap, the score blinks at every milestone,
+// gaps widen with speed, cucumber groups grow, and a butterfly joins once it's fast enough.
+const RULES = {
+  speed: { start: 85, max: 185, accel: 0.85 }, // px/s, px/s, px/s gained per second (≈2 min to max)
+  gravity: 675, // px/s²
+  jump: 190, // px/s take-off speed
+  shortHop: 90, // releasing jump early caps the upward speed here
+  drop: 220, // px/s straight down when ducking mid-air (fast fall)
+  clearStart: 1.5, // seconds with no obstacles
+  milestone: 100, // score blinks at every multiple
+  gap: { base: 45, perSpeed: 1 / 15, spread: 1.5 }, // min gap = width × speed × perSpeed + base; max = min × spread
+  groupAt: [1.4, 1.8], // speed (× start) at which cucumber groups of 2, then 3, are allowed
+  roombaAfter: 100, // score
+  butterflyAt: 1.5, // speed (× start)
+  butterflyExtra: 12, // px/s faster than the ground
+  maxRepeat: 2, // the same kind never appears more than this many times in a row
+};
+
+// Sprites: # ink, e eye, a accent, m muted, b bumper, x brush/wheel. Jiji faces right; the roomba faces left.
+const CAT = {
+  top: [
+    ".............#...#",
+    ".............#####",
+    "#............###e#",
+    "#............#####",
+    ".#..#############.",
+    "..#############...",
+    "...############...",
+    "...############...",
+  ],
+  spooked: [
+    "##...........#...#",
+    "##...........#####",
+    "##...........##ee#",
+    "##...........#####",
+    ".##.#############.",
+    "..#############...",
+    "...############...",
+    "...############...",
+  ],
+  legs: {
+    stride: ["..#..#.....#..#...", ".#....#...#....#.."],
+    gather: ["....##.....##.....", "....##.....##....."],
+    air: [".#............#...", "#..............#.."],
+  },
+  duck: [
+    "................#..#.",
+    "#...............#####",
+    ".#.##############e###",
+    "..##################.",
+    "...###############...",
+  ],
+  duckLegs: ["...#..#......#..#....", "....##........##....."],
+};
+
+const ROOMBA = {
+  body: [
+    "........aaaa........",
+    "...mmmmmmmmmmmmmm...",
+    ".mmmmmmmmmmmmmmmmmm.",
+    "bbbbbbbbbmmmmmmmmmmm",
+    "bbbbbbbbbmmmmmmmmmmm",
+    ".bbbbbbbbmmmmmmmmmm.",
+  ],
+  brush: ["x.x......x......x...", ".x.......x......x..."],
+};
+
+const BUTTERFLY = [
+  ["a.....a", "aa.#.aa", "aaa#aaa", ".aa#aa.", "..a#a.."],
+  [".......", "...#...", ".aa#aa.", "..a#a..", "...#..."],
 ];
 
-// Jiji, facing right. # body, e eye. Rows 0–7 are shared; the legs (rows 8–9) change per pose.
-const CAT_TOP = [
-  ".............#...#",
-  ".............#####",
-  "#............###e#",
-  "#............#####",
-  ".#..#############.",
-  "..#############...",
-  "...############...",
-  "...############...",
-];
-const SPOOKED_TOP = [
-  "##...........#...#",
-  "##...........#####",
-  "##...........##ee#",
-  "##...........#####",
-  ".##.#############.",
-  "..#############...",
-  "...############...",
-  "...############...",
-];
-const LEGS = {
-  stride: ["..#..#.....#..#...", ".#....#...#....#.."],
-  gather: ["....##.....##.....", "....##.....##....."],
-  air: [".#............#...", "#..............#.."],
-};
-const CAT_W = 18;
-const CAT_H = 10;
+const CUCUMBER = { small: { w: 5, h: 10 }, big: { w: 6, h: 14 } };
+const GROUP_GAP = 2;
 
 const random = (min, max) => min + Math.random() * (max - min);
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
 
 function readColors() {
   const css = getComputedStyle(document.documentElement);
   const token = (name, alpha = 1) => `rgb(${css.getPropertyValue(`--c-${name}`)} / ${alpha})`;
-  return { ink: token("text"), paper: token("bg", 0.45), muted: token("muted"), floor: token("muted", 0.5), accent: token("accent") };
+  return {
+    ink: token("text"),
+    paper: token("bg", 0.45),
+    muted: token("muted"),
+    bumper: token("text", 0.6),
+    floor: token("muted", 0.5),
+    accent: token("accent"),
+  };
 }
 
 // ==============================================================================================================
@@ -71,10 +115,22 @@ function drawSprite(ctx, rows, x, y, palette) {
   });
 }
 
-function drawCat(ctx, colors, height, t, spooked) {
-  const pose = spooked ? "gather" : height > 0 ? "air" : Math.floor(t * 10) % 2 ? "stride" : "gather";
-  const rows = [...(spooked ? SPOOKED_TOP : CAT_TOP), ...LEGS[pose]];
-  drawSprite(ctx, rows, CAT_X, Math.round(FLOOR - height) - CAT_H, { "#": colors.ink, e: EYES });
+function catPose(g) {
+  if (g.state === "over") return "spooked";
+  if (g.y > 0) return "air";
+  return g.ducking ? "duck" : "run";
+}
+
+function drawCat(ctx, colors, g) {
+  const pose = catPose(g);
+  const step = Math.floor(g.t * 10) % 2;
+  const palette = { "#": colors.ink, e: EYES };
+  if (pose === "duck") {
+    drawSprite(ctx, [...CAT.duck, CAT.duckLegs[step]], CAT_X, FLOOR - 6, palette);
+    return;
+  }
+  const legs = pose === "air" ? CAT.legs.air : pose === "spooked" || step ? CAT.legs.gather : CAT.legs.stride;
+  drawSprite(ctx, [...(pose === "spooked" ? CAT.spooked : CAT.top), ...legs], CAT_X, Math.round(FLOOR - g.y) - 10, palette);
 }
 
 // A pixel cucumber: stem, rounded ends, a few seeds.
@@ -90,24 +146,22 @@ function drawCucumber(ctx, colors, x, w, h) {
   for (let r = top + 3; r < FLOOR - 2; r += 3) ctx.fillRect(x + (r % 2 ? 1 : w - 2), r, 1, 1);
 }
 
-function drawVacuum(ctx, colors, x, w, h) {
-  const top = FLOOR - h;
-  ctx.fillStyle = colors.muted;
-  ctx.fillRect(x + 4, top, w - 8, 1);
-  ctx.fillRect(x + 1, top + 1, w - 2, 1);
-  ctx.fillRect(x, top + 2, w, h - 3);
-  ctx.fillRect(x + 1, FLOOR - 1, w - 2, 1);
-  ctx.fillStyle = colors.accent;
-  ctx.fillRect(x + w - 4, top + 2, 1, 1);
-}
-
-function drawObstacle(ctx, colors, o) {
+function drawObstacle(ctx, colors, o, t) {
   const x = Math.round(o.x);
-  if (o.kind === "vacuum") drawVacuum(ctx, colors, x, o.w, o.h);
-  else if (o.kind === "cucumbers") {
-    drawCucumber(ctx, colors, x, 5, o.h);
-    drawCucumber(ctx, colors, x + 7, 5, o.h - 3);
-  } else drawCucumber(ctx, colors, x, o.w, o.h);
+  const frame = Math.floor(t * 8) % 2;
+  if (o.kind === "roomba") {
+    drawSprite(ctx, [...ROOMBA.body, ROOMBA.brush[frame]], x, FLOOR - 7, {
+      a: colors.accent,
+      m: colors.muted,
+      b: colors.bumper,
+      x: colors.ink,
+    });
+  } else if (o.kind === "butterfly") {
+    drawSprite(ctx, BUTTERFLY[frame], x, o.top, { a: colors.accent, "#": colors.ink });
+  } else {
+    const { w, h } = CUCUMBER[o.kind];
+    for (let i = 0; i < o.count; i++) drawCucumber(ctx, colors, x + i * (w + GROUP_GAP), w, i % 2 ? h - 2 : h);
+  }
 }
 
 function drawFloor(ctx, colors, cols, offset) {
@@ -117,7 +171,30 @@ function drawFloor(ctx, colors, cols, offset) {
 }
 
 // ==============================================================================================================
-// An endless runner: Jiji runs automatically; jump over cucumbers and the robot vacuum. Space / ↑ / tap to jump.
+// Obstacles. Each has x, w, and a hitbox from top to the floor (butterflies: top to top + 4).
+function makeObstacle(kind, g, touch, cols) {
+  if (kind === "roomba") return { kind, x: cols + 6, w: 20, top: FLOOR - 6, bottom: FLOOR };
+  if (kind === "butterfly") {
+    // low: jump over · middle: duck under (keyboard only) · high: a standing Jiji runs under it
+    const tops = touch ? [FLOOR - 5, FLOOR - 16] : [FLOOR - 5, FLOOR - 11, FLOOR - 16];
+    const top = pick(tops);
+    return { kind, x: cols + 6, w: 7, top, bottom: top + 5 };
+  }
+  const { w, h } = CUCUMBER[kind];
+  const relative = g.speed / g.baseSpeed;
+  const most = 1 + RULES.groupAt.filter((at) => relative >= at).length;
+  const count = 1 + Math.floor(Math.random() * most);
+  return { kind, count, x: cols + 6, w: count * w + (count - 1) * GROUP_GAP, top: FLOOR - h, bottom: FLOOR };
+}
+
+function catBox(g) {
+  if (catPose(g) === "duck") return { left: CAT_X + 2, right: CAT_X + 20, top: FLOOR - 5, bottom: FLOOR };
+  const bottom = FLOOR - g.y;
+  return { left: CAT_X + 3, right: CAT_X + 16, top: bottom - 9, bottom };
+}
+
+// ==============================================================================================================
+// An endless runner: Jiji runs automatically. Space / ↑ / tap to jump, ↓ to duck (and to drop faster mid-air).
 export default function CatRun() {
   const canvas = useRef(null);
   const score = useRef(null);
@@ -125,10 +202,14 @@ export default function CatRun() {
   const theme = useTheme();
   const [status, setStatus] = useState("idle"); // idle | running | over
   const [result, setResult] = useState({ score: 0, best: 0 });
+  const [touch, setTouch] = useState(false);
 
   useEffect(() => {
     const el = canvas.current;
     const ctx = el.getContext("2d");
+    const isTouch = matchMedia("(pointer: coarse)").matches;
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTouch(isTouch);
     let cols = 0;
     let frame = 0;
     let best = 0;
@@ -137,14 +218,32 @@ export default function CatRun() {
     } catch {}
     setResult({ score: 0, best });
 
-    const g = { state: "idle", y: 0, vy: 0, obstacles: [], dist: 0, speed: 0, since: 0, gap: 0, t: 0, last: 0, overAt: 0, colors: readColors() };
+    const g = {
+      state: "idle",
+      y: 0,
+      vy: 0,
+      ducking: false,
+      obstacles: [],
+      recent: [],
+      dist: 0,
+      speed: 0,
+      baseSpeed: RULES.speed.start,
+      since: 0,
+      gap: 0,
+      t: 0,
+      last: 0,
+      overAt: 0,
+      flashUntil: 0,
+      flashScore: 0,
+      colors: readColors(),
+    };
     const points = () => Math.floor(g.dist / 10);
 
     function draw() {
       ctx.clearRect(0, 0, cols, ROWS);
       drawFloor(ctx, g.colors, cols, g.dist);
-      for (const o of g.obstacles) drawObstacle(ctx, g.colors, o);
-      drawCat(ctx, g.colors, g.y, g.t, g.state === "over");
+      for (const o of g.obstacles) drawObstacle(ctx, g.colors, o, g.t);
+      drawCat(ctx, g.colors, g);
     }
 
     // One canvas pixel per game pixel; CSS scales it up by PIXEL with image-rendering: pixelated.
@@ -157,18 +256,35 @@ export default function CatRun() {
     }
 
     function spawn() {
-      const pool = OBSTACLES.filter((o) => !o.after || points() >= o.after);
-      g.obstacles.push({ ...pool[Math.floor(Math.random() * pool.length)], x: cols + 6 });
+      const relative = g.speed / g.baseSpeed;
+      let kinds = ["small", "big"];
+      if (points() >= RULES.roombaAfter) kinds.push("roomba");
+      if (relative >= RULES.butterflyAt) kinds.push("butterfly");
+      const [a, b] = g.recent;
+      if (a && a === b && kinds.length > 1) kinds = kinds.filter((k) => k !== a); // no third in a row
+      const o = makeObstacle(pick(kinds), g, isTouch, cols);
+      g.obstacles.push(o);
+      g.recent = [o.kind, ...g.recent].slice(0, RULES.maxRepeat);
       g.since = 0;
-      const minGap = 65 + g.speed * 0.45;
-      g.gap = random(minGap, minGap + 70);
+      const min = o.w * g.speed * RULES.gap.perSpeed + RULES.gap.base;
+      g.gap = random(min, min * RULES.gap.spread);
     }
 
     function hit(o) {
-      const catLeft = CAT_X + 3;
-      const catRight = CAT_X + CAT_W - 2;
-      const catBottom = FLOOR - g.y;
-      return catRight > o.x + 1 && catLeft < o.x + o.w - 1 && catBottom > FLOOR - o.h + 1;
+      const c = catBox(g);
+      return c.right > o.x + 1 && c.left < o.x + o.w - 1 && c.bottom > o.top + 1 && c.top < o.bottom - 1;
+    }
+
+    function updateScore(now) {
+      const p = points();
+      const milestone = Math.floor(p / RULES.milestone) * RULES.milestone;
+      if (milestone > 0 && milestone > g.flashScore) {
+        g.flashScore = milestone;
+        if (!still) g.flashUntil = now + 750;
+      }
+      const flashing = now < g.flashUntil;
+      score.current.textContent = flashing ? g.flashScore : p;
+      score.current.style.visibility = flashing && Math.floor((g.flashUntil - now) / 125) % 2 ? "hidden" : "";
     }
 
     function step(now) {
@@ -176,27 +292,31 @@ export default function CatRun() {
       g.last = now;
       g.t += dt;
 
-      // Narrow screens get a slower start so obstacles stay readable.
+      // Narrow screens run slower overall so obstacles stay readable.
       const scale = Math.min(1, Math.max(0.7, (cols * PIXEL) / 720));
-      g.speed = Math.min(SPEED.max, SPEED.start + SPEED.gain * g.t) * scale;
+      g.baseSpeed = RULES.speed.start * scale;
+      g.speed = Math.min(g.speed + RULES.speed.accel * scale * dt, RULES.speed.max * scale);
       const dx = g.speed * dt;
       g.dist += dx;
 
-      g.vy -= GRAVITY * dt;
+      g.vy -= RULES.gravity * dt;
       g.y = Math.max(0, g.y + g.vy * dt);
       if (g.y === 0) g.vy = 0;
 
-      for (const o of g.obstacles) o.x -= dx;
+      for (const o of g.obstacles) o.x -= o.kind === "butterfly" ? dx + RULES.butterflyExtra * scale * dt : dx;
       g.obstacles = g.obstacles.filter((o) => o.x + o.w > -6);
       g.since += dx;
-      if (g.since >= g.gap) spawn();
+      if (g.t > RULES.clearStart && g.since >= g.gap) spawn();
 
-      score.current.textContent = points();
+      updateScore(now);
 
       if (g.obstacles.some(hit)) {
         g.state = "over";
         g.overAt = now;
+        g.flashUntil = 0;
+        score.current.style.visibility = "";
         const final = points();
+        score.current.textContent = final;
         best = Math.max(best, final);
         try {
           localStorage.setItem("catrun-best", String(best));
@@ -211,7 +331,22 @@ export default function CatRun() {
     }
 
     function start() {
-      Object.assign(g, { state: "running", y: 0, vy: 0, obstacles: [], dist: 0, since: 0, gap: cols * 0.6, t: 0, last: 0 });
+      const scale = Math.min(1, Math.max(0.7, (cols * PIXEL) / 720));
+      Object.assign(g, {
+        state: "running",
+        y: 0,
+        vy: 0,
+        obstacles: [],
+        recent: [],
+        dist: 0,
+        speed: RULES.speed.start * scale,
+        since: 0,
+        gap: 0,
+        t: 0,
+        last: 0,
+        flashUntil: 0,
+        flashScore: 0,
+      });
       setStatus("running");
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(step);
@@ -221,10 +356,15 @@ export default function CatRun() {
       press() {
         if (g.state === "over" && performance.now() - g.overAt < 400) return; // a held key doesn't restart instantly
         if (g.state !== "running") start();
-        if (g.y === 0) g.vy = JUMP;
+        if (g.y === 0) g.vy = RULES.jump;
       },
       release() {
-        if (g.vy > SHORT_HOP) g.vy = SHORT_HOP;
+        if (g.vy > RULES.shortHop) g.vy = RULES.shortHop;
+      },
+      duck(down) {
+        g.ducking = down;
+        if (down && g.state === "running" && g.y > 0) g.vy = -RULES.drop;
+        if (g.state !== "running") draw();
       },
       recolor() {
         g.colors = readColors();
@@ -245,12 +385,16 @@ export default function CatRun() {
     if (theme) game.current?.recolor();
   }, [theme]);
 
-  const keys = [" ", "ArrowUp", "w", "W"];
+  const jumpKeys = [" ", "ArrowUp", "w", "W"];
+  const duckKeys = ["ArrowDown", "s", "S"];
+  const controls = touch ? "Tap to jump" : "Space or ↑ to jump, ↓ to duck";
   const message =
     status === "idle"
-      ? "Press Space or tap to play"
+      ? touch
+        ? "Tap to play"
+        : `Press Space to play. ${controls}`
       : status === "over"
-        ? `Jiji got spooked at ${result.score}. Press Space or tap to try again`
+        ? `Jiji got spooked at ${result.score}. ${touch ? "Tap" : "Press Space"} to try again`
         : "";
 
   return (
@@ -267,13 +411,21 @@ export default function CatRun() {
 
       <div
         tabIndex={0}
-        aria-label="Cat runner game. Press Space or the up arrow to jump."
+        aria-label={`Cat runner game. ${controls}.`}
         onKeyDown={(event) => {
-          if (!keys.includes(event.key)) return;
-          event.preventDefault();
-          if (!event.repeat) game.current?.press();
+          if (jumpKeys.includes(event.key)) {
+            event.preventDefault();
+            if (!event.repeat) game.current?.press();
+          } else if (duckKeys.includes(event.key)) {
+            event.preventDefault();
+            if (!event.repeat) game.current?.duck(true);
+          }
         }}
-        onKeyUp={(event) => keys.includes(event.key) && game.current?.release()}
+        onKeyUp={(event) => {
+          if (jumpKeys.includes(event.key)) game.current?.release();
+          else if (duckKeys.includes(event.key)) game.current?.duck(false);
+        }}
+        onBlur={() => game.current?.duck(false)}
         onPointerDown={(event) => {
           if (event.button > 0) return;
           event.currentTarget.focus({ preventScroll: true });

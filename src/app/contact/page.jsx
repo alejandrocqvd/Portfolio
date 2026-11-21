@@ -1,35 +1,35 @@
-import Image from "next/image";
 import { ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
 import CatRun from "@/app/contact/CatRun";
 import { elsewhere } from "@/lib/site";
-import jiji from "@public/about/jiji.png";
 
 const icons = { Email: Mail, LinkedIn: Linkedin, GitHub: Github, Resume: FileText };
 
 // ==============================================================================================================
 function DirectLinks() {
   return (
-    <ul aria-label="Other ways to reach me" className="flex flex-col">
+    <ul aria-label="Other ways to reach me" className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
       {elsewhere.map((link) => {
         const Icon = icons[link.label];
         const external = !link.href.startsWith("mailto:");
         return (
-          <li key={link.label} className="border-t border-ink/10 last:border-b">
+          <li key={link.label} className="min-w-0">
             <a
               href={link.href}
               {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-              className="group flex items-center gap-4 px-1 py-5 transition-colors duration-150 ease-out hover:bg-ink/[0.04]"
+              className="group flex h-full flex-col gap-6 rounded-control border border-ink/10 p-5 transition-colors duration-150 ease-out hover:bg-ink/[0.04]"
             >
-              <Icon size={16} className="shrink-0 text-muted" aria-hidden />
-              <span className="min-w-0 flex-1">
+              <span className="flex items-center justify-between">
+                <Icon size={16} className="text-muted" aria-hidden />
+                <ArrowUpRight
+                  size={16}
+                  aria-hidden
+                  className="text-muted transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </span>
+              <span className="min-w-0">
                 <span className="block text-sm">{link.label}</span>
                 <span className="block truncate text-sm text-muted">{link.value}</span>
               </span>
-              <ArrowUpRight
-                size={16}
-                aria-hidden
-                className="shrink-0 text-muted transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
             </a>
           </li>
         );
@@ -48,20 +48,7 @@ export default function ContactPage() {
         conversations :D
       </p>
 
-      <div className="mt-14 grid gap-12 md:grid-cols-[minmax(0,1fr)_17.5rem]">
-        {/* No intrinsic height on desktop: the links column sets the row height and the photo fills it. */}
-        <div className="relative aspect-[4/3] overflow-hidden rounded-media border border-ink/10 md:aspect-auto">
-          <Image
-            src={jiji}
-            alt="Jiji, a black cat, sitting on a laptop keyboard"
-            placeholder="blur"
-            fill
-            sizes="(min-width: 768px) 600px, 100vw"
-            className="object-cover object-[50%_22%]"
-          />
-        </div>
-        <DirectLinks />
-      </div>
+      <DirectLinks />
 
       <CatRun />
     </section>
