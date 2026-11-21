@@ -222,7 +222,13 @@ html:has(dialog[open]) {
   from { opacity: 0; transform: translateY(6px); }
 }
 
-/* Theme switch: one root snapshot, revealed by an iris clip driven from JS. */
+/* Theme switch: one root snapshot, the new theme revealed by a feathered circle growing from the toggle (--iris, animated from JS). */
+@property --iris {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 html.theme-vt * {
   view-transition-name: none !important;
 }
@@ -233,9 +239,9 @@ html.theme-vt::view-transition-new(root) {
   mix-blend-mode: normal;
 }
 
-/* Hidden until the JS iris takes over, or a GPU can paint one full frame of the new theme first (flicker). */
+/* At --iris: 0 the mask hides everything, so no frame of the new theme shows before the JS animation starts (flicker). */
 html.theme-vt::view-transition-new(root) {
-  clip-path: inset(50%);
+  mask-image: radial-gradient(circle at var(--iris-x) var(--iris-y), #000 calc(var(--iris) * 0.9), transparent var(--iris));
 }
 
 /* Intro (once per session): logo, signature written by a pen mask, then the logo glides into the navbar.

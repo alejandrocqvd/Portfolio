@@ -28,21 +28,6 @@ function store(key, value) {
   } catch {}
 }
 
-// 8-blade aperture: an octagon that rotates while it opens, centred on the control that triggered it.
-function irisFrames(x, y) {
-  const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) / Math.cos(Math.PI / 8);
-  const steps = 16;
-  return Array.from({ length: steps + 1 }, (_, i) => {
-    const t = i / steps;
-    const turn = Math.PI / 8 + t * (Math.PI / 2);
-    const points = Array.from({ length: 8 }, (_, k) => {
-      const a = turn + (k * Math.PI) / 4;
-      return `${x + Math.cos(a) * reach * t}px ${y + Math.sin(a) * reach * t}px`;
-    });
-    return { clipPath: `polygon(${points.join(",")})` };
-  });
-}
-
 function withTransition(className, change, animate) {
   if (!document.startViewTransition || reducedMotion()) {
     change();
@@ -59,6 +44,10 @@ export function toggleTheme(origin) {
   const rect = origin?.getBoundingClientRect();
   const x = rect ? rect.left + rect.width / 2 : innerWidth / 2;
   const y = rect ? rect.top + rect.height / 2 : 0;
+  // The reveal is a circle from the toggle whose outer 10% is feathered (mask in globals.css); the solid part must cover the farthest corner.
+  const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) / 0.9;
+  root().style.setProperty("--iris-x", `${x}px`);
+  root().style.setProperty("--iris-y", `${y}px`);
 
   withTransition(
     "theme-vt",
@@ -67,7 +56,7 @@ export function toggleTheme(origin) {
       store("theme", next);
     },
     () =>
-      root().animate(irisFrames(x, y), {
+      root().animate({ "--iris": ["0px", `${reach}px`] }, {
         duration: 700,
         easing: "cubic-bezier(0.65, 0, 0.35, 1)",
         fill: "forwards",
