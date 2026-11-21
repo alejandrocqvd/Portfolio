@@ -140,6 +140,17 @@ body {
   }
 }
 
+/* Exit, played while still open (closeDialog in src/lib/dialog.js) so it works without `overlay` support */
+.palette[open][data-closing] {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+}
+
+.palette[open][data-closing]::backdrop {
+  background: rgb(0 0 0 / 0);
+  backdrop-filter: blur(0);
+}
+
 /* Dialogs lock page scroll */
 html:has(dialog[open]) {
   overflow: hidden;
@@ -188,6 +199,16 @@ html:has(dialog[open]) {
     background: rgb(0 0 0 / 0);
     backdrop-filter: blur(0);
   }
+}
+
+.project-dialog[open][data-closing] {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+}
+
+.project-dialog[open][data-closing]::backdrop {
+  background: rgb(0 0 0 / 0);
+  backdrop-filter: blur(0);
 }
 
 /* Page transitions (next-view-transitions): nav and root swap instantly, only the page fades/rises */

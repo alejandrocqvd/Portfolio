@@ -5,6 +5,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { Search } from "lucide-react";
 import { email, elsewhere, routes } from "@/lib/site";
 import { featuredProject, projects } from "@/app/projects/catalogue";
+import { closeDialog, openDialog } from "@/lib/dialog";
 import { toggleTheme } from "@/lib/display";
 
 // ==============================================================================================================
@@ -78,9 +79,9 @@ export default function CommandMenu() {
     setQuery("");
     setActive(0);
     setCopied(false);
-    dialog.current.showModal();
+    openDialog(dialog.current);
   };
-  const close = () => dialog.current.close();
+  const close = () => closeDialog(dialog.current);
 
   useEffect(() => {
     const onKey = (event) => {
@@ -131,6 +132,10 @@ export default function CommandMenu() {
       <dialog
         ref={dialog}
         aria-label="Command menu"
+        onCancel={(event) => {
+          event.preventDefault();
+          close();
+        }}
         onClick={(event) => event.target === dialog.current && close()}
         className="palette mx-auto mt-[12vh] w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-overlay border border-ink/10 bg-surface p-0 text-ink shadow-2xl shadow-black/40"
       >

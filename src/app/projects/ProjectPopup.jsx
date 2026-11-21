@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Github, Globe, X } from "lucide-react";
 import SkillBox from "@/app/projects/SkillBox";
+import { closeDialog, openDialog } from "@/lib/dialog";
 
 const blurDataURL =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdiJyB4PScwJyB5PScwJz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPScxMicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbGw9JyMyMjInIGZpbHRlcj0ndXJsKCNiKScvPjwvc3ZnPg==";
@@ -123,18 +124,13 @@ export default function ProjectDialog({ project, onClose }) {
 
   useLayoutEffect(() => {
     const el = dialog.current;
-    el.showModal();
+    openDialog(el);
     el.querySelector("[data-autofocus]")?.focus();
     return () => el.close();
   }, []);
 
-  // Close natively so the CSS exit transition plays, then let the page unmount the dialog once it has ended.
-  const close = () => {
-    const el = dialog.current;
-    if (!el.open) return;
-    el.close();
-    setTimeout(onClose, parseFloat(getComputedStyle(el).transitionDuration) * 1000 || 0);
-  };
+  // Fade out, close, then let the page unmount the dialog.
+  const close = () => closeDialog(dialog.current, onClose);
 
   return (
     <dialog
