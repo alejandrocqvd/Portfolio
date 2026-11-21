@@ -1,6 +1,6 @@
 import "../globals.css";
 
-import { Spline_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { ViewTransitions } from "next-view-transitions";
 
 import Background from "@/components/Background";
@@ -9,7 +9,17 @@ import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 import TransitionClicks from "@/components/TransitionClicks";
 
-const sans = Spline_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+// The site font: JetBrains Mono (variable 100–800, upright and italic), self-hosted from public/fonts/hello.
+// Exposed as --font-sans, which the body and Tailwind's font-sans read; the stack falls back to system monospace.
+const jetBrainsMono = localFont({
+  src: [
+    { path: "../../public/fonts/hello/JetBrainsMono-VariableFont_wght.woff2", weight: "100 800", style: "normal" },
+    { path: "../../public/fonts/hello/JetBrainsMono-Italic-VariableFont_wght.woff2", weight: "100 800", style: "italic" },
+  ],
+  variable: "--font-sans",
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+});
 
 export const metadata = {
   title: "Alejandro Cardona",
@@ -32,7 +42,7 @@ const displayScript = `(function(){var d=document.documentElement;try{var s=loca
 export default function RootLayout({ children }) {
   return (
     <ViewTransitions>
-      <html lang="en" suppressHydrationWarning className={sans.variable}>
+      <html lang="en" suppressHydrationWarning className={jetBrainsMono.variable}>
         <head>
           <link rel="icon" href="/favicon.ico" />
           <script dangerouslySetInnerHTML={{ __html: displayScript }} />
