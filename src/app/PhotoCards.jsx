@@ -35,7 +35,7 @@ export default function PhotoCards({ photos, className = "" }) {
       onPointerMove={(event) => event.pointerType !== "touch" && track(event)}
       onPointerDown={track}
       onPointerLeave={(event) => event.pointerType !== "touch" && setActive(null)}
-      className={`${className} relative aspect-[8/5] w-full max-w-[30rem] justify-self-center lg:max-w-none lg:justify-self-stretch`}
+      className={`${className} relative isolate aspect-[8/5] w-full max-w-[30rem] justify-self-center lg:max-w-none lg:justify-self-stretch`}
     >
       {shown.map((photo, i) => (
         <div

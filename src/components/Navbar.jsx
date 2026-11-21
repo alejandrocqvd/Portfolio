@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
@@ -50,9 +51,24 @@ function Logo() {
 }
 
 // ==============================================================================================================
+// Pinned to the top. Once the page scrolls, it gets a translucent blurred backing and a hairline so text passing
+// underneath stays readable; at the very top it stays clear over the hero.
 export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="nav-vt absolute inset-x-0 top-0 z-40">
+    <header
+      className={`nav-vt fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-[250ms] ease-out ${
+        scrolled ? "border-ink/10 bg-paper/75 backdrop-blur-md" : "border-transparent"
+      }`}
+    >
       {/* Same frame as the footer (max-w-5xl, px-6, xl:px-0), mirrored by .intro-track in globals.css (the intro logo lands on Logo) */}
       <nav aria-label="Main" className="mx-auto flex h-20 w-full max-w-5xl items-center justify-between gap-6 px-6 text-sm xl:px-0">
         <div className="flex items-center gap-5 sm:gap-10">
