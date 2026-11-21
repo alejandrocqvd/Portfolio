@@ -42,7 +42,8 @@ function ProjectLinks({ links }) {
 // ==============================================================================================================
 function MainMedia({ project, src }) {
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-media border border-ink/10 bg-black">
+    // At least 16:9; on desktop it grows (never shrinks) to fill any height the text column adds beside it.
+    <div className="relative aspect-video w-full overflow-hidden rounded-media border border-ink/10 bg-black md:shrink-0 md:grow">
       {isVideo(src) ? (
         <video
           key={src}
@@ -75,7 +76,7 @@ function Thumbnails({ project, active, setActive }) {
   if (project.images.length <= 1) return null;
 
   return (
-    <div role="group" aria-label="Media" className="mt-3 flex gap-2 overflow-x-auto pb-1">
+    <div role="group" aria-label="Media" className="mt-3 flex shrink-0 gap-2 overflow-x-auto overflow-y-hidden pb-1">
       {project.images.map((src, i) => (
         <button
           key={src}
@@ -102,7 +103,7 @@ function TechStack({ techStack }) {
   if (!techStack) return null;
 
   return (
-    <ul aria-label="Tech stack" className="mt-8 flex w-full">
+    <ul aria-label="Tech stack" className="flex w-full [grid-area:stack]">
       {techStack.map((item, idx) => (
         <li
           key={item.name}
@@ -143,13 +144,15 @@ export default function ProjectDialog({ project, onClose }) {
       onClick={(event) => event.target === dialog.current && close()}
       className="project-dialog m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-5xl overflow-y-auto overflow-x-hidden rounded-overlay border border-ink/10 bg-surface p-0 text-ink"
     >
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 p-5 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-10 md:p-8">
-        <div>
+      {/* Desktop: media and the tech stack on the left, the text spanning both rows on the right, so the columns end
+          level instead of leaving a gap under the images. Mobile: media, text, tech stack. */}
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 p-5 [grid-template-areas:'media'_'info'_'stack'] md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:grid-rows-[1fr_auto] md:gap-x-10 md:gap-y-6 md:p-8 md:[grid-template-areas:'media_info'_'stack_info']">
+        <div className="flex flex-col [grid-area:media]">
           <MainMedia project={project} src={project.images[active]} />
           <Thumbnails project={project} active={active} setActive={setActive} />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col [grid-area:info]">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 id="project-title" className="text-2xl font-[420] tracking-[-0.02em] md:text-3xl">
@@ -174,9 +177,9 @@ export default function ProjectDialog({ project, onClose }) {
           <p className="mt-2 whitespace-pre-line text-[0.95rem] leading-relaxed text-muted">
             {project.description.replace(/\n[ \t]+/g, "\n").trim()}
           </p>
-
-          <TechStack techStack={project.techStack} />
         </div>
+
+        <TechStack techStack={project.techStack} />
       </div>
     </dialog>
   );
