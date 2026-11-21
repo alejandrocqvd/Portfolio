@@ -1,14 +1,19 @@
 "use client";
 
-import PhotoRow from "@/components/PhotoRow";
 import Greeting from "@/app/Greeting";
+import PhotoStack from "@/app/PhotoStack";
 
 import back2 from "@public/about/back2.jpg";
 import grass from "@public/about/grass.jpg";
 import dinner from "@public/about/dinner.jpg";
 import mark from "@public/about/mark.jpg";
 
-const photos = [back2, grass, dinner, mark];
+const photos = [
+  { src: back2, alt: "Walking down a garden path under cherry blossoms" },
+  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera" },
+  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view" },
+  { src: mark, alt: "Posing with a peace sign next to a life-size cardboard cutout" },
+];
 
 // ==============================================================================================================
 function Bio() {
@@ -49,8 +54,10 @@ function Hero() {
 
       <div aria-hidden className="hero-rule my-10 h-px w-full bg-ink/30" />
 
-      <div className="flex justify-end">
+      {/* Bio first in reading order; on large screens the photo stack sits to its left. */}
+      <div className="flex flex-col items-center gap-14 lg:flex-row-reverse lg:items-start lg:justify-between">
         <Bio />
+        <PhotoStack photos={photos} />
       </div>
     </section>
   );
@@ -58,12 +65,5 @@ function Hero() {
 
 // ==============================================================================================================
 export default function HomePage() {
-  return (
-    <>
-      <Hero />
-      <section className="mx-auto mt-20 block w-full max-w-5xl px-6 xl:px-0">
-        <PhotoRow photos={photos} />
-      </section>
-    </>
-  );
+  return <Hero />;
 }
