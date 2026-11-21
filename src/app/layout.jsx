@@ -16,6 +16,9 @@ export const metadata = {
   description: "Alejandro Cardona, software engineer and Computer Science student at the University of Calgary.",
 };
 
+// Pages are static and refreshed at most every 5 minutes, which keeps the footer's "now" data (src/lib/now.js) current.
+export const revalidate = 300;
+
 export const viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#0D0E10" },
