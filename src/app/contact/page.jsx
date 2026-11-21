@@ -1,34 +1,56 @@
-import { ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import CatRun from "@/app/contact/CatRun";
+import CopyButton from "@/app/contact/CopyButton";
 import { elsewhere } from "@/lib/site";
 
-const icons = { Email: Mail, LinkedIn: Linkedin, GitHub: Github, Resume: FileText };
+// The label already names the site, so profiles show just the handle; the email may wrap after the @.
+function Value({ link }) {
+  if (link.href.startsWith("mailto:")) {
+    const [user, domain] = link.value.split("@");
+    return (
+      <>
+        {user}@<wbr />
+        {domain}
+      </>
+    );
+  }
+  return link.value.split("/").pop();
+}
 
 // ==============================================================================================================
+// One panel split by hairlines (gap-px over an ink/10 backing), matching the game card below. Each cell is a
+// stretched link: label on top, value underlined on hover like other links on the site.
 function DirectLinks() {
   return (
-    <ul aria-label="Other ways to reach me" className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+    <ul
+      aria-label="Other ways to reach me"
+      className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-media border border-ink/10 bg-ink/10 md:grid-cols-[1.3fr_1fr_1fr_1fr]"
+    >
       {elsewhere.map((link) => {
-        const Icon = icons[link.label];
-        const external = !link.href.startsWith("mailto:");
+        const email = link.href.startsWith("mailto:");
         return (
-          <li key={link.label} className="min-w-0">
-            <a
-              href={link.href}
-              {...(external && { target: "_blank", rel: "noopener noreferrer" })}
-              className="group flex h-full flex-col gap-6 rounded-control border border-ink/10 p-5 transition-colors duration-150 ease-out hover:bg-ink/[0.04]"
-            >
-              <span className="flex items-center justify-between">
-                <Icon size={16} className="text-muted" aria-hidden />
+          <li key={link.label} className="group relative flex min-w-0 flex-col justify-between gap-8 bg-surface p-5 md:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <span className="text-sm text-muted">{link.label}</span>
+              {email ? (
+                <CopyButton value={link.value} label="Copy email address" confirmation="Email address copied" />
+              ) : (
                 <ArrowUpRight
                   size={16}
                   aria-hidden
-                  className="text-muted transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  className="shrink-0 text-muted transition-[transform,color] duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
                 />
-              </span>
-              <span className="min-w-0">
-                <span className="block text-sm">{link.label}</span>
-                <span className="block truncate text-sm text-muted">{link.value}</span>
+              )}
+            </div>
+
+            <a
+              href={link.href}
+              aria-label={`${link.label}: ${link.value}`}
+              {...(!email && { target: "_blank", rel: "noopener noreferrer" })}
+              className="text-[0.95rem] leading-snug text-ink after:absolute after:inset-0 after:transition-colors after:duration-150 after:ease-out hover:after:bg-ink/[0.03] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-accent"
+            >
+              <span className="link [overflow-wrap:anywhere] group-hover:bg-[length:100%_1px]">
+                <Value link={link} />
               </span>
             </a>
           </li>
