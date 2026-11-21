@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
-import ContactLetter from "@/app/contact/ContactLetter";
+import CatRun from "@/app/contact/CatRun";
 import { elsewhere } from "@/lib/site";
+import jiji from "@public/about/jiji.png";
 
 const icons = { Email: Mail, LinkedIn: Linkedin, GitHub: Github, Resume: FileText };
 
@@ -47,9 +49,17 @@ export default function ContactPage() {
       </p>
 
       <div className="mt-14 grid gap-12 md:grid-cols-[minmax(0,1fr)_17.5rem]">
-        <ContactLetter />
+        <Image
+          src={jiji}
+          alt="Jiji, a black cat, sitting on a laptop keyboard"
+          placeholder="blur"
+          sizes="(min-width: 768px) 600px, 100vw"
+          className="aspect-[4/3] h-auto w-full rounded-media border border-ink/10 object-cover object-[50%_35%]"
+        />
         <DirectLinks />
       </div>
+
+      <CatRun />
     </section>
   );
 }
