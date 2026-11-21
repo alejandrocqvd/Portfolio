@@ -418,6 +418,11 @@ html.theme-vt::view-transition-new(root) {
   animation: rule-draw 900ms var(--ease) calc(var(--intro) + 0.1s) both;
 }
 
+/* The draw belongs to the intro: after it (or on later visits) the rule is simply there. */
+:root[data-intro="skip"] .hero-rule {
+  animation: none;
+}
+
 @keyframes rule-draw {
   from { transform: scaleX(0); }
 }

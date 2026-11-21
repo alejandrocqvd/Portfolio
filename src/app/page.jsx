@@ -52,7 +52,13 @@ function Hero() {
         Alejandro Cardona
       </h1>
 
-      <div aria-hidden className="hero-rule my-10 h-px w-full bg-ink/30" />
+      {/* Once the rule has drawn, the intro is over for this page load: returning to Home shows it (and starts the
+          greeting) immediately instead of replaying the intro timing. */}
+      <div
+        aria-hidden
+        onAnimationEnd={() => (document.documentElement.dataset.intro = "skip")}
+        className="hero-rule my-10 h-px w-full bg-ink/30"
+      />
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
         <Bio />
