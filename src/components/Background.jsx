@@ -41,6 +41,13 @@ export default function Background() {
     const post = (message) => entry?.worker.postMessage(message);
     const onResize = () => post({ size: { width: el.clientWidth, height: el.clientHeight, ratio: Math.min(devicePixelRatio, 1.5) } });
     const onVisibility = () => post({ running: !document.hidden });
+    // Ripple where the visitor clicks: mouse/pen on press, touch on release (a scroll swipe ends in pointercancel instead).
+    const onPointer = (e) => {
+      if (!e.isPrimary || e.button > 0 || e.type !== (e.pointerType === "touch" ? "pointerup" : "pointerdown")) return;
+      const rect = el.getBoundingClientRect();
+      if (e.clientY > rect.bottom) return;
+      post({ ripple: [e.clientX - rect.left, e.clientY - rect.top] });
+    };
 
     const begin = () => {
       if (entry) clearTimeout(entry.kill);
@@ -59,6 +66,8 @@ export default function Background() {
       observer.observe(el);
       window.addEventListener("resize", onResize);
       document.addEventListener("visibilitychange", onVisibility);
+      window.addEventListener("pointerdown", onPointer, { passive: true });
+      window.addEventListener("pointerup", onPointer, { passive: true });
     };
 
     // Start once the page is idle; the lattice is decoration and never competes with first paint.
@@ -70,6 +79,8 @@ export default function Background() {
       observer?.disconnect();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pointerdown", onPointer);
+      window.removeEventListener("pointerup", onPointer);
       if (entry) {
         entry.listener = null;
         entry.kill = setTimeout(() => {
