@@ -1,18 +1,17 @@
 "use client";
 
 import Greeting from "@/app/Greeting";
-import PhotoStack from "@/app/PhotoStack";
+import PhotoCards from "@/app/PhotoCards";
 
 import back2 from "@public/about/back2.jpg";
 import grass from "@public/about/grass.jpg";
 import dinner from "@public/about/dinner.jpg";
-import mark from "@public/about/mark.jpg";
 
+// Left, middle, right. The back of each card shows date, place (both optional) and caption.
 const photos = [
-  { src: back2, alt: "Walking down a garden path under cherry blossoms" },
-  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera" },
-  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view" },
-  { src: mark, alt: "Posing with a peace sign next to a life-size cardboard cutout" },
+  { src: back2, alt: "Walking down a garden path under cherry blossoms", caption: "Cherry blossom walk" },
+  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view", caption: "Dinner with a view" },
+  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera", caption: "Afternoon in the grass" },
 ];
 
 // ==============================================================================================================
@@ -54,11 +53,11 @@ function Hero() {
 
       <div aria-hidden className="hero-rule my-10 h-px w-full bg-ink/30" />
 
-      {/* Bio first in reading order; on large screens the photo stack fills the space to its left. gap-10 matches the
-          rule's my-10, so the stack sits as far from the bio as the bio sits from the rule. */}
+      {/* Bio first in reading order; on large screens the photo cards fill the space to its left. gap-10 matches the
+          rule's my-10, so the cards sit as far from the bio as the bio sits from the rule. */}
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
         <Bio />
-        <PhotoStack photos={photos} className="lg:col-start-1 lg:row-start-1" />
+        <PhotoCards photos={photos} className="lg:col-start-1 lg:row-start-1" />
       </div>
     </section>
   );
