@@ -67,7 +67,7 @@ export default function PhotoStack({ photos }) {
       onFocus={() => (paused.current = true)}
       onBlur={() => (paused.current = false)}
       aria-label={`${top.alt}. Photo ${order[0] + 1} of ${photos.length}. Show next photo`}
-      className="group relative aspect-[4/5] w-full max-w-[17rem] shrink-0 cursor-pointer rounded-media focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-accent"
+      className="group relative aspect-square w-full max-w-[23rem] shrink-0 cursor-pointer rounded-media focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-8 focus-visible:outline-accent"
     >
       {photos.map((photo, i) => {
         const depth = order.indexOf(i);
@@ -88,7 +88,7 @@ export default function PhotoStack({ photos }) {
               alt=""
               fill
               placeholder="blur"
-              sizes="(min-width: 1024px) 272px, 70vw"
+              sizes="(min-width: 1024px) 368px, 90vw"
               className={`object-cover transition-transform duration-150 ease-out ${depth === 0 ? "group-hover:scale-[1.02]" : ""}`}
             />
           </span>
