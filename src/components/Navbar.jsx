@@ -8,12 +8,21 @@ import CommandMenu from "@/components/CommandMenu";
 import DisplayToggle from "@/components/DisplayToggle";
 
 // ==============================================================================================================
+// A plain click on a link to the current page would replay the page transition; do nothing instead (modified clicks still open tabs).
+function stayOnPage(pathname, href) {
+  return (event) => {
+    if (pathname === href && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) event.preventDefault();
+  };
+}
+
+// ==============================================================================================================
 function NavLink({ route }) {
   const pathname = usePathname();
 
   return (
     <Link
       href={route.href}
+      onClick={stayOnPage(pathname, route.href)}
       aria-current={pathname === route.href ? "page" : undefined}
       className="link py-1 text-muted transition-colors hover:text-ink aria-[current=page]:text-ink"
     >
@@ -24,8 +33,10 @@ function NavLink({ route }) {
 
 // ==============================================================================================================
 function Logo() {
+  const pathname = usePathname();
+
   return (
-    <Link href="/" aria-label="Alejandro Cardona, home" className="logo-slot flex shrink-0 items-center rounded-control">
+    <Link href="/" onClick={stayOnPage(pathname, "/")} aria-label="Alejandro Cardona, home" className="logo-slot flex shrink-0 items-center rounded-control">
       <Image
         src="/misc/logo_white.svg"
         alt=""
