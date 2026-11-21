@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "@/lib/display";
 
 // A canvas can hand its control to a worker only once, so the worker outlives a dev-mode (StrictMode) remount.
 const workers = new WeakMap();
@@ -19,7 +20,8 @@ function startWorker(el) {
   };
   const size = { width: el.clientWidth, height: el.clientHeight, ratio: Math.min(devicePixelRatio, 1.5) };
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  worker.postMessage({ canvas: offscreen, still, size }, [offscreen]);
+  const light = document.documentElement.dataset.theme === "light";
+  worker.postMessage({ canvas: offscreen, still, light, size }, [offscreen]);
   return entry;
 }
 
@@ -27,6 +29,12 @@ function startWorker(el) {
 export default function Background() {
   const canvas = useRef(null);
   const [status, setStatus] = useState(null);
+  const theme = useTheme();
+
+  // Light mode draws slightly larger dots (the worker scales them).
+  useEffect(() => {
+    if (theme) workers.get(canvas.current)?.worker.postMessage({ light: theme === "light" });
+  }, [theme]);
 
   useEffect(() => {
     const el = canvas.current;
@@ -48,6 +56,22 @@ export default function Background() {
       if (e.clientY > rect.bottom) return;
       post({ ripple: [e.clientX - rect.left, e.clientY - rect.top] });
     };
+    // Hover disturbance follows the mouse/pen (re-sent on scroll, since the canvas moves under a still cursor).
+    let pointer = null;
+    const sendCursor = () => {
+      if (!pointer) return post({ cursor: null });
+      const rect = el.getBoundingClientRect();
+      post({ cursor: [pointer[0] - rect.left, pointer[1] - rect.top] });
+    };
+    const onMove = (e) => {
+      if (e.pointerType === "touch") return;
+      pointer = [e.clientX, e.clientY];
+      sendCursor();
+    };
+    const onLeave = () => {
+      pointer = null;
+      sendCursor();
+    };
 
     const begin = () => {
       if (entry) clearTimeout(entry.kill);
@@ -68,6 +92,9 @@ export default function Background() {
       document.addEventListener("visibilitychange", onVisibility);
       window.addEventListener("pointerdown", onPointer, { passive: true });
       window.addEventListener("pointerup", onPointer, { passive: true });
+      window.addEventListener("pointermove", onMove, { passive: true });
+      window.addEventListener("scroll", sendCursor, { passive: true });
+      document.documentElement.addEventListener("pointerleave", onLeave);
     };
 
     // Start once the page is idle; the lattice is decoration and never competes with first paint.
@@ -81,6 +108,9 @@ export default function Background() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointerdown", onPointer);
       window.removeEventListener("pointerup", onPointer);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("scroll", sendCursor);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
       if (entry) {
         entry.listener = null;
         entry.kill = setTimeout(() => {

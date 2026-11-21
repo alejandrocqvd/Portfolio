@@ -4,8 +4,22 @@
 const COLS = 204;
 const ROWS = 90;
 
-// Click ripples: a ring travelling 900 px/s, ~40 px wide, gone after 1.4 s (numbers in the shader); up to 4 at once, oldest replaced.
+// Tuning. Click ripples: up to 4 at once, the oldest replaced by a new click.
+const RIPPLE = {
+  speed: 900, // px per second the ring travels outward
+  width: 40, // px, soft thickness of the ring
+  life: 1.4, // seconds until a ripple has fully faded
+  push: 6, // px the ring pushes dots outward
+};
+// Mouse hover: dots within `radius` drift away from the cursor (mouse/pen only).
+const CURSOR = {
+  radius: 140, // px
+  push: 10, // px, displacement right under the cursor
+  follow: 10, // how quickly the disturbance catches up with the cursor (higher = snappier)
+};
+const LIGHT_DOT_SCALE = 1.35; // light mode draws dark dots on a light page; slightly larger reads the same weight
 const RIPPLES = 4;
+const f = (n) => n.toFixed(2); // GLSL float literal
 
 const vertex = `#version 300 es
 in vec2 grid;
@@ -14,6 +28,8 @@ uniform float aspect;
 uniform float dpr;
 uniform vec2 res;
 uniform vec3 ripples[4];
+uniform vec3 cursor; // x, y (CSS px), strength 0..1
+uniform float dotScale;
 out float alpha;
 
 void main() {
@@ -28,7 +44,7 @@ void main() {
 
   float focal = 1.6;
   gl_Position = vec4(q.x * focal / aspect, q.y * focal, 0.0, q.z);
-  gl_PointSize = clamp(dpr * 12.0 / q.z, dpr, 3.0 * dpr);
+  gl_PointSize = clamp(dpr * 12.0 / q.z, dpr, 3.0 * dpr) * dotScale;
 
   // A soft glow in the upper middle, faded to zero before every viewport edge.
   vec2 ndc = gl_Position.xy / q.z;
@@ -39,18 +55,24 @@ void main() {
   // Click ripples, in CSS px: dots on a ring are pushed outward, grow and brighten (even outside the glow).
   vec2 pt = vec2(ndc.x * 0.5 + 0.5, 0.5 - ndc.y * 0.5) * res;
   float ring = 0.0;
-  vec2 push = vec2(0.0);
-  for (int i = 0; i < 4; i++) {
+  vec2 offset = vec2(0.0);
+  for (int i = 0; i < ${RIPPLES}; i++) {
     float age = time - ripples[i].z;
-    if (age < 0.0 || age > 1.4) continue;
+    if (age < 0.0 || age > ${f(RIPPLE.life)}) continue;
     vec2 away = pt - ripples[i].xy;
     float d = max(length(away), 0.001);
-    float k = exp(-pow((d - age * 900.0) / 40.0, 2.0)) * pow(1.0 - age / 1.4, 2.0);
+    float k = exp(-pow((d - age * ${f(RIPPLE.speed)}) / ${f(RIPPLE.width)}, 2.0)) * pow(1.0 - age / ${f(RIPPLE.life)}, 2.0);
     ring += k;
-    push += away / d * k;
+    offset += away / d * k * ${f(RIPPLE.push)};
   }
   ring = min(ring, 1.0);
-  pt += push * 6.0;
+
+  // Mouse hover: dots near the cursor ease away from it.
+  vec2 fromCursor = pt - cursor.xy;
+  float cd = max(length(fromCursor), 0.001);
+  offset += fromCursor / cd * cursor.z * pow(1.0 - smoothstep(0.0, ${f(CURSOR.radius)}, cd), 2.0) * ${f(CURSOR.push)};
+
+  pt += offset;
   gl_Position.xy = vec2(pt.x / res.x * 2.0 - 1.0, 1.0 - pt.y / res.y * 2.0) * q.z;
   gl_PointSize += ring * 1.5 * dpr;
 
@@ -86,6 +108,11 @@ let still = false;
 let running = true;
 let frame = 0;
 let slot = 0;
+let light = false;
+let last = 0;
+// The disturbance eases toward the latest cursor message each frame, so it glides instead of jumping between events.
+const cursorNow = { x: 0, y: 0, s: 0 };
+const cursorTarget = { x: 0, y: 0, s: 0 };
 const ripples = new Float32Array(RIPPLES * 3).map((_, i) => (i % 3 === 2 ? -100 : 0));
 
 function init(offscreen) {
@@ -116,7 +143,9 @@ function init(offscreen) {
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-  uniforms = Object.fromEntries(["time", "aspect", "dpr", "res", "ripples"].map((name) => [name, gl.getUniformLocation(program, name)]));
+  uniforms = Object.fromEntries(
+    ["time", "aspect", "dpr", "res", "ripples", "cursor", "dotScale"].map((name) => [name, gl.getUniformLocation(program, name)])
+  );
   gl.uniform3fv(uniforms.ripples, ripples);
   return true;
 }
@@ -131,14 +160,29 @@ function resize({ width, height, ratio }) {
 }
 
 function draw(now) {
+  const dt = Math.min((now - last) / 1000, 0.1);
+  last = now;
+  const k = 1 - Math.exp(-dt * CURSOR.follow);
+  for (const key of ["x", "y", "s"]) cursorNow[key] += (cursorTarget[key] - cursorNow[key]) * k;
+  gl.uniform3f(uniforms.cursor, cursorNow.x, cursorNow.y, cursorNow.s);
+  gl.uniform1f(uniforms.dotScale, light ? LIGHT_DOT_SCALE : 1);
   gl.uniform1f(uniforms.time, still ? 12 : now / 1000);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.drawArrays(gl.POINTS, 0, COLS * ROWS);
   frame = !still && running ? raf(draw) : 0;
 }
 
-// Messages: { canvas, still, size } once, then { size } on resize, { running } on visibility changes, { ripple: [x, y] } on clicks.
+// Messages: { canvas, still, light, size } once, then { size } on resize, { running } on visibility changes,
+// { light } on theme changes, { ripple: [x, y] } on clicks and { cursor: [x, y] | null } as the mouse moves or leaves.
 self.onmessage = ({ data }) => {
+  if ("cursor" in data) {
+    if (!gl || still) return;
+    // Entering from nowhere: start at the cursor instead of sweeping in from the last spot.
+    if (cursorNow.s < 0.01 && data.cursor) [cursorNow.x, cursorNow.y] = data.cursor;
+    if (data.cursor) [cursorTarget.x, cursorTarget.y] = data.cursor;
+    cursorTarget.s = data.cursor ? 1 : 0;
+    return;
+  }
   if (data.ripple) {
     // Same clock as draw()'s rAF time; the running loop picks it up, a paused or still lattice ignores it.
     if (!gl || still) return;
@@ -147,6 +191,7 @@ self.onmessage = ({ data }) => {
     gl.uniform3fv(uniforms.ripples, ripples);
     return;
   }
+  if ("light" in data) light = data.light;
   if (data.canvas) {
     still = data.still;
     let ok = false;
