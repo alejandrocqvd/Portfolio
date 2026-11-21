@@ -145,9 +145,10 @@ export default function ProjectPage() {
     if (id && allProjects[id]) setActiveId(id);
   }, []);
 
-  const close = () => {
+  // A card opened during the previous dialog's exit transition must not be closed by that dialog's late onClose.
+  const close = (id) => {
     if (window.location.search) history.replaceState(null, "", window.location.pathname);
-    setActiveId(null);
+    setActiveId((current) => (current === id ? null : current));
   };
 
   return (
@@ -159,7 +160,7 @@ export default function ProjectPage() {
         <BentoRow row={projectCards.bottom} reversed onOpen={setActiveId} />
       </section>
 
-      {activeId && <ProjectDialog project={allProjects[activeId]} onClose={close} />}
+      {activeId && <ProjectDialog key={activeId} project={allProjects[activeId]} onClose={() => close(activeId)} />}
     </div>
   );
 }

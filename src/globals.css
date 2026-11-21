@@ -150,9 +150,49 @@ html:has(dialog[open]) {
   overflow: hidden;
 }
 
+/* Project dialog: rises into place like a page change (8px + scale), backdrop fades with it; reverses on close */
+.project-dialog {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transition:
+    opacity var(--dur-ui) var(--ease),
+    transform var(--dur-ui) var(--ease),
+    overlay var(--dur-ui) allow-discrete,
+    display var(--dur-ui) allow-discrete;
+}
+
+.project-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .project-dialog[open] {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
 .project-dialog::backdrop {
+  background: rgb(0 0 0 / 0);
+  backdrop-filter: blur(0);
+  transition:
+    background-color var(--dur-ui) var(--ease),
+    backdrop-filter var(--dur-ui) var(--ease),
+    overlay var(--dur-ui) allow-discrete,
+    display var(--dur-ui) allow-discrete;
+}
+
+.project-dialog[open]::backdrop {
   background: rgb(0 0 0 / 0.6);
   backdrop-filter: blur(4px);
+}
+
+@starting-style {
+  .project-dialog[open]::backdrop {
+    background: rgb(0 0 0 / 0);
+    backdrop-filter: blur(0);
+  }
 }
 
 /* Page transitions (next-view-transitions): nav and root swap instantly, only the page fades/rises */
@@ -197,6 +237,11 @@ html.theme-vt::view-transition-old(root),
 html.theme-vt::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+/* Hidden until the JS iris takes over, or a GPU can paint one full frame of the new theme first (flicker). */
+html.theme-vt::view-transition-new(root) {
+  clip-path: inset(50%);
 }
 
 html.mono-vt::view-transition-old(root) {
@@ -384,7 +429,9 @@ html.mono-vt::view-transition-new(root) {
   }
 
   .palette,
-  .palette::backdrop {
+  .palette::backdrop,
+  .project-dialog,
+  .project-dialog::backdrop {
     transition: none;
   }
 }

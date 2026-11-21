@@ -73,6 +73,7 @@ export function toggleTheme(origin) {
       root().animate(irisFrames(x, y), {
         duration: 700,
         easing: "cubic-bezier(0.65, 0, 0.35, 1)",
+        fill: "forwards",
         pseudoElement: "::view-transition-new(root)",
       })
   );

@@ -128,15 +128,23 @@ export default function ProjectDialog({ project, onClose }) {
     return () => el.close();
   }, []);
 
+  // Close natively so the CSS exit transition plays, then let the page unmount the dialog once it has ended.
+  const close = () => {
+    const el = dialog.current;
+    if (!el.open) return;
+    el.close();
+    setTimeout(onClose, parseFloat(getComputedStyle(el).transitionDuration) * 1000 || 0);
+  };
+
   return (
     <dialog
       ref={dialog}
       aria-labelledby="project-title"
       onCancel={(event) => {
         event.preventDefault();
-        onClose();
+        close();
       }}
-      onClick={(event) => event.target === dialog.current && onClose()}
+      onClick={(event) => event.target === dialog.current && close()}
       className="project-dialog m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-5xl overflow-y-auto overflow-x-hidden rounded-overlay border border-ink/10 bg-surface p-0 text-ink"
     >
       <div className="grid grid-cols-[minmax(0,1fr)] gap-8 p-5 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-10 md:p-8">
@@ -155,7 +163,7 @@ export default function ProjectDialog({ project, onClose }) {
             </div>
             <button
               type="button"
-              onClick={onClose}
+              onClick={close}
               aria-label="Close"
               data-autofocus
               className="absolute right-7 top-7 z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface/80 text-muted backdrop-blur transition-colors duration-150 ease-out hover:bg-ink/[0.06] hover:text-ink md:static md:-mr-2 md:-mt-1 md:bg-transparent md:backdrop-blur-none"
