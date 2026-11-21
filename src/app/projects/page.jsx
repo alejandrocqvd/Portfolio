@@ -2,12 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { Github } from "lucide-react";
 import ProjectDialog from "@/app/projects/ProjectPopup";
 import { featuredProject, projects, projectCards } from "@/app/projects/catalogue";
 
 const allProjects = { featured: featuredProject, ...projects };
+
+// Optimized (resized, modern format) poster for the featured video, which is the page's largest paint.
+const poster = getImageProps({ src: "/work/idea-mr-room-planner-img.PNG", alt: "", width: 896, height: 504, quality: 70 }).props.src;
 
 const button =
   "inline-flex h-10 items-center justify-center gap-2 rounded-control px-4 text-sm transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]";
@@ -48,7 +51,7 @@ function FeaturedVideo() {
       <video
         ref={video}
         src={featuredProject.images[0]}
-        poster="/work/idea-mr-room-planner-img.PNG"
+        poster={poster}
         aria-label={`${featuredProject.title} demo`}
         className="aspect-video w-full object-cover"
         preload="metadata"

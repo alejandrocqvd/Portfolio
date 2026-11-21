@@ -111,23 +111,25 @@ export default function ContactLetter() {
         <dt id={`${id}-re`} className="text-sm text-muted">
           Re
         </dt>
-        <dd role="radiogroup" aria-labelledby={`${id}-re`} className="flex flex-wrap gap-2">
-          {topics.map((topic) => (
-            <label
-              key={topic}
-              className="cursor-pointer rounded-control border border-ink/15 px-3 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:text-ink has-[:checked]:border-ink/60 has-[:checked]:bg-ink/[0.06] has-[:checked]:text-ink has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent"
-            >
-              <input
-                type="radio"
-                name={`${id}-topic`}
-                value={topic}
-                checked={letter.topic === topic}
-                onChange={set("topic")}
-                className="sr-only"
-              />
-              {topic}
-            </label>
-          ))}
+        <dd>
+          <div role="radiogroup" aria-labelledby={`${id}-re`} className="flex flex-wrap gap-2">
+            {topics.map((topic) => (
+              <label
+                key={topic}
+                className="cursor-pointer rounded-control border border-ink/15 px-3 py-1.5 text-sm text-muted transition-colors duration-150 ease-out hover:text-ink has-[:checked]:border-ink/60 has-[:checked]:bg-ink/[0.06] has-[:checked]:text-ink has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent"
+              >
+                <input
+                  type="radio"
+                  name={`${id}-topic`}
+                  value={topic}
+                  checked={letter.topic === topic}
+                  onChange={set("topic")}
+                  className="sr-only"
+                />
+                {topic}
+              </label>
+            ))}
+          </div>
         </dd>
       </dl>
 
