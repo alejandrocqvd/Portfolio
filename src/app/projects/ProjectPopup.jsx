@@ -41,10 +41,7 @@ function ProjectLinks({ links }) {
 // ==============================================================================================================
 function MainMedia({ project, src }) {
   return (
-    <div
-      style={{ viewTransitionName: "project-media" }}
-      className="relative aspect-video w-full overflow-hidden rounded-media border border-ink/10 bg-black"
-    >
+    <div className="relative aspect-video w-full overflow-hidden rounded-media border border-ink/10 bg-black">
       {isVideo(src) ? (
         <video
           key={src}
@@ -124,7 +121,6 @@ export default function ProjectDialog({ project, onClose }) {
   const dialog = useRef(null);
   const [active, setActive] = useState(0);
 
-  // Runs inside the view-transition update (flushSync), so the dialog is open in the "new" snapshot.
   useLayoutEffect(() => {
     const el = dialog.current;
     el.showModal();

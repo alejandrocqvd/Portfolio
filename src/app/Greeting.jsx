@@ -2,21 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Each phrase ends where the name (the h1 below) continues it, so "I'm" follows that language's word order.
 const greetings = [
-  { text: "Hello", lang: "en", name: "English" },
-  { text: "Bonjour", lang: "fr", name: "French" },
-  { text: "Hola", lang: "es", name: "Spanish" },
-  { text: "Oki", lang: "bla", name: "Blackfoot" },
-  { text: "Olá", lang: "pt", name: "Portuguese" },
-  { text: "Hej", lang: "sv", name: "Swedish" },
-  { text: "Hallo", lang: "de", name: "German" },
-  { text: "Kumusta", lang: "tl", name: "Tagalog" },
-  { text: "Xin chào", lang: "vi", name: "Vietnamese" },
-  { text: "こんにちは", lang: "ja", name: "Japanese" },
-  { text: "你好", lang: "zh", name: "Chinese" },
-  { text: "안녕하세요", lang: "ko", name: "Korean" },
-  { text: "नमस्ते", lang: "hi", name: "Hindi", whole: true },
-  { text: "مرحبا", lang: "ar", name: "Arabic", whole: true, dir: "rtl" },
+  { text: "Hello, I’m", lang: "en", name: "English" },
+  { text: "Bonjour, je suis", lang: "fr", name: "French" },
+  { text: "Hola, soy", lang: "es", name: "Spanish" },
+  { text: "Oki, nitaniko", lang: "bla", name: "Blackfoot" },
+  { text: "Olá, eu sou", lang: "pt", name: "Portuguese" },
+  { text: "Hej, jag är", lang: "sv", name: "Swedish" },
+  { text: "Hallo, ich bin", lang: "de", name: "German" },
+  { text: "Kumusta, ako si", lang: "tl", name: "Tagalog" },
+  { text: "Xin chào, tôi là", lang: "vi", name: "Vietnamese" },
+  { text: "こんにちは、私は", lang: "ja", name: "Japanese" },
+  { text: "你好，我是", lang: "zh", name: "Chinese" },
+  { text: "안녕하세요, 저는", lang: "ko", name: "Korean" },
+  { text: "नमस्ते, मैं", lang: "hi", name: "Hindi", whole: true },
+  { text: "مرحبا، أنا", lang: "ar", name: "Arabic", whole: true, dir: "rtl" },
 ];
 
 const HOLD = 2200;
@@ -93,7 +94,6 @@ export default function Greeting() {
           {previous && <Word key={`out-${step}`} item={previous} out />}
           <Word key={`in-${step}`} item={current} />
         </span>
-        , I’m
       </span>
     </p>
   );

@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
+import { useEffect, useRef, useState } from "react";
 import Image, { getImageProps } from "next/image";
 import { Github } from "lucide-react";
 import ProjectDialog from "@/app/projects/ProjectPopup";
@@ -16,29 +15,6 @@ const button =
   "inline-flex h-10 items-center justify-center gap-2 rounded-control px-4 text-sm transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]";
 
 // ==============================================================================================================
-// The card's media morphs into the dialog's media (and back) through a shared view-transition name.
-function morph(update, before, after) {
-  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    update();
-    after?.();
-    return;
-  }
-  const root = document.documentElement;
-  before?.();
-  root.classList.add("project-vt");
-  const transition = document.startViewTransition(() => flushSync(update));
-  transition.finished.finally(() => {
-    root.classList.remove("project-vt");
-    after?.();
-  });
-}
-
-function setMediaName(id, name) {
-  const el = document.querySelector(`[data-project-media="${id}"]`);
-  if (el) el.style.viewTransitionName = name;
-}
-
-// ==============================================================================================================
 function FeaturedVideo() {
   const video = useRef(null);
 
@@ -47,7 +23,7 @@ function FeaturedVideo() {
   }, []);
 
   return (
-    <div data-project-media="featured" className="overflow-hidden rounded-media border border-ink/10 bg-black">
+    <div className="overflow-hidden rounded-media border border-ink/10 bg-black">
       <video
         ref={video}
         src={featuredProject.images[0]}
@@ -116,7 +92,7 @@ function Card({ id, side, large, onOpen }) {
         large ? "h-96" : "h-44"
       } ${edgeClasses(side)}`}
     >
-      <div data-project-media={id} className={`relative w-full overflow-hidden ${large ? "h-1/2 md:h-3/4" : "h-1/2 md:h-[55%]"}`}>
+      <div className={`relative w-full overflow-hidden ${large ? "h-1/2 md:h-3/4" : "h-1/2 md:h-[55%]"}`}>
         <Image
           src={project.thumbnail}
           alt=""
@@ -169,36 +145,18 @@ export default function ProjectPage() {
     if (id && allProjects[id]) setActiveId(id);
   }, []);
 
-  const open = useCallback((id) => {
-    morph(
-      () => {
-        setMediaName(id, "");
-        setActiveId(id);
-      },
-      () => setMediaName(id, "project-media")
-    );
-  }, []);
-
-  const close = useCallback(() => {
-    const id = activeId;
+  const close = () => {
     if (window.location.search) history.replaceState(null, "", window.location.pathname);
-    morph(
-      () => {
-        setActiveId(null);
-        setMediaName(id, "project-media");
-      },
-      null,
-      () => setMediaName(id, "")
-    );
-  }, [activeId]);
+    setActiveId(null);
+  };
 
   return (
     <div className="mx-auto max-w-4xl">
-      <FeaturedProject onOpen={open} />
+      <FeaturedProject onOpen={setActiveId} />
 
       <section aria-label="More projects" className="mt-24 flex flex-col gap-4 md:mt-32 md:gap-6">
-        <BentoRow row={projectCards.top} onOpen={open} />
-        <BentoRow row={projectCards.bottom} reversed onOpen={open} />
+        <BentoRow row={projectCards.top} onOpen={setActiveId} />
+        <BentoRow row={projectCards.bottom} reversed onOpen={setActiveId} />
       </section>
 
       {activeId && <ProjectDialog project={allProjects[activeId]} onClose={close} />}
