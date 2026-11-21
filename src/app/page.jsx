@@ -18,7 +18,7 @@ const photos = [
 // ==============================================================================================================
 function Bio() {
   return (
-    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-muted lg:w-1/2">
+    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-muted lg:col-start-2 lg:row-start-1">
       <p>
         I&apos;m a full time student currently enrolled in Computer Science at the University of Calgary.
       </p>
@@ -54,10 +54,11 @@ function Hero() {
 
       <div aria-hidden className="hero-rule my-10 h-px w-full bg-ink/30" />
 
-      {/* Bio first in reading order; on large screens the photo stack sits to its left. */}
-      <div className="flex flex-col items-center gap-14 lg:flex-row-reverse lg:items-start lg:justify-between">
+      {/* Bio first in reading order; on large screens the photo stack fills the space to its left. gap-10 matches the
+          rule's my-10, so the stack sits as far from the bio as the bio sits from the rule. */}
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
         <Bio />
-        <PhotoStack photos={photos} />
+        <PhotoStack photos={photos} className="lg:col-start-1 lg:row-start-1" />
       </div>
     </section>
   );
