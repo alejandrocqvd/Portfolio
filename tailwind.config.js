@@ -17,8 +17,7 @@ module.exports = {
         error: token("error"),
       },
       fontFamily: {
-        sans: ["var(--font-body)", "Hello Script", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-sans)", "Hello Script", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       borderRadius: {
         control: "8px",

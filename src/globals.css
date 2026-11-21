@@ -17,7 +17,6 @@
   --c-muted: 140 147 155;
   --c-accent: 87 211 196;
   --c-error: 255 128 128;
-  --font-body: var(--font-sans);
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --dur-fast: 150ms;
   --dur-ui: 250ms;
@@ -35,10 +34,6 @@
   color-scheme: light;
 }
 
-:root[data-mono] {
-  --font-body: var(--font-mono);
-}
-
 /* Base */
 html {
   background: rgb(var(--c-bg));
@@ -47,7 +42,7 @@ html {
 
 body {
   color: rgb(var(--c-text));
-  font-family: var(--font-body), "Hello Script", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans), "Hello Script", ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -227,9 +222,8 @@ html:has(dialog[open]) {
   from { opacity: 0; transform: translateY(6px); }
 }
 
-/* Theme/mono switch: one root snapshot. Theme uses an iris clip driven from JS, mono a cross-fade. */
-html.theme-vt *,
-html.mono-vt * {
+/* Theme switch: one root snapshot, revealed by an iris clip driven from JS. */
+html.theme-vt * {
   view-transition-name: none !important;
 }
 
@@ -242,18 +236,6 @@ html.theme-vt::view-transition-new(root) {
 /* Hidden until the JS iris takes over, or a GPU can paint one full frame of the new theme first (flicker). */
 html.theme-vt::view-transition-new(root) {
   clip-path: inset(50%);
-}
-
-html.mono-vt::view-transition-old(root) {
-  animation: vt-out 200ms var(--ease) both;
-}
-
-html.mono-vt::view-transition-new(root) {
-  animation: vt-fade 200ms var(--ease) both;
-}
-
-@keyframes vt-fade {
-  from { opacity: 0; }
 }
 
 /* Intro (once per session): logo, signature written by a pen mask, then the logo glides into the navbar.
@@ -279,13 +261,31 @@ html.mono-vt::view-transition-new(root) {
   animation: intro-out 450ms var(--ease) 2.35s forwards;
 }
 
-.intro-logo {
-  position: fixed;
+/* The track spans the viewport like the navbar. --slot is the navbar logo's left edge (max-w-screen-2xl + px-4/px-6);
+   the track shifts the logo to the centre, so both transforms settling to none lands it on the slot. */
+.intro-track {
+  --slot: calc(max(0px, (100% - 1536px) / 2) + 16px);
+  position: absolute;
   top: 24px;
-  left: 50%;
+  left: 0;
+  width: 100%;
+  height: 32px;
+  transform: translateX(calc(50% - 16px - var(--slot)));
+  animation: intro-logo 450ms var(--ease) 2.35s forwards;
+}
+
+@media (min-width: 768px) {
+  .intro-track {
+    --slot: calc(max(0px, (100% - 1536px) / 2) + 24px);
+  }
+}
+
+.intro-logo {
+  position: absolute;
+  top: 0;
+  left: var(--slot);
   width: 32px;
   height: 32px;
-  margin-left: -16px;
   transform: translateY(calc(50vh - 110px)) scale(2.25);
   animation: intro-logo 450ms var(--ease) 2.35s forwards;
 }
@@ -414,6 +414,10 @@ html.mono-vt::view-transition-new(root) {
 
   .intro-logo {
     animation: intro-fade 300ms linear 0.9s forwards;
+  }
+
+  .intro-track {
+    animation: none;
   }
 
   .hero-rule,

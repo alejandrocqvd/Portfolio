@@ -5,7 +5,7 @@ import { useTransitionRouter } from "next-view-transitions";
 import { Search } from "lucide-react";
 import { email, elsewhere, routes } from "@/lib/site";
 import { featuredProject, projects } from "@/app/projects/catalogue";
-import { toggleMono, toggleTheme } from "@/lib/display";
+import { toggleTheme } from "@/lib/display";
 
 // ==============================================================================================================
 function buildItems() {
@@ -23,7 +23,6 @@ function buildItems() {
 
   const actions = [
     { label: "Toggle light / dark theme", keywords: "theme dark light mode", run: () => toggleTheme() },
-    { label: "Toggle monospace", keywords: "mono font typeface", run: toggleMono },
     { label: "Copy email address", hint: email, keywords: "contact mail", copy: email },
     ...elsewhere
       .filter((l) => !l.href.startsWith("mailto:"))

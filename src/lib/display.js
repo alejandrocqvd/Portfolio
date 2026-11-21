@@ -2,23 +2,20 @@
 
 import { useSyncExternalStore } from "react";
 
-// Theme and monospace live as data attributes on <html>, set before paint by the inline script in layout.jsx.
+// The theme lives as a data attribute on <html>, set before paint by the inline script in layout.jsx.
 const root = () => document.documentElement;
 
 function subscribe(callback) {
   const observer = new MutationObserver(callback);
-  observer.observe(root(), { attributes: true, attributeFilter: ["data-theme", "data-mono"] });
+  observer.observe(root(), { attributes: true, attributeFilter: ["data-theme"] });
   return () => observer.disconnect();
 }
 
-const snapshot = () => `${root().dataset.theme}|${root().dataset.mono !== undefined}`;
+const snapshot = () => root().dataset.theme;
 
 // Returns null on the server and during hydration so markup matches.
-export function useDisplay() {
-  const value = useSyncExternalStore(subscribe, snapshot, () => null);
-  if (!value) return null;
-  const [theme, mono] = value.split("|");
-  return { theme, mono: mono === "true" };
+export function useTheme() {
+  return useSyncExternalStore(subscribe, snapshot, () => null);
 }
 
 function reducedMotion() {
@@ -77,13 +74,4 @@ export function toggleTheme(origin) {
         pseudoElement: "::view-transition-new(root)",
       })
   );
-}
-
-export function toggleMono() {
-  withTransition("mono-vt", () => {
-    const on = root().dataset.mono === undefined;
-    if (on) root().dataset.mono = "";
-    else delete root().dataset.mono;
-    store("mono", on ? "1" : "0");
-  });
 }

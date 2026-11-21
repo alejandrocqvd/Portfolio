@@ -29,7 +29,9 @@ const strokes = [
 export default function Loader() {
   return (
     <div aria-hidden className="intro">
-      <Image src="/misc/logo_white.svg" alt="" width={32} height={32} priority className="intro-logo" />
+      <div className="intro-track">
+        <Image src="/misc/logo_white.svg" alt="" width={32} height={32} priority className="intro-logo" />
+      </div>
 
       <svg viewBox="120 8 700 170" className="intro-signature">
         <defs>

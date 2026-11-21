@@ -7,8 +7,6 @@ import { routes } from "@/lib/site";
 import CommandMenu from "@/components/CommandMenu";
 import DisplayToggle from "@/components/DisplayToggle";
 
-const [home, about, projects, contact] = routes;
-
 // ==============================================================================================================
 function NavLink({ route }) {
   const pathname = usePathname();
@@ -44,21 +42,19 @@ function Logo() {
 export default function Navbar() {
   return (
     <header className="nav-vt absolute inset-x-0 top-0 z-40">
-      <nav aria-label="Main" className="relative mx-auto flex h-20 max-w-screen-2xl items-center justify-center px-4 text-sm md:px-6">
-        {/* 1fr | auto | 1fr keeps the logo at the exact centre whatever the link widths or font */}
-        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-3 sm:gap-x-10">
-          <div className="flex justify-end gap-3 sm:gap-10">
-            <NavLink route={home} />
-            <NavLink route={about} />
-          </div>
+      {/* px-4 / md:px-6 and max-w-screen-2xl are mirrored by .intro-track in globals.css (the intro logo lands on Logo) */}
+      <nav aria-label="Main" className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-6 px-4 text-sm md:px-6">
+        <div className="flex items-center gap-5 sm:gap-10">
           <Logo />
-          <div className="flex justify-start gap-3 sm:gap-10">
-            <NavLink route={projects} />
-            <NavLink route={contact} />
+          <div className="flex gap-4 sm:gap-8">
+            {routes.map((route) => (
+              <NavLink key={route.href} route={route} />
+            ))}
           </div>
         </div>
 
-        <div className="absolute right-6 hidden items-center gap-1 md:flex">
+        {/* On small screens these live in the footer */}
+        <div className="-mr-2 hidden items-center gap-1 md:flex">
           <CommandMenu />
           <DisplayToggle />
         </div>
