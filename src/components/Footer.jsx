@@ -4,6 +4,7 @@ import Clock from "@/components/Clock";
 import CommandMenu from "@/components/CommandMenu";
 import DisplayToggle from "@/components/DisplayToggle";
 import { elsewhere, routes } from "@/lib/site";
+import { signature, signatureViewBox } from "@/lib/signature";
 import { getLocation, getRecentGame, getRecentSong, getWeather } from "@/lib/now";
 
 const LAST_UPDATED = "November 2026";
@@ -65,9 +66,9 @@ export default function Footer() {
     <footer className="mx-auto mt-24 w-full max-w-5xl px-6 pb-10 xl:px-0">
       <div className="grid grid-cols-2 gap-10 border-t border-ink/10 pt-10 md:grid-cols-[1fr_auto_auto] md:gap-16">
         <div className="col-span-2 flex flex-col gap-6 md:col-span-1">
-          <p className="max-w-sm text-sm text-muted">
-            Alejandro Cardona, software engineer and Computer Science student at the University of Calgary.
-          </p>
+          <svg viewBox={signatureViewBox} role="img" aria-label="Alejandro Cardona" className="h-auto w-44 text-ink">
+            <path d={signature} fill="currentColor" />
+          </svg>
           <Now />
         </div>
 

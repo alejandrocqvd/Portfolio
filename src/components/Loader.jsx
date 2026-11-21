@@ -1,9 +1,7 @@
-import { readFileSync } from "node:fs";
-import path from "node:path";
 import Image from "next/image";
+import { signature, signatureViewBox } from "@/lib/signature";
 
 // The signature is a filled auto-trace, so it is revealed through hand-traced pen strokes (a mask) in writing order.
-const signature = readFileSync(path.join(process.cwd(), "public/misc/signature.svg"), "utf8").match(/ d="([^"]+)"/)[1];
 
 // [path, start (s), duration (s)]
 const strokes = [
@@ -33,7 +31,7 @@ export default function Loader() {
         <Image src="/misc/logo_white.svg" alt="" width={32} height={32} priority className="intro-logo" />
       </div>
 
-      <svg viewBox="120 8 700 170" className="intro-signature">
+      <svg viewBox={signatureViewBox} className="intro-signature">
         <defs>
           <mask id="intro-pen" maskUnits="userSpaceOnUse" x="0" y="0" width="818" height="198">
             {strokes.map(([d, delay, duration]) => (
