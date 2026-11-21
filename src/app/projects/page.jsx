@@ -1,81 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import Image from "next/image";
-import { Eye, Github } from "lucide-react";
-import { ProjectPopUpContainer } from "@/app/projects/ProjectPopup";
-import {
-  featuredProject,
-  projects,
-  projectCards,
-} from "@/app/projects/catalogue";
+import { Github } from "lucide-react";
+import ProjectDialog from "@/app/projects/ProjectPopup";
+import { featuredProject, projects, projectCards } from "@/app/projects/catalogue";
+
+const allProjects = { featured: featuredProject, ...projects };
+
+const button =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-control px-4 text-sm transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]";
 
 // ==============================================================================================================
-function FeaturedProject({ onProjectClick }) {
-  return (
-    <section className="flex flex-col md:flex-row justify-center items-center w-full mt-32 md:mt-44 px-8 md:px-0">
-      <FeaturedProjectContent onProjectClick={onProjectClick} />
-      <FeaturedProjectVideo />
-    </section>
-  );
+// The card's media morphs into the dialog's media (and back) through a shared view-transition name.
+function morph(update, before, after) {
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    update();
+    after?.();
+    return;
+  }
+  const root = document.documentElement;
+  before?.();
+  root.classList.add("project-vt");
+  const transition = document.startViewTransition(() => flushSync(update));
+  transition.finished.finally(() => {
+    root.classList.remove("project-vt");
+    after?.();
+  });
+}
+
+function setMediaName(id, name) {
+  const el = document.querySelector(`[data-project-media="${id}"]`);
+  if (el) el.style.viewTransitionName = name;
 }
 
 // ==============================================================================================================
-function FeaturedProjectContent({ onProjectClick }) {
-  return (
-    <div className="flex flex-col justify-center items-start md:mr-9 flex-1 basis-1/2">
-      <p className="w-full mb-2 italic font-light text-gray-300 fade-up-first">
-        Featured Project
-      </p>
+function FeaturedVideo() {
+  const video = useRef(null);
 
-      <p className="w-full text-4xl font-mono mb-8 fade-up-first">
-        {featuredProject.title}
-      </p>
-
-      <div className="flex flex-row justify-between items-start w-full mb-8">
-        <p className="text-justify fade-up-first">{featuredProject.blurb}</p>
-      </div>
-
-      <FeaturedProjectActions onProjectClick={onProjectClick} />
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function FeaturedProjectActions({ onProjectClick }) {
-  const github = featuredProject.links.find((link) => link.title === "GitHub");
+  useEffect(() => {
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) video.current?.play().catch(() => {});
+  }, []);
 
   return (
-    <div className="w-full flex-row flex gap-4 mb-12 md:mb-0">
-      <button
-        className="border border-white/20 fade-up-first flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
-        onClick={() => onProjectClick(featuredProject)}
-      >
-        <Eye size={18} />
-        See More
-      </button>
-
-      <button
-        onClick={() => window.open(github.url, "_blank")}
-        className="border border-white/20 fade-up-first flex items-center justify-center gap-2 w-32 bg-black/40 rounded-lg px-2 py-2 text-center text-white hover:bg-black/20 transition"
-      >
-        <Github size={18} />
-        GitHub
-      </button>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function FeaturedProjectVideo() {
-  return (
-    <div className="flex-1 basis-1/2 md:ml-9 w-[120%] mdLw-full border-y-2 fade-up-first border border-white/20 rounded-md">
+    <div data-project-media="featured" className="overflow-hidden rounded-media border border-ink/10 bg-black">
       <video
+        ref={video}
         src={featuredProject.images[0]}
-        className="object-cover h-96 w-full rounded-md"
-        autoPlay
-        loop
+        poster="/work/idea-mr-room-planner-img.PNG"
+        aria-label={`${featuredProject.title} demo`}
+        className="aspect-video w-full object-cover"
+        preload="metadata"
         muted
+        loop
         playsInline
       />
     </div>
@@ -83,165 +61,144 @@ function FeaturedProjectVideo() {
 }
 
 // ==============================================================================================================
-function SmallCard({ title, subtitle, img, onClick, side, fade = "" }) {
-  const sideClasses =
-    side === "left"
-      ? "rounded-l-none rounded-r-md md:rounded-l-md md:rounded-r-md border-l-0 md:border-l"
-      : side === "right"
-        ? "rounded-r-none rounded-l-md md:rounded-r-md md:rounded-l-md border-r-0 md:border-r"
-        : "rounded-md";
+function FeaturedProject({ onOpen }) {
+  const github = featuredProject.links.find((link) => link.title === "GitHub");
 
   return (
-    <div
-      onClick={onClick}
-      className={`border border-white/20 group flex flex-col h-44 w-full overflow-hidden cursor-pointer ${fade} ${sideClasses}`}
-    >
-      <div className="relative w-full h-[50%] md:h-[55%] overflow-hidden">
-        <Image
-          src={img}
-          alt={title}
-          fill
-          className={`object-cover rounded-md transition-transform duration-300 group-hover:scale-110 ${side === "left" ? "rounded-l-none" : side === "right" ? "rounded-r-none" : ""}`}
-        />
+    <section className="grid items-center gap-10 px-6 pt-36 md:grid-cols-2 md:gap-12 md:pt-44 xl:px-0">
+      <div className="flex flex-col items-start">
+        <p className="text-sm text-muted">Featured project</p>
+        <h1 className="mt-2 text-3xl font-[420] leading-tight tracking-[-0.02em] md:text-4xl">{featuredProject.title}</h1>
+        <p className="mt-5 max-w-md leading-relaxed text-muted">{featuredProject.blurb}</p>
+
+        <div className="mt-8 flex gap-3">
+          <button type="button" onClick={() => onOpen("featured")} className={`${button} bg-ink text-paper hover:bg-ink/85`}>
+            View details
+          </button>
+          <a
+            href={github.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${button} border border-ink/15 hover:bg-ink/[0.06]`}
+          >
+            <Github size={16} aria-hidden />
+            GitHub
+          </a>
+        </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center md:items-start px-4 md:px-6 md:pb-1 bg-black/30 h-[50%] md:h-[45%]">
-        <p className="font-mono text-lg md:mb-1 text-center md:text-left">
-          {title}
-        </p>
-
-        <p className="hidden md:flex text-xs text-gray-400 transition-opacity duration-300 group-hover:opacity-0">
-          {subtitle}
-        </p>
-
-        <p className="hidden md:block absolute text-xs mt-8 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-          See more →
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function LargeCard({ title, subtitle, img, onClick, side, fade = "" }) {
-  return (
-    <div
-      onClick={onClick}
-      className={`border border-white/20 group flex flex-col rounded-md h-96 w-full overflow-hidden cursor-pointer ${fade}
-        ${
-          side === "left"
-            ? "rounded-l-none md:rounded-l-md border-l-0 md:border-l"
-            : side === "right"
-              ? "rounded-r-none md:rounded-r-md border-r-0 md:border-r"
-              : ""
-        }`}
-    >
-      <div className="relative w-full h-1/2 md:h-3/4 overflow-hidden">
-        <Image
-          src={img}
-          alt={title}
-          fill
-          className={`object-cover rounded-md transition-transform duration-500 group-hover:scale-110 ${side === "left" ? "rounded-l-none" : side === "right" ? "rounded-r-none" : ""}`}
-        />
-      </div>
-
-      <div className="flex flex-col justify-center items-start px-12 bg-black/30 h-1/2 md:h-1/3">
-        <p className="font-mono text-2xl mb-2 md:mb-1">{title}</p>
-
-        <p className="text-sm text-gray-400 transition-opacity duration-300 group-hover:opacity-0">
-          {subtitle}
-        </p>
-
-        <p className="absolute text-sm mt-9 text-gray-400 transition-opacity duration-300 opacity-0 group-hover:opacity-100">
-          See more →
-        </p>
-
-        <p className="relative md:hidden text-sm mt-6 text-gray-400">
-          See more →
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function cardProps(card, onProjectClick) {
-  const project = projects[card.id];
-
-  return {
-    title: project.title,
-    subtitle: project.subtitle,
-    img: project.thumbnail,
-    side: card.side,
-    fade: card.fade,
-    onClick: () => onProjectClick(project),
-  };
-}
-
-// ==============================================================================================================
-function ProjectBentoBox({ onProjectClick }) {
-  return (
-    <section className="w-full flex flex-col justify-center items-center mt-24">
-      <ProjectBentoTopRow onProjectClick={onProjectClick} />
-      <ProjectBentoBottomRow onProjectClick={onProjectClick} />
+      <FeaturedVideo />
     </section>
   );
 }
 
 // ==============================================================================================================
-function ProjectBentoTopRow({ onProjectClick }) {
+// `side` lets a card bleed to the screen edge on mobile: that edge loses its border and rounding.
+function edgeClasses(side) {
+  if (side === "left") return "rounded-l-none border-l-0 md:rounded-l-media md:border-l";
+  if (side === "right") return "rounded-r-none border-r-0 md:rounded-r-media md:border-r";
+  return "";
+}
+
+// ==============================================================================================================
+function Card({ id, side, large, onOpen }) {
+  const project = projects[id];
+
   return (
-    <div className="w-full flex flex-row gap-8">
-      <div className="w-2/3">
-        <LargeCard {...cardProps(projectCards.top.large, onProjectClick)} />
+    <button
+      type="button"
+      onClick={() => onOpen(id)}
+      aria-label={`${project.title}, ${project.subtitle}`}
+      className={`group flex w-full flex-col overflow-hidden rounded-media border border-ink/10 bg-surface text-left transition-transform duration-150 ease-out active:scale-[0.99] ${
+        large ? "h-96" : "h-44"
+      } ${edgeClasses(side)}`}
+    >
+      <div data-project-media={id} className={`relative w-full overflow-hidden ${large ? "h-1/2 md:h-3/4" : "h-1/2 md:h-[55%]"}`}>
+        <Image
+          src={project.thumbnail}
+          alt=""
+          fill
+          sizes={large ? "(min-width: 896px) 600px, 66vw" : "(min-width: 896px) 300px, 33vw"}
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+        />
       </div>
 
-      <div className="flex flex-col justify-between w-1/3 gap-8">
-        {projectCards.top.small.map((card) => (
-          <SmallCard key={card.id} {...cardProps(card, onProjectClick)} />
-        ))}
+      <div className={`flex flex-1 flex-col justify-center ${large ? "px-6 md:px-8" : "px-4 md:px-5"}`}>
+        <p className={`link w-fit group-hover:bg-[length:100%_1px] ${large ? "text-lg md:text-xl" : "text-sm md:text-base"}`}>
+          {project.title}
+        </p>
+        <p className={`mt-1 text-sm text-muted ${large ? "" : "hidden md:block"}`}>{project.subtitle}</p>
       </div>
-    </div>
+    </button>
   );
 }
 
 // ==============================================================================================================
-function ProjectBentoBottomRow({ onProjectClick }) {
-  return (
-    <div className="w-full flex flex-row gap-8 mt-8">
-      <div className="flex flex-col justify-between w-1/3 gap-8">
-        {projectCards.bottom.small.map((card) => (
-          <SmallCard key={card.id} {...cardProps(card, onProjectClick)} />
-        ))}
-      </div>
+function BentoRow({ row, reversed, onOpen }) {
+  const large = (
+    <div className="w-2/3">
+      <Card {...row.large} large onOpen={onOpen} />
+    </div>
+  );
+  const small = (
+    <div className="flex w-1/3 flex-col gap-4 md:gap-6">
+      {row.small.map((card) => (
+        <Card key={card.id} {...card} onOpen={onOpen} />
+      ))}
+    </div>
+  );
 
-      <div className="w-2/3">
-        <LargeCard {...cardProps(projectCards.bottom.large, onProjectClick)} />
-      </div>
+  return (
+    <div className="flex gap-4 md:gap-6">
+      {reversed ? small : large}
+      {reversed ? large : small}
     </div>
   );
 }
 
 // ==============================================================================================================
 export default function ProjectPage() {
-  const [activeProject, setActiveProject] = useState(null);
+  const [activeId, setActiveId] = useState(null);
 
-  const openProject = (projectData) => {
-    setActiveProject(projectData);
-  };
+  // Deep link from the command menu: /projects?p=<id>
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("p");
+    if (id && allProjects[id]) setActiveId(id);
+  }, []);
 
-  const closeProject = () => {
-    setActiveProject(null);
-  };
+  const open = useCallback((id) => {
+    morph(
+      () => {
+        setMediaName(id, "");
+        setActiveId(id);
+      },
+      () => setMediaName(id, "project-media")
+    );
+  }, []);
+
+  const close = useCallback(() => {
+    const id = activeId;
+    if (window.location.search) history.replaceState(null, "", window.location.pathname);
+    morph(
+      () => {
+        setActiveId(null);
+        setMediaName(id, "project-media");
+      },
+      null,
+      () => setMediaName(id, "")
+    );
+  }, [activeId]);
 
   return (
-    <div className="flex flex-col justify-center items-center max-w-4xl mx-auto">
-      <FeaturedProject onProjectClick={openProject} />
-      <ProjectBentoBox onProjectClick={openProject} />
+    <div className="mx-auto max-w-4xl">
+      <FeaturedProject onOpen={open} />
 
-      {activeProject && (
-        <ProjectPopUpContainer project={activeProject} onClose={closeProject} />
-      )}
+      <section aria-label="More projects" className="mt-24 flex flex-col gap-4 md:mt-32 md:gap-6">
+        <BentoRow row={projectCards.top} onOpen={open} />
+        <BentoRow row={projectCards.bottom} reversed onOpen={open} />
+      </section>
+
+      {activeId && <ProjectDialog project={allProjects[activeId]} onClose={close} />}
     </div>
   );
 }

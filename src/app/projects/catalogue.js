@@ -195,17 +195,17 @@ export const projects = {
 // Bento-grid layout: each card points at a project by id.
 export const projectCards = {
   top: {
-    large: { id: "nullus", side: "left", fade: "fade-in-1" },
+    large: { id: "nullus", side: "left" },
     small: [
-      { id: "urbanSignal", side: "right", fade: "fade-in-2" },
-      { id: "malwareTerminal", side: "right", fade: "fade-in-3" },
+      { id: "urbanSignal", side: "right" },
+      { id: "malwareTerminal", side: "right" },
     ],
   },
   bottom: {
     small: [
-      { id: "dinodb", side: "left", fade: "fade-in-4" },
-      { id: "sortingVisualizer", side: "left", fade: "fade-in-5" },
+      { id: "dinodb", side: "left" },
+      { id: "sortingVisualizer", side: "left" },
     ],
-    large: { id: "mihistoria", side: "right", fade: "fade-in-6" },
+    large: { id: "mihistoria", side: "right" },
   },
 };
