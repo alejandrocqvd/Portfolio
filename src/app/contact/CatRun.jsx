@@ -3,126 +3,117 @@
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@/lib/display";
 
-// Tuning (CSS px and seconds).
-const HEIGHT = 190; // play area height
-const FLOOR = 160; // y of the floor
-const GRAVITY = 2700; // px/s²
-const JUMP = 760; // px/s take-off speed
-const SHORT_HOP = 360; // releasing the key/tap early caps the upward speed here, for a small hop
-const SPEED = { start: 340, max: 820, gain: 8 }; // px/s at start, cap, px/s gained per second
-const CAT_X = 48;
+// The world is drawn in game pixels, each PIXEL CSS px wide, and scaled up without smoothing for a pixel-art look.
+// Tuning below is in game pixels and seconds.
+const PIXEL = 4;
+const ROWS = 48; // play area height (48 × 4 = 192 CSS px)
+const FLOOR = 41; // y of the floor
+const GRAVITY = 675; // px/s²
+const JUMP = 190; // px/s take-off speed
+const SHORT_HOP = 90; // releasing the key/tap early caps the upward speed here, for a small hop
+const SPEED = { start: 85, max: 205, gain: 2 }; // px/s at start, cap, px/s gained per second
+const CAT_X = 12;
 const EYES = "#D7E36B"; // Jiji's yellow-green
 const OBSTACLES = [
-  { kind: "cucumber", w: 14, h: 30 },
-  { kind: "cucumber", w: 16, h: 42 },
-  { kind: "cucumbers", w: 34, h: 32 },
-  { kind: "vacuum", w: 56, h: 20, after: 100 }, // only once the score passes `after`
+  { kind: "cucumber", w: 5, h: 10 },
+  { kind: "cucumber", w: 6, h: 14 },
+  { kind: "cucumbers", w: 12, h: 11 },
+  { kind: "vacuum", w: 18, h: 6, after: 100 }, // only once the score passes `after`
 ];
+
+// Jiji, facing right. # body, e eye. Rows 0–7 are shared; the legs (rows 8–9) change per pose.
+const CAT_TOP = [
+  ".............#...#",
+  ".............#####",
+  "#............###e#",
+  "#............#####",
+  ".#..#############.",
+  "..#############...",
+  "...############...",
+  "...############...",
+];
+const SPOOKED_TOP = [
+  "##...........#...#",
+  "##...........#####",
+  "##...........##ee#",
+  "##...........#####",
+  ".##.#############.",
+  "..#############...",
+  "...############...",
+  "...############...",
+];
+const LEGS = {
+  stride: ["..#..#.....#..#...", ".#....#...#....#.."],
+  gather: ["....##.....##.....", "....##.....##....."],
+  air: [".#............#...", "#..............#.."],
+};
+const CAT_W = 18;
+const CAT_H = 10;
 
 const random = (min, max) => min + Math.random() * (max - min);
 
 function readColors() {
   const css = getComputedStyle(document.documentElement);
   const token = (name, alpha = 1) => `rgb(${css.getPropertyValue(`--c-${name}`)} / ${alpha})`;
-  return { ink: token("text"), paper: token("bg"), muted: token("muted"), floor: token("muted", 0.45), accent: token("accent") };
+  return { ink: token("text"), paper: token("bg", 0.45), muted: token("muted"), floor: token("muted", 0.5), accent: token("accent") };
 }
 
 // ==============================================================================================================
-// Drawing. y is height above the floor; t drives the run cycle.
-function drawCat(ctx, c, y, t, airborne, spooked) {
-  const x = CAT_X;
-  const base = FLOOR - y;
-  ctx.fillStyle = c.ink;
-  ctx.strokeStyle = c.ink;
-  ctx.lineCap = "round";
-
-  // Tail: sways while running, streams back mid-air, puffs straight up when spooked.
-  const sway = airborne ? -4 : Math.sin(t * 10) * 3;
-  ctx.lineWidth = spooked ? 5 : 3.5;
-  ctx.beginPath();
-  ctx.moveTo(x + 4, base - 16);
-  if (spooked) ctx.quadraticCurveTo(x - 4, base - 20, x - 3, base - 38);
-  else ctx.quadraticCurveTo(x - 10, base - 18, x - 8 + sway * 0.3, base - 32 + sway);
-  ctx.stroke();
-
-  // Legs: two pairs swinging in opposition; tucked forward/back in the air.
-  ctx.lineWidth = 3;
-  const swing = airborne || spooked ? 0 : Math.sin(t * 22) * 4;
-  for (const [hip, dir] of [[9, 1], [13, -1], [27, -1], [31, 1]]) {
-    const front = hip > 20;
-    ctx.beginPath();
-    ctx.moveTo(x + hip, base - 10);
-    if (airborne) ctx.lineTo(x + hip + (front ? 7 : -7), base - 4);
-    else ctx.lineTo(x + hip + swing * dir, base);
-    ctx.stroke();
-  }
-
-  // Body, head, ears.
-  ctx.beginPath();
-  ctx.ellipse(x + 19, base - 15, 17, 9, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(x + 38, base - 23, 8.5, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(x + 31.5, base - 27);
-  ctx.lineTo(x + 32.5, base - 37);
-  ctx.lineTo(x + 38, base - 31);
-  ctx.moveTo(x + 38.5, base - 31);
-  ctx.lineTo(x + 44, base - 37);
-  ctx.lineTo(x + 45.5, base - 27);
-  ctx.fill();
-
-  // Eye: wide open when spooked.
-  ctx.fillStyle = EYES;
-  ctx.strokeStyle = c.paper;
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.arc(x + 41.5, base - 24, spooked ? 3.2 : 2.3, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
+// Drawing, in game pixels.
+function drawSprite(ctx, rows, x, y, palette) {
+  rows.forEach((row, r) => {
+    for (let c = 0; c < row.length; c++) {
+      const color = palette[row[c]];
+      if (!color) continue;
+      ctx.fillStyle = color;
+      ctx.fillRect(x + c, y + r, 1, 1);
+    }
+  });
 }
 
-function drawCucumber(ctx, c, x, w, h) {
-  ctx.fillStyle = c.accent;
-  ctx.beginPath();
-  ctx.roundRect(x, FLOOR - h, w, h, w / 2);
-  ctx.fill();
-  ctx.fillStyle = c.paper;
-  ctx.globalAlpha = 0.35;
-  for (let i = 1; i * 9 < h - 4; i++) {
-    ctx.beginPath();
-    ctx.arc(x + w / 2 + (i % 2 ? -w / 5 : w / 5), FLOOR - h + i * 9, 1.2, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = c.muted;
-  ctx.fillRect(x + w / 2 - 1.5, FLOOR - h - 3, 3, 4);
+function drawCat(ctx, colors, height, t, spooked) {
+  const pose = spooked ? "gather" : height > 0 ? "air" : Math.floor(t * 10) % 2 ? "stride" : "gather";
+  const rows = [...(spooked ? SPOOKED_TOP : CAT_TOP), ...LEGS[pose]];
+  drawSprite(ctx, rows, CAT_X, Math.round(FLOOR - height) - CAT_H, { "#": colors.ink, e: EYES });
 }
 
-function drawVacuum(ctx, c, x, w, h) {
-  ctx.fillStyle = c.muted;
-  ctx.beginPath();
-  ctx.roundRect(x, FLOOR - h, w, h, h / 2);
-  ctx.roundRect(x + 10, FLOOR - h - 4, w - 20, 6, 3);
-  ctx.fill();
-  ctx.fillStyle = c.accent;
-  ctx.beginPath();
-  ctx.arc(x + w - 12, FLOOR - h + 7, 2, 0, Math.PI * 2);
-  ctx.fill();
+// A pixel cucumber: stem, rounded ends, a few seeds.
+function drawCucumber(ctx, colors, x, w, h) {
+  const top = FLOOR - h;
+  ctx.fillStyle = colors.muted;
+  ctx.fillRect(x + Math.floor(w / 2), top, 1, 1);
+  ctx.fillStyle = colors.accent;
+  ctx.fillRect(x + 1, top + 1, w - 2, 1);
+  ctx.fillRect(x, top + 2, w, h - 3);
+  ctx.fillRect(x + 1, FLOOR - 1, w - 2, 1);
+  ctx.fillStyle = colors.paper;
+  for (let r = top + 3; r < FLOOR - 2; r += 3) ctx.fillRect(x + (r % 2 ? 1 : w - 2), r, 1, 1);
 }
 
-function drawObstacle(ctx, c, o) {
-  if (o.kind === "vacuum") drawVacuum(ctx, c, o.x, o.w, o.h);
+function drawVacuum(ctx, colors, x, w, h) {
+  const top = FLOOR - h;
+  ctx.fillStyle = colors.muted;
+  ctx.fillRect(x + 4, top, w - 8, 1);
+  ctx.fillRect(x + 1, top + 1, w - 2, 1);
+  ctx.fillRect(x, top + 2, w, h - 3);
+  ctx.fillRect(x + 1, FLOOR - 1, w - 2, 1);
+  ctx.fillStyle = colors.accent;
+  ctx.fillRect(x + w - 4, top + 2, 1, 1);
+}
+
+function drawObstacle(ctx, colors, o) {
+  const x = Math.round(o.x);
+  if (o.kind === "vacuum") drawVacuum(ctx, colors, x, o.w, o.h);
   else if (o.kind === "cucumbers") {
-    drawCucumber(ctx, c, o.x, 15, o.h);
-    drawCucumber(ctx, c, o.x + 19, 15, o.h - 8);
-  } else drawCucumber(ctx, c, o.x, o.w, o.h);
+    drawCucumber(ctx, colors, x, 5, o.h);
+    drawCucumber(ctx, colors, x + 7, 5, o.h - 3);
+  } else drawCucumber(ctx, colors, x, o.w, o.h);
 }
 
-function drawFloor(ctx, c, width, offset) {
-  ctx.fillStyle = c.floor;
-  for (let x = -(offset % 10); x < width; x += 10) ctx.fillRect(x, FLOOR + 1, 2, 2);
+function drawFloor(ctx, colors, cols, offset) {
+  ctx.fillStyle = colors.floor;
+  const shift = Math.round(offset) % 4;
+  for (let x = -shift; x < cols; x += 4) ctx.fillRect(x, FLOOR, 1, 1);
 }
 
 // ==============================================================================================================
@@ -138,7 +129,7 @@ export default function CatRun() {
   useEffect(() => {
     const el = canvas.current;
     const ctx = el.getContext("2d");
-    let width = el.clientWidth;
+    let cols = 0;
     let frame = 0;
     let best = 0;
     try {
@@ -147,37 +138,37 @@ export default function CatRun() {
     setResult({ score: 0, best });
 
     const g = { state: "idle", y: 0, vy: 0, obstacles: [], dist: 0, speed: 0, since: 0, gap: 0, t: 0, last: 0, overAt: 0, colors: readColors() };
-    const points = () => Math.floor(g.dist / 40);
+    const points = () => Math.floor(g.dist / 10);
 
     function draw() {
-      ctx.clearRect(0, 0, width, HEIGHT);
-      drawFloor(ctx, g.colors, width, g.dist);
+      ctx.clearRect(0, 0, cols, ROWS);
+      drawFloor(ctx, g.colors, cols, g.dist);
       for (const o of g.obstacles) drawObstacle(ctx, g.colors, o);
-      drawCat(ctx, g.colors, g.y, g.t, g.y > 0, g.state === "over");
+      drawCat(ctx, g.colors, g.y, g.t, g.state === "over");
     }
 
+    // One canvas pixel per game pixel; CSS scales it up by PIXEL with image-rendering: pixelated.
     function resize() {
-      width = el.clientWidth;
-      const ratio = Math.min(devicePixelRatio, 2);
-      el.width = Math.round(width * ratio);
-      el.height = Math.round(HEIGHT * ratio);
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      cols = Math.floor(el.parentElement.clientWidth / PIXEL);
+      el.width = cols;
+      el.height = ROWS;
+      el.style.width = `${cols * PIXEL}px`;
       draw();
     }
 
     function spawn() {
       const pool = OBSTACLES.filter((o) => !o.after || points() >= o.after);
-      g.obstacles.push({ ...pool[Math.floor(Math.random() * pool.length)], x: width + 20 });
+      g.obstacles.push({ ...pool[Math.floor(Math.random() * pool.length)], x: cols + 6 });
       g.since = 0;
-      const minGap = 260 + g.speed * 0.45;
-      g.gap = random(minGap, minGap + 280);
+      const minGap = 65 + g.speed * 0.45;
+      g.gap = random(minGap, minGap + 70);
     }
 
     function hit(o) {
-      const catLeft = CAT_X + 8;
-      const catRight = CAT_X + 45;
+      const catLeft = CAT_X + 3;
+      const catRight = CAT_X + CAT_W - 2;
       const catBottom = FLOOR - g.y;
-      return catRight > o.x + 3 && catLeft < o.x + o.w - 3 && catBottom > FLOOR - o.h + 4;
+      return catRight > o.x + 1 && catLeft < o.x + o.w - 1 && catBottom > FLOOR - o.h + 1;
     }
 
     function step(now) {
@@ -186,7 +177,7 @@ export default function CatRun() {
       g.t += dt;
 
       // Narrow screens get a slower start so obstacles stay readable.
-      const scale = Math.min(1, Math.max(0.7, width / 720));
+      const scale = Math.min(1, Math.max(0.7, (cols * PIXEL) / 720));
       g.speed = Math.min(SPEED.max, SPEED.start + SPEED.gain * g.t) * scale;
       const dx = g.speed * dt;
       g.dist += dx;
@@ -196,7 +187,7 @@ export default function CatRun() {
       if (g.y === 0) g.vy = 0;
 
       for (const o of g.obstacles) o.x -= dx;
-      g.obstacles = g.obstacles.filter((o) => o.x + o.w > -20);
+      g.obstacles = g.obstacles.filter((o) => o.x + o.w > -6);
       g.since += dx;
       if (g.since >= g.gap) spawn();
 
@@ -220,7 +211,7 @@ export default function CatRun() {
     }
 
     function start() {
-      Object.assign(g, { state: "running", y: 0, vy: 0, obstacles: [], dist: 0, since: 0, gap: width * 0.6, t: 0, last: 0 });
+      Object.assign(g, { state: "running", y: 0, vy: 0, obstacles: [], dist: 0, since: 0, gap: cols * 0.6, t: 0, last: 0 });
       setStatus("running");
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(step);
@@ -242,7 +233,7 @@ export default function CatRun() {
     };
 
     const observer = new ResizeObserver(resize);
-    observer.observe(el);
+    observer.observe(el.parentElement);
     return () => {
       observer.disconnect();
       cancelAnimationFrame(frame);
@@ -292,7 +283,12 @@ export default function CatRun() {
         onPointerCancel={() => game.current?.release()}
         className="relative mt-4 cursor-pointer touch-manipulation select-none overflow-hidden rounded-media border border-ink/10 bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
-        <canvas ref={canvas} aria-hidden className="block w-full" style={{ height: HEIGHT }} />
+        <canvas
+          ref={canvas}
+          aria-hidden
+          className="mx-auto block [image-rendering:pixelated]"
+          style={{ height: ROWS * PIXEL }}
+        />
         {message && (
           <p className="pointer-events-none absolute inset-x-0 top-6 px-6 text-center text-sm text-muted">{message}</p>
         )}
