@@ -7,11 +7,11 @@ import back2 from "@public/about/back2.jpg";
 import grass from "@public/about/grass.jpg";
 import dinner from "@public/about/dinner.jpg";
 
-// Left, middle, right. The back of each card shows date, place (both optional) and caption.
+// Left, middle, right.
 const photos = [
-  { src: back2, alt: "Walking down a garden path under cherry blossoms", caption: "Cherry blossom walk" },
-  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view", caption: "Dinner with a view" },
-  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera", caption: "Afternoon in the grass" },
+  { src: back2, alt: "Walking down a garden path under cherry blossoms" },
+  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view" },
+  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera" },
 ];
 
 // ==============================================================================================================
