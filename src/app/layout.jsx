@@ -7,6 +7,7 @@ import Background from "@/components/Background";
 import Footer from "@/components/Footer";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
+import TransitionClicks from "@/components/TransitionClicks";
 
 const sans = Spline_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
             Skip to content
           </a>
           <Loader />
+          <TransitionClicks />
           <Background />
           <Navbar />
           <div className="page-vt">
