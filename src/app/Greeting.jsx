@@ -22,14 +22,14 @@ const greetings = [
 
 const HOLD = 2200;
 
-// English first, the rest shuffled, ending back on English after one loop.
+// English first, then the rest shuffled; the loop repeats this order forever.
 function sequence() {
   const rest = greetings.slice(1);
   for (let i = rest.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [rest[i], rest[j]] = [rest[j], rest[i]];
   }
-  return [greetings[0], ...rest, greetings[0]];
+  return [greetings[0], ...rest];
 }
 
 // ==============================================================================================================
@@ -66,10 +66,7 @@ export default function Greeting() {
     const start = setTimeout(() => {
       interval = setInterval(() => {
         if (paused.current || document.hidden) return;
-        setStep((s) => {
-          if (s + 1 >= order.length - 1) clearInterval(interval);
-          return Math.min(s + 1, order.length - 1);
-        });
+        setStep((s) => s + 1);
       }, HOLD);
     }, intro * 1000);
 
@@ -79,8 +76,9 @@ export default function Greeting() {
     };
   }, []);
 
-  const current = words[step];
-  const previous = step > 0 ? words[step - 1] : null;
+  // step only counts up (it keys the roll animation); the word wraps around the order.
+  const current = words[step % words.length];
+  const previous = step > 0 ? words[(step - 1) % words.length] : null;
 
   return (
     <p
