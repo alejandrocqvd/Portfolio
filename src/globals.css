@@ -266,9 +266,21 @@ html.theme-vt::view-transition-new(root) {
 }
 
 /* Intro (once per session): logo, signature written by a pen mask, then the logo glides into the navbar.
-   --intro is when the page is "revealed"; the hero waits on it. */
+   Tune --intro-hold and --intro-fade; everything else follows. --intro is when the page is "revealed" (the greeting,
+   hero rule and navbar logo wait on it); it is registered as a <time> so JS reads it as a plain value like "3.95s". */
+@property --intro {
+  syntax: "<time>";
+  inherits: true;
+  initial-value: 0s;
+}
+
 :root {
-  --intro: 2.8s;
+  --intro-write: 2.05s; /* when the last pen stroke ends (stroke timings in src/components/Loader.jsx) */
+  --intro-hold: 1s; /* how long the finished signature stays on screen */
+  --intro-fade: 900ms; /* how long the overlay takes to fade into the page (and the logo to glide to the navbar) */
+  --intro-leave: calc(var(--intro-write) + var(--intro-hold));
+  --intro: calc(var(--intro-leave) + var(--intro-fade));
+  --intro-ease: cubic-bezier(0.65, 0, 0.35, 1); /* even ease-in-out: the dissolve spends the whole --intro-fade */
 }
 
 :root[data-intro="skip"] {
@@ -285,7 +297,7 @@ html.theme-vt::view-transition-new(root) {
   z-index: 60;
   pointer-events: none;
   background: rgb(var(--c-bg));
-  animation: intro-out 450ms var(--ease) 2.35s forwards;
+  animation: intro-out var(--intro-fade) var(--intro-ease) var(--intro-leave) forwards;
 }
 
 /* The track spans the viewport like the navbar. --slot is the navbar logo's left edge (max-w-5xl + px-6, xl:px-0);
@@ -298,7 +310,7 @@ html.theme-vt::view-transition-new(root) {
   width: 100%;
   height: 32px;
   transform: translateX(calc(50% - 16px - var(--slot)));
-  animation: intro-logo 450ms var(--ease) 2.35s forwards;
+  animation: intro-logo var(--intro-fade) var(--intro-ease) var(--intro-leave) forwards;
 }
 
 @media (min-width: 1280px) {
@@ -314,7 +326,7 @@ html.theme-vt::view-transition-new(root) {
   width: 32px;
   height: 32px;
   transform: translateY(calc(50vh - 110px)) scale(2.25);
-  animation: intro-logo 450ms var(--ease) 2.35s forwards;
+  animation: intro-logo var(--intro-fade) var(--intro-ease) var(--intro-leave) forwards;
 }
 
 :root[data-theme="light"] .intro-logo {
@@ -328,7 +340,7 @@ html.theme-vt::view-transition-new(root) {
   width: min(78vw, 440px);
   transform: translateX(-50%);
   color: rgb(var(--c-text));
-  animation: intro-fade 250ms var(--ease) 2.3s forwards;
+  animation: intro-fade calc(var(--intro-fade) / 2) var(--intro-ease) var(--intro-leave) forwards;
 }
 
 .intro-stroke {
@@ -429,7 +441,7 @@ html.theme-vt::view-transition-new(root) {
 
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-intro="skip"]) {
-    --intro: 1.2s;
+    --intro-write: 0s;
   }
 
   .intro-stroke,
@@ -439,13 +451,8 @@ html.theme-vt::view-transition-new(root) {
     opacity: 1;
   }
 
-  .intro,
-  .intro-signature {
-    animation-delay: 0.9s;
-  }
-
   .intro-logo {
-    animation: intro-fade 300ms linear 0.9s forwards;
+    animation: intro-fade var(--intro-fade) linear var(--intro-leave) forwards;
   }
 
   .intro-track {

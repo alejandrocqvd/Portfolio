@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 // Each phrase ends where the name (the h1 below) continues it, so "I'm" follows that language's word order.
 const greetings = [
-  { text: "Hello, I’m", lang: "en", name: "English" },
+  { text: "Hello, I'm", lang: "en", name: "English" },
   { text: "Bonjour, je suis", lang: "fr", name: "French" },
   { text: "Hola, soy", lang: "es", name: "Spanish" },
   { text: "Oki, nitaniko", lang: "bla", name: "Blackfoot" },
@@ -33,12 +33,13 @@ function sequence() {
 }
 
 // ==============================================================================================================
-// Joined scripts (Devanagari conjuncts, Arabic) roll as one piece; everything else rolls per character.
+// Joined scripts (Devanagari conjuncts, Arabic) roll as one piece; everything else rolls per character. text-left keeps
+// right-to-left phrases (Arabic) flush with the name below instead of against the far edge of the greeting's box.
 function Word({ item, out }) {
   const pieces = item.whole ? [item.text] : [...item.text];
 
   return (
-    <span lang={item.lang} dir={item.dir} title={item.name} className="col-start-1 row-start-1 whitespace-pre">
+    <span lang={item.lang} dir={item.dir} title={item.name} className="col-start-1 row-start-1 whitespace-pre text-left">
       {pieces.map((piece, i) => (
         <span key={i} className={`inline-block ${out ? "roll-out" : "roll-in"}`} style={{ animationDelay: `${i * 25}ms` }}>
           {piece}
