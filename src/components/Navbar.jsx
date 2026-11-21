@@ -42,8 +42,8 @@ function Logo() {
 export default function Navbar() {
   return (
     <header className="nav-vt absolute inset-x-0 top-0 z-40">
-      {/* px-4 / md:px-6 and max-w-screen-2xl are mirrored by .intro-track in globals.css (the intro logo lands on Logo) */}
-      <nav aria-label="Main" className="mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-6 px-4 text-sm md:px-6">
+      {/* Same frame as the footer (max-w-5xl, px-6, xl:px-0), mirrored by .intro-track in globals.css (the intro logo lands on Logo) */}
+      <nav aria-label="Main" className="mx-auto flex h-20 w-full max-w-5xl items-center justify-between gap-6 px-6 text-sm xl:px-0">
         <div className="flex items-center gap-5 sm:gap-10">
           <Logo />
           <div className="flex gap-4 sm:gap-8">

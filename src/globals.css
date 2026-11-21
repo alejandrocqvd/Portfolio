@@ -261,10 +261,10 @@ html.theme-vt::view-transition-new(root) {
   animation: intro-out 450ms var(--ease) 2.35s forwards;
 }
 
-/* The track spans the viewport like the navbar. --slot is the navbar logo's left edge (max-w-screen-2xl + px-4/px-6);
+/* The track spans the viewport like the navbar. --slot is the navbar logo's left edge (max-w-5xl + px-6, xl:px-0);
    the track shifts the logo to the centre, so both transforms settling to none lands it on the slot. */
 .intro-track {
-  --slot: calc(max(0px, (100% - 1536px) / 2) + 16px);
+  --slot: calc(max(0px, (100% - 1024px) / 2) + 24px);
   position: absolute;
   top: 24px;
   left: 0;
@@ -274,9 +274,9 @@ html.theme-vt::view-transition-new(root) {
   animation: intro-logo 450ms var(--ease) 2.35s forwards;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1280px) {
   .intro-track {
-    --slot: calc(max(0px, (100% - 1536px) / 2) + 24px);
+    --slot: calc((100% - 1024px) / 2);
   }
 }
 
