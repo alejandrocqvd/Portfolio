@@ -10,6 +10,7 @@ const ROWS = 48; // play area height (48 × 4 = 192 CSS px)
 const FLOOR = 41; // y of the floor
 const CAT_X = 12;
 const EYES = "#D7E36B"; // Jiji's yellow-green
+const ROOMBA_LIGHT = "#E5484D"; // the roomba's red status light
 
 // Rules, after the classic offline runner: speed climbs every frame to a cap, the score blinks at every milestone,
 // gaps widen with speed, cucumber groups grow, and a butterfly joins once it's fast enough.
@@ -29,7 +30,7 @@ const RULES = {
   maxRepeat: 2, // the same kind never appears more than this many times in a row
 };
 
-// Sprites: # ink, e eye, a accent, m muted, b bumper, x brush/wheel. Jiji faces right; the roomba faces left.
+// Sprites: # ink, e eye, a accent, m muted, b bumper, r light. Jiji faces right; the roomba faces left.
 const CAT = {
   top: [
     ".............#...#",
@@ -66,17 +67,16 @@ const CAT = {
   duckLegs: ["...#..#......#..#....", "....##........##....."],
 };
 
-const ROOMBA = {
-  body: [
-    "........aaaa........",
-    "...mmmmmmmmmmmmmm...",
-    ".mmmmmmmmmmmmmmmmmm.",
-    "bbbbbbbbbmmmmmmmmmmm",
-    "bbbbbbbbbmmmmmmmmmmm",
-    ".bbbbbbbbmmmmmmmmmm.",
-  ],
-  brush: ["x.x......x......x...", ".x.......x......x..."],
-};
+// Body rows; the bottom row (wheels and the 5-bristle side brush) is drawn per frame in drawRoomba.
+const ROOMBA = [
+  ".mmmmmmmmmmmmmmmmmm.",
+  "mmmrmmmmmmmmmmmmmmmm",
+  "bbbbbbbbmmmmmmmmmmmm",
+  "bbbbbbbbmmmmmmmmmmmm",
+  "bbbbbbbbmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmm",
+];
+const BRISTLES = 5; // spaced every 2px across the front 10px, sweeping left to right
 
 const BUTTERFLY = [
   ["a.....a", "aa.#.aa", "aaa#aaa", ".aa#aa.", "..a#a.."],
@@ -146,17 +146,20 @@ function drawCucumber(ctx, colors, x, w, h) {
   for (let r = top + 3; r < FLOOR - 2; r += 3) ctx.fillRect(x + (r % 2 ? 1 : w - 2), r, 1, 1);
 }
 
+function drawRoomba(ctx, colors, x, t) {
+  drawSprite(ctx, ROOMBA, x, FLOOR - 7, { m: colors.muted, b: colors.bumper, r: ROOMBA_LIGHT });
+  ctx.fillStyle = colors.ink;
+  ctx.fillRect(x + 12, FLOOR - 1, 2, 1); // wheels
+  ctx.fillRect(x + 16, FLOOR - 1, 2, 1);
+  const sweep = Math.floor(t * 16);
+  for (let i = 0; i < BRISTLES; i++) ctx.fillRect(x + ((i * 2 + sweep) % 10), FLOOR - 1, 1, 1);
+}
+
 function drawObstacle(ctx, colors, o, t) {
   const x = Math.round(o.x);
   const frame = Math.floor(t * 8) % 2;
-  if (o.kind === "roomba") {
-    drawSprite(ctx, [...ROOMBA.body, ROOMBA.brush[frame]], x, FLOOR - 7, {
-      a: colors.accent,
-      m: colors.muted,
-      b: colors.bumper,
-      x: colors.ink,
-    });
-  } else if (o.kind === "butterfly") {
+  if (o.kind === "roomba") drawRoomba(ctx, colors, x, t);
+  else if (o.kind === "butterfly") {
     drawSprite(ctx, BUTTERFLY[frame], x, o.top, { a: colors.accent, "#": colors.ink });
   } else {
     const { w, h } = CUCUMBER[o.kind];
@@ -173,7 +176,7 @@ function drawFloor(ctx, colors, cols, offset) {
 // ==============================================================================================================
 // Obstacles. Each has x, w, and a hitbox from top to the floor (butterflies: top to top + 4).
 function makeObstacle(kind, g, touch, cols) {
-  if (kind === "roomba") return { kind, x: cols + 6, w: 20, top: FLOOR - 6, bottom: FLOOR };
+  if (kind === "roomba") return { kind, x: cols + 6, w: 20, top: FLOOR - 7, bottom: FLOOR };
   if (kind === "butterfly") {
     // low: jump over · middle: duck under (keyboard only) · high: a standing Jiji runs under it
     const tops = touch ? [FLOOR - 5, FLOOR - 16] : [FLOOR - 5, FLOOR - 11, FLOOR - 16];
