@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const COLS = 84;
-const ROWS = 44;
+// About 15px between dots at typical sizes; the sheet overfills every aspect ratio so its edges are never on screen.
+const COLS = 204;
+const ROWS = 90;
 
 const vertex = `#version 300 es
 in vec2 grid;
@@ -14,7 +15,7 @@ out float alpha;
 
 void main() {
   // A sheet of points facing the camera, tilted back, rippling in depth like a scanned surface.
-  vec2 g = grid * vec2(11.0, 5.8);
+  vec2 g = vec2(grid.x * 17.0, mix(-5.5, 9.5, grid.y * 0.5 + 0.5));
   float wave = sin(g.x * 0.42 + time * 0.30) * 0.30
              + sin(g.y * 0.65 - time * 0.24) * 0.25
              + sin((g.x - g.y) * 0.27 + time * 0.18) * 0.40;
@@ -24,12 +25,14 @@ void main() {
 
   float focal = 1.6;
   gl_Position = vec4(q.x * focal / aspect, q.y * focal, 0.0, q.z);
-  gl_PointSize = clamp(dpr * 15.0 / q.z, dpr, 3.0 * dpr);
+  gl_PointSize = clamp(dpr * 12.0 / q.z, dpr, 3.0 * dpr);
 
-  // Brightest across the top of the viewport, fading toward the edges and down into the page.
+  // A soft glow in the upper middle, faded to zero before every viewport edge.
   vec2 ndc = gl_Position.xy / q.z;
-  float glow = 1.0 - smoothstep(0.2, 1.15, length(vec2(ndc.x * 0.7, (ndc.y - 0.55) * 1.1)));
-  alpha = glow * (0.6 + wave * 0.5);
+  float glow = 1.0 - smoothstep(0.1, 1.2, length(vec2(ndc.x * 0.6, (ndc.y - 0.3) * 0.9)));
+  float sides = smoothstep(1.0, 0.7, abs(ndc.x));
+  float top = smoothstep(0.95, 0.55, ndc.y);
+  alpha = glow * sides * top * (0.6 + wave * 0.5);
 }`;
 
 const fragment = `#version 300 es

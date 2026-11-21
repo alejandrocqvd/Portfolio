@@ -42,9 +42,10 @@ function matches(item, query) {
 }
 
 // ==============================================================================================================
-function Trigger({ onOpen }) {
+function Trigger({ onOpen, triggerRef }) {
   return (
     <button
+      ref={triggerRef}
       type="button"
       onClick={onOpen}
       aria-label="Open command menu"
@@ -64,6 +65,7 @@ function Trigger({ onOpen }) {
 export default function CommandMenu() {
   const dialog = useRef(null);
   const list = useRef(null);
+  const trigger = useRef(null);
   const router = useTransitionRouter();
   const id = useId();
   const [query, setQuery] = useState("");
@@ -83,6 +85,8 @@ export default function CommandMenu() {
 
   useEffect(() => {
     const onKey = (event) => {
+      // Rendered in the navbar (desktop) and footer (mobile); only the visible instance answers the shortcut.
+      if (!trigger.current?.offsetParent) return;
       if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         if (dialog.current.open) close();
@@ -123,7 +127,7 @@ export default function CommandMenu() {
 
   return (
     <>
-      <Trigger onOpen={open} />
+      <Trigger onOpen={open} triggerRef={trigger} />
 
       <dialog
         ref={dialog}

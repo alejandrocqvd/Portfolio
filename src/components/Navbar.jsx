@@ -45,19 +45,22 @@ export default function Navbar() {
   return (
     <header className="nav-vt absolute inset-x-0 top-0 z-40">
       <nav aria-label="Main" className="relative mx-auto flex h-20 max-w-screen-2xl items-center justify-center px-4 text-sm md:px-6">
-        <div className="flex items-center gap-3 sm:gap-10">
-          <NavLink route={home} />
-          <NavLink route={about} />
+        {/* 1fr | auto | 1fr keeps the logo at the exact centre whatever the link widths or font */}
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-3 sm:gap-x-10">
+          <div className="flex justify-end gap-3 sm:gap-10">
+            <NavLink route={home} />
+            <NavLink route={about} />
+          </div>
           <Logo />
-          <NavLink route={projects} />
-          <NavLink route={contact} />
+          <div className="flex justify-start gap-3 sm:gap-10">
+            <NavLink route={projects} />
+            <NavLink route={contact} />
+          </div>
         </div>
 
-        <div className="absolute right-2 flex items-center gap-1 md:right-6">
+        <div className="absolute right-6 hidden items-center gap-1 md:flex">
           <CommandMenu />
-          <div className="hidden md:block">
-            <DisplayToggle />
-          </div>
+          <DisplayToggle />
         </div>
       </nav>
     </header>

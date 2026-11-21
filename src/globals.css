@@ -4,8 +4,8 @@
 
 /* Theme tokens: RGB channels so Tailwind opacity modifiers work (bg-text/10). Dark is the no-JS default. */
 :root {
-  --c-bg: 0 0 0;
-  --c-surface: 14 16 18;
+  --c-bg: 13 14 16;
+  --c-surface: 22 24 27;
   --c-text: 236 238 240;
   --c-muted: 140 147 155;
   --c-accent: 87 211 196;
@@ -150,6 +150,7 @@ section {
 /* Page transitions (next-view-transitions): nav and root swap instantly, only the page fades/rises */
 .page-vt {
   view-transition-name: page;
+  display: flow-root; /* keeps page margins from collapsing into <body> */
 }
 
 .nav-vt {

@@ -17,7 +17,7 @@ export const metadata = {
 
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#0D0E10" },
     { media: "(prefers-color-scheme: light)", color: "#F2F4F5" },
   ],
 };
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
           <script dangerouslySetInnerHTML={{ __html: displayScript }} />
         </head>
 
-        <body className="relative min-h-screen">
+        <body className="min-h-screen">
           <a
             href="#main"
             className="fixed left-4 top-4 z-50 -translate-y-16 rounded-control bg-surface px-3 py-2 text-sm transition-transform focus:translate-y-0"

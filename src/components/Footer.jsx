@@ -1,6 +1,7 @@
 import { Link } from "next-view-transitions";
 import { Clock3, Gamepad2, MapPin, Music2 } from "lucide-react";
 import Clock from "@/components/Clock";
+import CommandMenu from "@/components/CommandMenu";
 import DisplayToggle from "@/components/DisplayToggle";
 import { elsewhere, routes } from "@/lib/site";
 import { getLocation, getRecentGame, getRecentSong, getWeather } from "@/lib/now";
@@ -99,7 +100,8 @@ export default function Footer() {
       </div>
 
       <div className="mt-12 flex flex-col justify-between gap-2 text-xs text-muted sm:flex-row">
-        <div className="-ml-2 md:hidden">
+        <div className="-ml-2 flex items-center gap-1 md:hidden">
+          <CommandMenu />
           <DisplayToggle />
         </div>
         <p>© 2026 Alejandro Cardona</p>
