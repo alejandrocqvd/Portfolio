@@ -11,9 +11,9 @@ function getContainerClasses(reversed) {
 }
 
 // ==============================================================================================================
-function getPhotoClasses(index, hovered, fade) {
+function getPhotoClasses(index, hovered) {
   return `
-    relative flex-1 transition-all duration-500 ease-out ${fade ?? ""}
+    relative flex-1 transition-all duration-500 ease-out
     ${index >= 2 ? "hidden md:block" : ""}
     ${hovered === index ? "flex-[2] z-10" : "flex-[1] z-0"}
   `;
@@ -32,7 +32,6 @@ export default function PhotoRow({
   photos,
   reversed = false,
   defaultSelected = 0,
-  fade,
 }) {
   const [hovered, setHovered] = useState(defaultSelected);
 
@@ -41,8 +40,7 @@ export default function PhotoRow({
       {photos.map((src, index) => (
         <div
           key={index}
-          className={getPhotoClasses(index, hovered, fade)}
-          style={{ animationDelay: `${0.1 + index * 0.1}s` }}
+          className={getPhotoClasses(index, hovered)}
           onMouseEnter={() => setHovered(index)}
           onMouseLeave={() => setHovered(defaultSelected)}
         >

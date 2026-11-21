@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import PhotoRow from "@/components/PhotoRow";
 
 import vs from "@public/about/vs.jpg";
@@ -20,7 +19,6 @@ const timelineItems = [
       "Awards and Honours: Alexander Rutherford Scholarship, 3x Dean's List",
       "Relevant Coursework:  DSA, OOP, DBMS",
     ],
-    color: "bg-blue-900",
   },
   {
     company: "Pason Systems",
@@ -31,7 +29,6 @@ const timelineItems = [
       "Wrote all the kinds of tests you can imagine (unit, integration, e2e, you name it)",
       "Shipped faster with CI/CD, automating builds, tests, and deployments",
     ],
-    color: "bg-blue-600",
   },
   {
     company: "Nullus",
@@ -42,7 +39,6 @@ const timelineItems = [
       "Designed and developed sites for individuals, clubs, and businesses",
       "Served 6+ clients and reaching 2000+ users",
     ],
-    color: "bg-blue-500",
   },
   {
     company: "UofA Robotics and Aerial Drones",
@@ -53,7 +49,6 @@ const timelineItems = [
       "Utilized ArduPilot to program and test autonomous drone flight missions",
       "0 drones exploded",
     ],
-    color: "bg-blue-300",
   },
   {
     company: "Canadian Global Care on Campus",
@@ -64,95 +59,89 @@ const timelineItems = [
       "Promoted the site which led to a 30% increase in club event attendance",
       "Entire box of leftover croissants taken home after event",
     ],
-    color: "bg-blue-200",
   },
 ];
 
 // ==============================================================================================================
 function TimelineHeader() {
   return (
-    <>
-      <h2 className="font-mono text-left mx-auto w-full text-4xl mb-12 relative fade-up-first px-6 md:mx-0">
-        Timeline
-      </h2>
-
-      <p className="text-sm text-justify fade-up-first px-6 md:mx-0">
-        From volunteering to full-time work, I&apos;ve been lucky enough to have
-        been a part of so many different teams, learning something new from each
-        one. Forever grateful for the people who took the time to mentor me and
-        trust me with real responsibility (and not just make me fetch coffee or
-        something).
+    <div className="px-6 xl:px-0">
+      <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Timeline</h1>
+      <p className="mt-5 max-w-2xl leading-relaxed text-muted">
+        From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different teams,
+        learning something new from each one. Forever grateful for the people who took the time to mentor me and trust me
+        with real responsibility (and not just make me fetch coffee or something).
       </p>
-    </>
+    </div>
   );
 }
 
 // ==============================================================================================================
 function TimelinePhotos() {
   return (
-    <div className="flex flex-col xl:flex-row justify-center items-stretch w-full max-w-5xl h-full relative top-12">
-      <PhotoRow
-        fade="fade-up-second"
-        className="mt-44 relative"
-        photos={photos}
-        reversed={true}
-        defaultSelected={photos.length - 1}
-      />
+    <div className="mt-16 px-6 xl:px-0">
+      <PhotoRow photos={photos} reversed defaultSelected={photos.length - 1} />
     </div>
   );
 }
 
 // ==============================================================================================================
+// Spine and nodes share one x position: 7px into the list on mobile, 7px past the date column on desktop.
 function TimelineItem({ item }) {
+  const current = /now/i.test(item.period);
+
   return (
-    <div className="mb-10 ml-4">
-      <div
-        className={`absolute -left-[0.525rem] w-4 h-4 rounded-full border-2 border-gray-900 ${item.color}`}
-      />
+    <li className="relative grid pb-12 pl-8 last:pb-0 md:grid-cols-[10rem_1fr] md:pl-0">
+      <p className="order-last mt-2 text-sm tabular-nums text-muted md:order-none md:mt-0.5 md:pr-8 md:text-right">
+        {item.period}
+      </p>
 
-      <div className="flex flex-col">
-        <span className="text-white font-semibold">
-          {item.company} <span className="font-normal">|</span>{" "}
-          <span className="italic font-light text-gray-300">{item.role}</span>
-        </span>
-
-        <ul className="list-disc list-inside text-sm text-gray-400 mt-1">
+      <div className="relative md:pl-10">
+        <span
+          aria-hidden
+          className={`absolute -left-8 top-1.5 h-[15px] w-[15px] rounded-full border-2 bg-paper md:left-0 ${
+            current ? "border-accent" : "border-ink/25"
+          }`}
+        />
+        <h2 className="font-medium">
+          {item.company}
+          <span className="font-normal text-muted"> {item.role}</span>
+          {current && <span className="sr-only"> (current)</span>}
+        </h2>
+        <ul className="mt-2 flex flex-col gap-1 text-[0.95rem] leading-relaxed text-muted">
           {item.description.map((point) => (
             <li key={point}>{point}</li>
           ))}
         </ul>
-
-        <span className="text-gray-500 text-sm mt-2">{item.period}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
 // ==============================================================================================================
 function TimelineList() {
   return (
-    <div className="flex flex-col items-start justify-center mx-auto mt-8 px-10 md:mx-0 fade-up-second-2">
-      <div className="relative border-l border-gray-600 pl-6">
-        {timelineItems.map((item) => (
-          <TimelineItem key={`${item.company}-${item.role}`} item={item} />
-        ))}
-      </div>
-    </div>
+    <ol className="relative mt-20 px-6 xl:px-0">
+      <span aria-hidden className="spine absolute bottom-2 left-[calc(1.5rem+7px)] top-2 w-px bg-ink/15 md:left-[calc(11.5rem+7px)] xl:left-[calc(10rem+7px)]" />
+      {timelineItems.map((item) => (
+        <TimelineItem key={`${item.company}-${item.role}`} item={item} />
+      ))}
+    </ol>
   );
 }
 
 // ==============================================================================================================
 function TimelineFooter() {
   return (
-    <p className="text-sm w-full mx-auto text-center mt-12 px-6 md:mx-0 fade-up-second-2">
-      To view my full experience, check out my CV{" "}
+    <p className="mt-16 px-6 text-muted md:pl-[14rem] xl:px-0 xl:pl-[12.5rem]">
+      For my full experience, see my{" "}
       <a
         href="/misc/Alejandro-Cardona-Resume.pdf"
-        className="hover:underline"
         target="_blank"
         rel="noreferrer"
+        className="text-ink underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
       >
-        here
+        resume (PDF)
       </a>
       .
     </p>
@@ -162,7 +151,7 @@ function TimelineFooter() {
 // ==============================================================================================================
 export default function Timeline() {
   return (
-    <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl">
+    <section className="mx-auto w-full max-w-4xl pt-36 md:pt-44">
       <TimelineHeader />
       <TimelinePhotos />
       <TimelineList />

@@ -1,141 +1,55 @@
-import React from "react";
-import Image from "next/image";
-import {
-  ArrowUpRight,
-  Mail,
-  Github,
-  Linkedin,
-  FileText,
-} from "lucide-react";
+import { ArrowUpRight, FileText, Github, Linkedin, Mail } from "lucide-react";
+import ContactLetter from "@/app/contact/ContactLetter";
+import { elsewhere } from "@/lib/site";
 
-import jiji from "@public/about/jiji.png";
-
-const contactLinks = [
-  {
-    number: "01",
-    label: "Email",
-    value: "alejandrocqvd@gmail.com",
-    href: "mailto:alejandrocqvd@gmail.com",
-    icon: Mail,
-  },
-  {
-    number: "02",
-    label: "LinkedIn",
-    value: "linkedin.com/in/alejandro-cardonaq",
-    href: "https://www.linkedin.com/in/alejandro-cardonaq",
-    icon: Linkedin,
-  },
-  {
-    number: "03",
-    label: "GitHub",
-    value: "github.com/alejandrocqvd",
-    href: "https://github.com/alejandrocqvd",
-    icon: Github,
-  },
-  {
-    number: "04",
-    label: "Resume",
-    value: "View my resume",
-    href: "/misc/Alejandro-Cardona-Resume.pdf",
-    icon: FileText,
-  },
-];
+const icons = { Email: Mail, LinkedIn: Linkedin, GitHub: Github, Resume: FileText };
 
 // ==============================================================================================================
-function ContactHeader() {
+function DirectLinks() {
   return (
-    <>
-      <h2 className="font-mono text-left mx-auto w-full text-4xl mb-8 fade-up-first">
-        Get In Touch
-      </h2>
-
-      <p className="text-sm text-left w-full md:mb-12 text-muted-foreground fade-up-first">
-        Feel free to reach out if you want to chat about anything. I&apos;m
-        always open to new opportunities and conversations :D
-      </p>
-    </>
-  );
-}
-
-// ==============================================================================================================
-function ContactImage() {
-  return (
-    <div className="md:w-2/5 md:h-full">
-      <Image
-        src={jiji}
-        alt="Jiji the black cat sitting on a laptop"
-        width={400}
-        height={400}
-        placeholder="blur"
-        className="hidden md:block rounded-lg object-cover w-full h-full fade-up-first"
-      />
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function ContactLink({ link, index }) {
-  const Icon = link.icon;
-  const isEmail = link.href.startsWith("mailto:");
-
-  return (
-    <a
-      href={link.href}
-      target={isEmail ? undefined : "_blank"}
-      style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-      rel={isEmail ? undefined : "noopener noreferrer"}
-      className="group flex flex-1 items-center justify-between px-3 border-t border-border last:border-b transition-colors hover:bg-secondary/30 fade-up-second"
-    >
-      <div className="flex items-center gap-5">
-        <span className="text-white group-hover:text-white/50 transition-colors">
-          <Icon className="w-4 h-4" />
-        </span>
-
-        <div className="flex flex-col gap-0.5">
-          <span className="font-mono text-sm font-bold text-white group-hover:text-white/50 transition-colors">
-            {link.label}
-          </span>
-
-          <span className="text-xs text-muted-white group-hover:text-white/50 transition-colors">
-            {link.value}
-          </span>
-        </div>
-      </div>
-
-      <ArrowUpRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-white/50 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-    </a>
-  );
-}
-
-// ==============================================================================================================
-function ContactLinks() {
-  return (
-    <div className="md:w-3/5 h-full flex flex-col justify-between">
-      {contactLinks.map((link, index) => (
-        <ContactLink key={link.label} link={link} index={index} />
-      ))}
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function ContactContent() {
-  return (
-    <div className="flex flex-col md:flex-row gap-16 md:gap-16 w-full mb-20 h-[320px]">
-      <ContactImage />
-      <ContactLinks />
-    </div>
+    <ul aria-label="Other ways to reach me" className="flex flex-col">
+      {elsewhere.map((link) => {
+        const Icon = icons[link.label];
+        const external = !link.href.startsWith("mailto:");
+        return (
+          <li key={link.label} className="border-t border-ink/10 last:border-b">
+            <a
+              href={link.href}
+              {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+              className="group flex items-center gap-4 px-1 py-4 transition-colors duration-150 ease-out hover:bg-ink/[0.04]"
+            >
+              <Icon size={16} className="shrink-0 text-muted" aria-hidden />
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm">{link.label}</span>
+                <span className="block truncate text-sm text-muted">{link.value}</span>
+              </span>
+              <ArrowUpRight
+                size={16}
+                aria-hidden
+                className="shrink-0 text-muted transition-transform duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
 // ==============================================================================================================
 export default function ContactPage() {
   return (
-    <>
-      <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl px-6">
-        <ContactHeader />
-        <ContactContent />
-      </section>
-    </>
+    <section className="mx-auto w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
+      <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Get in touch</h1>
+      <p className="mt-5 max-w-xl leading-relaxed text-muted">
+        Feel free to reach out if you want to chat about anything. I&apos;m always open to new opportunities and
+        conversations :D
+      </p>
+
+      <div className="mt-14 grid gap-12 md:grid-cols-[minmax(0,1fr)_17.5rem]">
+        <ContactLetter />
+        <DirectLinks />
+      </div>
+    </section>
   );
 }

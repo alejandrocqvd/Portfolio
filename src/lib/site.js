@@ -12,5 +12,5 @@ export const elsewhere = [
   { label: "Email", value: email, href: `mailto:${email}` },
   { label: "LinkedIn", value: "linkedin.com/in/alejandro-cardonaq", href: "https://www.linkedin.com/in/alejandro-cardonaq" },
   { label: "GitHub", value: "github.com/alejandrocqvd", href: "https://github.com/alejandrocqvd" },
-  { label: "Resume", value: "PDF, updated 2026", href: "/misc/Alejandro-Cardona-Resume.pdf" },
+  { label: "Resume", value: "View the PDF", href: "/misc/Alejandro-Cardona-Resume.pdf" },
 ];

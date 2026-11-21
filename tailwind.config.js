@@ -14,6 +14,7 @@ module.exports = {
         ink: token("text"),
         muted: token("muted"),
         accent: token("accent"),
+        error: token("error"),
       },
       fontFamily: {
         sans: ["var(--font-body)", "Hello Script", "ui-sans-serif", "system-ui", "sans-serif"],
