@@ -86,12 +86,13 @@ function TimelinePhotos() {
 }
 
 // ==============================================================================================================
-// Spine and nodes share one x position: 7px into the list on mobile, 7px past the date column on desktop.
+// Spine and nodes share one x position: 7px into the list on mobile, 7px past the date column on desktop. The 12rem
+// date column (2rem of it padding) fits the widest period, "Oct 2023 - Mar 2025"; the spine and footer offsets follow it.
 function TimelineItem({ item }) {
   const current = /now/i.test(item.period);
 
   return (
-    <li className="relative grid pb-12 pl-8 last:pb-0 md:grid-cols-[10rem_1fr] md:pl-0">
+    <li className="relative grid pb-12 pl-8 last:pb-0 md:grid-cols-[12rem_1fr] md:pl-0">
       <p className="order-last mt-2 text-sm tabular-nums text-muted md:order-none md:mt-0.5 md:pr-8 md:text-right">
         {item.period}
       </p>
@@ -108,7 +109,7 @@ function TimelineItem({ item }) {
           <span className="font-normal text-muted"> {item.role}</span>
           {current && <span className="sr-only"> (current)</span>}
         </h2>
-        <ul className="mt-2 flex flex-col gap-1 text-[0.95rem] leading-relaxed text-muted">
+        <ul className="mt-2 flex list-disc flex-col gap-1 pl-[1.1em] text-[0.95rem] leading-relaxed text-muted marker:text-ink/30">
           {item.description.map((point) => (
             <li key={point}>{point}</li>
           ))}
@@ -122,7 +123,7 @@ function TimelineItem({ item }) {
 function TimelineList() {
   return (
     <ol className="relative mt-20 px-6 xl:px-0">
-      <span aria-hidden className="spine absolute bottom-2 left-[calc(1.5rem+7px)] top-2 w-px bg-ink/15 md:left-[calc(11.5rem+7px)] xl:left-[calc(10rem+7px)]" />
+      <span aria-hidden className="spine absolute bottom-2 left-[calc(1.5rem+7px)] top-2 w-px bg-ink/15 md:left-[calc(13.5rem+7px)] xl:left-[calc(12rem+7px)]" />
       {timelineItems.map((item) => (
         <TimelineItem key={`${item.company}-${item.role}`} item={item} />
       ))}
@@ -133,7 +134,7 @@ function TimelineList() {
 // ==============================================================================================================
 function TimelineFooter() {
   return (
-    <p className="mt-16 px-6 text-muted md:pl-[14rem] xl:px-0 xl:pl-[12.5rem]">
+    <p className="mt-16 px-6 text-muted md:pl-[16rem] xl:px-0 xl:pl-[14.5rem]">
       For my full experience, see my{" "}
       <a
         href="/misc/Alejandro-Cardona-Resume.pdf"
