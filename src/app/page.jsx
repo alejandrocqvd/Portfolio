@@ -43,9 +43,10 @@ function Bio() {
 }
 
 // ==============================================================================================================
+// At least one screen tall (svh: the visible height on mobile, without the URL bar), so the footer starts below the fold.
 function Hero() {
   return (
-    <section className="mx-auto w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
+    <section className="mx-auto min-h-[100svh] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
       <Greeting />
       <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em]">
         Alejandro Cardona
@@ -53,8 +54,6 @@ function Hero() {
 
       <div aria-hidden className="hero-rule my-10 h-px w-full bg-ink/30" />
 
-      {/* Bio first in reading order; on large screens the photo cards fill the space to its left. gap-10 matches the
-          rule's my-10, so the cards sit as far from the bio as the bio sits from the rule. */}
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
         <Bio />
         <PhotoCards photos={photos} className="lg:col-start-1 lg:row-start-1" />
