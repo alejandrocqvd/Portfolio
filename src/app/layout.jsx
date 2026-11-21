@@ -5,6 +5,7 @@ import { ViewTransitions } from "next-view-transitions";
 
 import Background from "@/components/Background";
 import Footer from "@/components/Footer";
+import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 
 const sans = Spline_Sans({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
@@ -22,8 +23,8 @@ export const viewport = {
   ],
 };
 
-// Runs before first paint so the stored theme/mono choice never flickers.
-const displayScript = `(function(){var d=document.documentElement;try{var s=localStorage,t=s.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.dataset.theme=t;if(s.getItem("mono")==="1")d.dataset.mono="";}catch(e){d.dataset.theme="dark"}if(/Mac|iPhone|iPad/.test(navigator.platform))d.dataset.os="mac";})()`;
+// Runs before first paint so the stored theme/mono choice never flickers, and the intro plays once per session.
+const displayScript = `(function(){var d=document.documentElement;try{var s=localStorage,t=s.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";d.dataset.theme=t;if(s.getItem("mono")==="1")d.dataset.mono="";}catch(e){d.dataset.theme="dark"}try{if(sessionStorage.getItem("intro"))d.dataset.intro="skip";else sessionStorage.setItem("intro","1")}catch(e){d.dataset.intro="skip"}if(/Mac|iPhone|iPad/.test(navigator.platform))d.dataset.os="mac";})()`;
 
 export default function RootLayout({ children }) {
   return (
@@ -41,6 +42,7 @@ export default function RootLayout({ children }) {
           >
             Skip to content
           </a>
+          <Loader />
           <Background />
           <Navbar />
           <div className="page-vt">

@@ -13,7 +13,7 @@ function getContainerClasses(reversed) {
 // ==============================================================================================================
 function getPhotoClasses(index, hovered, fade) {
   return `
-    relative flex-1 transition-all duration-300 ease-in-out ${fade}
+    relative flex-1 transition-all duration-500 ease-out ${fade ?? ""}
     ${index >= 2 ? "hidden md:block" : ""}
     ${hovered === index ? "flex-[2] z-10" : "flex-[1] z-0"}
   `;
@@ -22,7 +22,7 @@ function getPhotoClasses(index, hovered, fade) {
 // ==============================================================================================================
 function getImageContainerClasses(index, hovered) {
   return `
-    relative w-full h-64 transition-all duration-300 ease-in-out
+    relative w-full h-64 transition-all duration-500 ease-out
     ${hovered === index ? "h-80" : "h-64"}
   `;
 }
@@ -53,7 +53,7 @@ export default function PhotoRow({
               fill
               placeholder="blur"
               sizes="(max-width: 768px) 100vw, 33vw"
-              className="object-cover rounded-md shadow-lg"
+              className="rounded-media object-cover"
             />
           </div>
         </div>

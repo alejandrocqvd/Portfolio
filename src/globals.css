@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Greeting glyphs outside Latin: ~1 KB subsets holding only the hello words, used via unicode-range. */
+@font-face { font-family: "Hello Script"; src: url("/fonts/hello/ja.woff2") format("woff2"); unicode-range: U+3053, U+3061, U+306B, U+306F, U+3093; font-display: block; }
+@font-face { font-family: "Hello Script"; src: url("/fonts/hello/zh.woff2") format("woff2"); unicode-range: U+4F60, U+597D; font-display: block; }
+@font-face { font-family: "Hello Script"; src: url("/fonts/hello/ko.woff2") format("woff2"); unicode-range: U+AC00-D7A3; font-display: block; }
+@font-face { font-family: "Hello Script"; src: url("/fonts/hello/hi.woff2") format("woff2"); unicode-range: U+0900-097F; font-display: block; }
+@font-face { font-family: "Hello Script"; src: url("/fonts/hello/ar.woff2") format("woff2"); unicode-range: U+0600-06FF; font-display: block; }
+
 /* Theme tokens: RGB channels so Tailwind opacity modifiers work (bg-text/10). Dark is the no-JS default. */
 :root {
   --c-bg: 13 14 16;
@@ -42,7 +49,7 @@ html {
 
 body {
   color: rgb(var(--c-text));
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), "Hello Script", ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -55,13 +62,6 @@ body {
   outline: 2px solid rgb(var(--c-accent));
   outline-offset: 3px;
   border-radius: 4px;
-}
-
-section {
-  display: grid;
-  place-items: center;
-  align-content: center;
-  width: 100%;
 }
 
 /* Theme-dependent icon swaps (no hydration flicker) */
@@ -203,7 +203,155 @@ html.mono-vt::view-transition-new(root) {
   from { opacity: 0; }
 }
 
+/* Intro (once per session): logo, signature written by a pen mask, then the logo glides into the navbar.
+   --intro is when the page is "revealed"; the hero waits on it. */
+:root {
+  --intro: 2.8s;
+}
+
+:root[data-intro="skip"] {
+  --intro: 0s;
+}
+
+:root[data-intro="skip"] .intro {
+  display: none;
+}
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  background: rgb(var(--c-bg));
+  animation: intro-out 450ms var(--ease) 2.35s forwards;
+}
+
+.intro-logo {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin-left: -16px;
+  transform: translateY(calc(50vh - 110px)) scale(2.25);
+  animation: intro-logo 450ms var(--ease) 2.35s forwards;
+}
+
+:root[data-theme="light"] .intro-logo {
+  filter: invert(1);
+}
+
+.intro-signature {
+  position: fixed;
+  top: calc(50% - 10px);
+  left: 50%;
+  width: min(78vw, 440px);
+  transform: translateX(-50%);
+  color: rgb(var(--c-text));
+  animation: intro-fade 250ms var(--ease) 2.3s forwards;
+}
+
+.intro-stroke {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 16;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: intro-pen;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-fill-mode: forwards;
+}
+
+.intro-fill {
+  opacity: 0;
+  animation: intro-in 150ms linear 2.02s forwards;
+}
+
+/* The real navbar logo stays hidden until the intro logo lands on it. */
+:root:not([data-intro="skip"]) .logo-slot img {
+  animation: intro-hold var(--intro) step-end;
+}
+
+@keyframes intro-pen {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes intro-in {
+  to { opacity: 1; }
+}
+
+@keyframes intro-fade {
+  to { opacity: 0; }
+}
+
+@keyframes intro-out {
+  to { background-color: rgb(var(--c-bg) / 0); visibility: hidden; }
+}
+
+@keyframes intro-logo {
+  to { transform: none; }
+}
+
+@keyframes intro-hold {
+  from { opacity: 0; }
+}
+
+/* Greeting: characters roll up out of / into a clipped line */
+.roll-in {
+  animation: roll-in 500ms var(--ease) both;
+}
+
+.roll-out {
+  animation: roll-out 350ms var(--ease) forwards;
+}
+
+@keyframes roll-in {
+  from { transform: translateY(105%); opacity: 0; }
+}
+
+@keyframes roll-out {
+  to { transform: translateY(-105%); opacity: 0; }
+}
+
+/* Hero: the rule under the name draws out from the centre once the intro has lifted. */
+.hero-rule {
+  transform-origin: center;
+  animation: rule-draw 900ms var(--ease) calc(var(--intro) + 0.1s) both;
+}
+
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  :root:not([data-intro="skip"]) {
+    --intro: 1.2s;
+  }
+
+  .intro-stroke,
+  .intro-fill {
+    animation: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+
+  .intro,
+  .intro-signature {
+    animation-delay: 0.9s;
+  }
+
+  .intro-logo {
+    animation: intro-fade 300ms linear 0.9s forwards;
+  }
+
+  .hero-rule,
+  .roll-in,
+  .roll-out {
+    animation: none;
+  }
+
   ::view-transition-old(page),
   ::view-transition-new(page) {
     animation: none;
