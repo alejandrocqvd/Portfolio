@@ -1,13 +1,23 @@
 "use client";
 
-import PhotoRow from "@/components/PhotoRow";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 
 import vs from "@public/about/vs.jpg";
 import uarad from "@public/about/uarad.jpg";
 import playgroundBuild from "@public/about/playgroundBuild.png";
 import speakingHD from "@public/about/speakingHD.png";
 
-const photos = [uarad, playgroundBuild, speakingHD, vs];
+const photos = [
+  { src: uarad, alt: "Three of us in front of the Acuren banner at an event" },
+  { src: playgroundBuild, alt: "The volunteer crew in front of the playground we built" },
+  { src: speakingHD, alt: "Speaking at a podium beside a Pason banner" },
+  { src: vs, alt: "Students' Union Volunteer Services photo booth with friends" },
+];
+
+// Same buttons as the Projects and Contact heroes.
+const button =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-control px-4 text-sm transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]";
 
 const timelineItems = [
   {
@@ -63,31 +73,50 @@ const timelineItems = [
 ];
 
 // ==============================================================================================================
-function TimelineHeader() {
+// Same two-column frame as the Projects and Contact heroes.
+function TimelineHero() {
   return (
-    <div className="px-6 xl:px-0">
-      <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Timeline</h1>
-      <p className="mt-5 max-w-2xl leading-relaxed text-muted">
-        From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different teams,
-        learning something new from each one. Forever grateful for the people who took the time to mentor me and trust me
-        with real responsibility (and not just make me fetch coffee or something).
-      </p>
-    </div>
-  );
-}
+    <div className="grid gap-12 md:grid-cols-2 md:items-center">
+      <div>
+        <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Timeline</h1>
+        <p className="mt-5 max-w-md leading-relaxed text-muted">
+          From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different
+          teams, learning something new from each one. Forever grateful for the people who took the time to mentor me
+          and trust me with real responsibility (and not just make me fetch coffee or something).
+        </p>
+        <a
+          href="/misc/Alejandro-Cardona-Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${button} mt-10 bg-ink text-paper hover:bg-ink/85`}
+        >
+          <ArrowUpRight size={16} aria-hidden />
+          Resume
+        </a>
+      </div>
 
-// ==============================================================================================================
-function TimelinePhotos() {
-  return (
-    <div className="mt-16 px-6 xl:px-0">
-      <PhotoRow photos={photos} reversed defaultSelected={photos.length - 1} />
+      {/* 4:3, not square: the photos are 4:3 or 3:2, and a square crop cuts people off the edges. */}
+      <ul aria-label="Photos" className="grid grid-cols-2 gap-3">
+        {photos.map((photo) => (
+          <li key={photo.alt} className="relative aspect-[4/3] overflow-hidden rounded-media border border-ink/10">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              placeholder="blur"
+              sizes="(min-width: 768px) 210px, 45vw"
+              className="object-cover"
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 // ==============================================================================================================
 // Spine and nodes share one x position: 7px into the list on mobile, 7px past the date column on desktop. The 12rem
-// date column (2rem of it padding) fits the widest period, "Oct 2023 - Mar 2025"; the spine and footer offsets follow it.
+// date column (2rem of it padding) fits the widest period, "Oct 2023 - Mar 2025"; the spine offset follows it.
 function TimelineItem({ item }) {
   const current = /now/i.test(item.period);
 
@@ -122,41 +151,23 @@ function TimelineItem({ item }) {
 // ==============================================================================================================
 function TimelineList() {
   return (
-    <ol className="relative px-6 xl:px-0 mt-8">
-      <span aria-hidden className="spine absolute bottom-2 left-[calc(1.5rem+7px)] top-2 w-px bg-ink/15 md:left-[calc(13.5rem+7px)] xl:left-[calc(12rem+7px)]" />
-      {timelineItems.map((item) => (
-        <TimelineItem key={`${item.company}-${item.role}`} item={item} />
-      ))}
-    </ol>
-  );
-}
-
-// ==============================================================================================================
-function TimelineFooter() {
-  return (
-    <p className="mt-16 px-6 text-muted md:pl-[16rem] xl:px-0 xl:pl-[14.5rem]">
-      For my full experience, see my{" "}
-      <a
-        href="/misc/Alejandro-Cardona-Resume.pdf"
-        target="_blank"
-        rel="noreferrer"
-        className="text-ink underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
-      >
-        resume (PDF)
-      </a>
-      .
-    </p>
+    <div className="mt-20 border-t border-ink/10 pt-12 md:mt-24">
+      <ol className="relative">
+        <span aria-hidden className="spine absolute bottom-2 left-[7px] top-2 w-px bg-ink/15 md:left-[calc(12rem+7px)]" />
+        {timelineItems.map((item) => (
+          <TimelineItem key={`${item.company}-${item.role}`} item={item} />
+        ))}
+      </ol>
+    </div>
   );
 }
 
 // ==============================================================================================================
 export default function Timeline() {
   return (
-    <section className="mx-auto w-full max-w-4xl pt-36 md:pt-44">
-      <TimelineHeader />
-      <TimelinePhotos />
+    <section className="mx-auto w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
+      <TimelineHero />
       <TimelineList />
-      <TimelineFooter />
     </section>
   );
 }
