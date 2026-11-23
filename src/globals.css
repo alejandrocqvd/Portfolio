@@ -459,21 +459,24 @@ html.theme-vt::view-transition-new(root) {
   to { transform: translateY(-105%); opacity: 0; }
 }
 
-/* Timeline spine draws as the list scrolls into view (static where scroll timelines are unsupported) */
-.spine {
-  transform-origin: top;
+/* Timeline year track: bars grow from their start date once the intro has lifted (--intro is 0s on later visits),
+   one lane after another (--i is the lane index). The selected role's details fade up in their panel. */
+.year-bar {
+  transform-origin: left;
+  animation: bar-grow 400ms var(--ease) both;
+  animation-delay: calc(var(--intro) + var(--i) * 40ms);
 }
 
-@supports (animation-timeline: view()) {
-  .spine {
-    animation: spine-draw linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 55%;
-  }
+@keyframes bar-grow {
+  from { transform: scaleX(0); }
 }
 
-@keyframes spine-draw {
-  from { transform: scaleY(0); }
+.role-in {
+  animation: role-in 250ms var(--ease) both;
+}
+
+@keyframes role-in {
+  from { opacity: 0; transform: translateY(4px); }
 }
 
 /* Hero: the rule under the name draws out from the centre once the intro has lifted. */
@@ -510,7 +513,8 @@ html.theme-vt::view-transition-new(root) {
   }
 
   .hero-rule,
-  .spine,
+  .year-bar,
+  .role-in,
   .roll-in,
   .roll-out {
     animation: none;

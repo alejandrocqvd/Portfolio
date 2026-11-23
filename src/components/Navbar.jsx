@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Link } from "next-view-transitions";
@@ -50,7 +51,21 @@ function Logo() {
 }
 
 // ==============================================================================================================
+// The intro belongs to the full page load. Once the user navigates client-side, mark it done so anything timed off
+// --intro (year-track bars, Greeting, hero rule) runs at once, even when the load didn't start on Home.
+function useIntroDoneOnNavigate() {
+  const pathname = usePathname();
+  const first = useRef(pathname);
+
+  useEffect(() => {
+    if (pathname !== first.current) document.documentElement.dataset.intro = "skip";
+  }, [pathname]);
+}
+
+// ==============================================================================================================
 export default function Navbar() {
+  useIntroDoneOnNavigate();
+
   return (
     <header className="nav-vt absolute inset-x-0 top-0 z-40 font-mono">
       {/* Same frame as the footer (max-w-5xl, px-6, xl:px-0), mirrored by .intro-logo's --slot in globals.css (the intro logo lands on Logo) */}
