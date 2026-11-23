@@ -54,8 +54,8 @@ function Trigger({ onOpen, triggerRef }) {
     >
       <Search size={16} aria-hidden />
       <kbd className="hidden font-sans text-xs md:inline">
-        <span className="only-mac">⌘K</span>
-        <span className="only-other-os">Ctrl K</span>
+        <span className="only-mac font-mono">⌘K</span>
+        <span className="only-other-os font-mono">Ctrl K</span>
       </kbd>
     </button>
   );

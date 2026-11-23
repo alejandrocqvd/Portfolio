@@ -228,11 +228,11 @@ html:has(dialog[open]) {
 }
 
 ::view-transition-old(page) {
-  animation: vt-out 150ms var(--ease) both;
+  animation: vt-out 600ms var(--ease) both;
 }
 
 ::view-transition-new(page) {
-  animation: vt-in 320ms var(--ease) both;
+  animation: vt-in 800ms var(--ease) both;
 }
 
 @keyframes vt-out {
@@ -265,15 +265,42 @@ html.theme-vt::view-transition-new(root) {
   mask-image: radial-gradient(circle at var(--iris-x) var(--iris-y), #000 calc(var(--iris) * 0.9), transparent var(--iris));
 }
 
-/* Intro (once per session): logo, signature written by a pen mask, then the logo glides into the navbar.
-   Tune --intro-hold and --intro-fade, plain numbers of seconds (e.g. 0.5); everything else follows. They are registered
-   as <number>, so a value with a unit (or anything invalid) falls back to the default instead of breaking the intro.
+/* Intro (every full page load, refreshes included; client-side navigation keeps the finished layout): the aperture
+   spins (one lit blade, like a loading ring) while the A fades in; once the A is in, the spin stops and the blades after
+   the lit one catch up to full, one per step. The logo glows as the last one lands, holds, then glides into the navbar
+   as the page fades in.
+   Tune the --intro-* numbers in :root below, plain numbers of seconds (e.g. 0.5); everything else follows. They are
+   registered as <number>, so a value with a unit (or anything invalid) falls back to the default instead of breaking it.
    --intro is when the page is "revealed" (greeting, hero rule and navbar logo wait on it), registered as a <time> so JS
    reads it as a plain value like "3.95s". */
 @property --intro {
   syntax: "<time>";
   inherits: true;
   initial-value: 0s;
+}
+
+@property --intro-step {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.15;
+}
+
+@property --intro-spin {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
+@property --intro-a {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.4;
+}
+
+@property --intro-glow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.25;
 }
 
 @property --intro-hold {
@@ -289,11 +316,17 @@ html.theme-vt::view-transition-new(root) {
 }
 
 :root {
-  --intro-write: 2.05s; /* when the last pen stroke ends (stroke timings in src/components/Loader.jsx) */
-  --intro-hold: 1; /* seconds the finished signature stays on screen */
-  --intro-fade: 0.9; /* seconds the overlay takes to fade into the page (and the logo to glide to the navbar) */
+  --intro-step: 0.09; /* seconds the lit blade stays on each blade (a full turn is 8 steps); also the catch-up pace */
+  --intro-spin: 1.0; /* seconds the aperture spins before the A starts fading in */
+  --intro-a: 0.5; /* seconds the A takes to fade in (the spin continues) */
+  --intro-glow: 0.6; /* seconds the glow takes to bloom once the last blade is full (part of the hold) */
+  --intro-hold: 1; /* seconds the finished logo holds, glowing, before the page fades in */
+  --intro-fade: 0.6; /* seconds the overlay takes to fade into the page (and the logo to glide to the navbar) */
   --intro-fade-time: calc(var(--intro-fade) * 1s);
-  --intro-leave: calc(var(--intro-write) + var(--intro-hold) * 1s);
+  --intro-stop: calc((var(--intro-spin) + var(--intro-a)) * 1s); /* the spin stops once the A is fully in */
+  --intro-head: mod(round(down, (var(--intro-spin) + var(--intro-a)) / var(--intro-step) + 0.001, 1), 8);
+  --intro-full: calc(var(--intro-stop) + 7 * var(--intro-step) * 1s); /* the other 7 blades catch up one step each */
+  --intro-leave: calc(var(--intro-full) + var(--intro-hold) * 1s);
   --intro: calc(var(--intro-leave) + var(--intro-fade-time));
   --intro-ease: cubic-bezier(0.65, 0, 0.35, 1); /* even ease-in-out: the dissolve spends the whole --intro-fade */
 }
@@ -310,83 +343,91 @@ html.theme-vt::view-transition-new(root) {
   position: fixed;
   inset: 0;
   z-index: 60;
+  container-type: size; /* cq units below: the overlay's size, the same width the navbar spans */
   pointer-events: none;
   background: rgb(var(--c-bg));
   animation: intro-out var(--intro-fade-time) var(--intro-ease) var(--intro-leave) forwards;
 }
 
-/* The track spans the viewport like the navbar. --slot is the navbar logo's left edge (max-w-5xl + px-6, xl:px-0);
-   the track shifts the logo to the centre, so both transforms settling to none lands it on the slot. */
-.intro-track {
-  --slot: calc(max(0px, (100% - 1024px) / 2) + 24px);
+/* The logo is placed on the navbar's logo (--slot is its left edge: max-w-5xl + px-6, xl:px-0; 24px down centres it in
+   the h-20 bar), then moved to the screen's centre and scaled up. Gliding settles the transform to none. */
+.intro-logo {
+  --slot: calc(max(0px, (100cqw - 1024px) / 2) + 24px);
+  --glow: drop-shadow(0 0 8px rgb(var(--c-text) / 0.4));
   position: absolute;
   top: 24px;
-  left: 0;
-  width: 100%;
-  height: 32px;
-  transform: translateX(calc(50% - 16px - var(--slot)));
-  animation: intro-logo var(--intro-fade-time) var(--intro-ease) var(--intro-leave) forwards;
-}
-
-@media (min-width: 1280px) {
-  .intro-track {
-    --slot: calc((100% - 1024px) / 2);
-  }
-}
-
-.intro-logo {
-  position: absolute;
-  top: 0;
   left: var(--slot);
   width: 32px;
   height: 32px;
-  transform: translateY(calc(50vh - 110px)) scale(2.25);
-  animation: intro-logo var(--intro-fade-time) var(--intro-ease) var(--intro-leave) forwards;
-}
-
-:root[data-theme="light"] .intro-logo {
-  filter: invert(1);
-}
-
-.intro-signature {
-  position: fixed;
-  top: calc(50% - 10px);
-  left: 50%;
-  width: min(78vw, 440px);
-  transform: translateX(-50%);
   color: rgb(var(--c-text));
-  animation: intro-fade calc(var(--intro-fade-time) / 2) var(--intro-ease) var(--intro-leave) forwards;
+  transform: translate(calc(50cqw - 16px - var(--slot)), calc(50cqh - 40px)) scale(2.25);
+  animation:
+    intro-glow calc(var(--intro-glow) * 1s) var(--ease) var(--intro-full) forwards,
+    intro-land var(--intro-fade-time) var(--intro-ease) var(--intro-leave) forwards;
 }
 
-.intro-stroke {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 16;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation-name: intro-pen;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-  animation-fill-mode: forwards;
+@media (min-width: 1280px) {
+  .intro-logo {
+    --slot: calc((100cqw - 1024px) / 2);
+  }
 }
 
-.intro-fill {
+/* Blade --i is lit at --i steps into each turn; the negative delay starts every blade mid-turn so the ring runs at once.
+   At --intro-stop the spin freezes: --k is how many steps the blade sits behind the lit one, --o its brightness then
+   (1, then the 0.7 / 0.5 tail, then 0.3). Each blade holds --o, then fills to full --ahead steps later (its distance
+   clockwise from the lit one), so the light keeps going round and the tail catches up last. Later animations in the
+   list override earlier ones. */
+.intro-blade {
+  --k: mod(var(--intro-head) - var(--i) + 8, 8);
+  --ahead: mod(var(--i) - var(--intro-head) + 8, 8);
+  --o: max(0.3, 1 - 0.3 * min(var(--k), 1) - 0.2 * max(var(--k) - 1, 0));
+  opacity: 0.3;
+  animation:
+    intro-blade calc(8 * var(--intro-step) * 1s) step-end calc((var(--i) - 8) * var(--intro-step) * 1s) infinite,
+    intro-freeze 0s var(--intro-stop) forwards,
+    intro-lit calc(var(--intro-step) * 1s) linear calc(var(--intro-stop) + max(var(--ahead) - 1, 0) * var(--intro-step) * 1s) forwards;
+}
+
+.intro-a {
   opacity: 0;
-  animation: intro-in 150ms linear 2.02s forwards;
+  animation: intro-in calc(var(--intro-a) * 1s) var(--intro-ease) calc(var(--intro-spin) * 1s) forwards;
 }
 
-/* The real navbar logo stays hidden until the intro logo lands on it. */
+/* The navbar's own logo stays hidden until the intro logo lands on it. */
 :root:not([data-intro="skip"]) .logo-slot img {
   animation: intro-hold var(--intro) step-end;
 }
 
-@keyframes intro-pen {
-  to { stroke-dashoffset: 0; }
+/* Lit blade, then a two-blade tail, then dim: each value holds for one step (step-end). */
+@keyframes intro-blade {
+  0% { opacity: 1; }
+  12.5% { opacity: 0.7; }
+  25% { opacity: 0.5; }
+  37.5%,
+  100% { opacity: 0.3; }
+}
+
+@keyframes intro-freeze {
+  from, to { opacity: var(--o); }
+}
+
+@keyframes intro-lit {
+  from { opacity: var(--o); }
+  to { opacity: 1; }
 }
 
 @keyframes intro-in {
   to { opacity: 1; }
+}
+
+@keyframes intro-glow {
+  to { filter: var(--glow); }
+}
+
+/* Sheds the glow on the way, so it lands looking exactly like the navbar logo. */
+@keyframes intro-land {
+  from { filter: var(--glow); }
+  to { transform: none; filter: drop-shadow(0 0 0 transparent); }
 }
 
 @keyframes intro-fade {
@@ -395,10 +436,6 @@ html.theme-vt::view-transition-new(root) {
 
 @keyframes intro-out {
   to { background-color: rgb(var(--c-bg) / 0); visibility: hidden; }
-}
-
-@keyframes intro-logo {
-  to { transform: none; }
 }
 
 @keyframes intro-hold {
@@ -455,23 +492,21 @@ html.theme-vt::view-transition-new(root) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* No spin or glide: the full logo shows at once, glows while it holds, then fades out in place. */
   :root:not([data-intro="skip"]) {
-    --intro-write: 0s;
+    --intro-spin: 0;
+    --intro-a: 0;
+    --intro-step: 0;
   }
 
-  .intro-stroke,
-  .intro-fill {
+  .intro-blade,
+  .intro-a {
     animation: none;
-    stroke-dashoffset: 0;
     opacity: 1;
   }
 
   .intro-logo {
-    animation: intro-fade var(--intro-fade-time) linear var(--intro-leave) forwards;
-  }
-
-  .intro-track {
-    animation: none;
+    animation-name: intro-glow, intro-fade;
   }
 
   .hero-rule,

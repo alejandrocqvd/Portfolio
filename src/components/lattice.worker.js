@@ -6,18 +6,18 @@ const ROWS = 90;
 
 // Tuning. Click ripples: up to 4 at once, the oldest replaced by a new click.
 const RIPPLE = {
-  speed: 900, // px per second the ring travels outward
+  speed: 600, // px per second the ring travels outward
   width: 40, // px, soft thickness of the ring
   life: 1.4, // seconds until a ripple has fully faded
   push: 6, // px the ring pushes dots outward
 };
 // Mouse hover: dots within `radius` drift away from the cursor (mouse/pen only).
 const CURSOR = {
-  radius: 140, // px
-  push: 10, // px, displacement right under the cursor
-  follow: 10, // how quickly the disturbance catches up with the cursor (higher = snappier)
+  radius: 600, // px
+  push: 6, // px, displacement right under the cursor
+  follow: 6, // how quickly the disturbance catches up with the cursor (higher = snappier)
 };
-const LIGHT_DOT_SCALE = 1.35; // light mode draws dark dots on a light page; slightly larger reads the same weight
+const LIGHT_DOT_SCALE = 1.5; // light mode draws dark dots on a light page; slightly larger reads the same weight
 const RIPPLES = 4;
 const f = (n) => n.toFixed(2); // GLSL float literal
 

@@ -32,7 +32,6 @@ async function Now() {
   return (
     <ul aria-label="Right now" className="grid grid-cols-1 gap-x-8 gap-y-3 text-sm sm:grid-cols-2">
       <NowItem icon={MapPin} label="Location">
-        <span className="relative mr-2 inline-flex h-1.5 w-1.5 translate-y-[-2px] rounded-full bg-accent" aria-hidden />
         {location}
         <span className="ml-2 text-muted" title={weather === null ? "Weather not connected yet" : undefined}>
           {weather === null ? "—" : Math.round(weather)}°C
@@ -67,7 +66,7 @@ export default function Footer() {
       <div className="grid grid-cols-2 gap-10 border-t border-ink/10 pt-10 md:grid-cols-[1fr_auto_auto] md:gap-16">
         <div className="col-span-2 flex flex-col gap-6 md:col-span-1">
           <svg viewBox={signatureViewBox} role="img" aria-label="Alejandro Cardona" className="h-auto w-44 text-ink">
-            <path d={signature} fill="currentColor" />
+            <path d={signature} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <Now />
         </div>

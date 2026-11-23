@@ -13,7 +13,7 @@ const timelineItems = [
   {
     company: "University of Calgary",
     role: "BS in Computer Science",
-    period: "2022 - Now",
+    period: "Sept 2022 - Now",
     description: [
       "CGPA: 3.9 / 4.0",
       "Awards and Honours: Alexander Rutherford Scholarship, 3x Dean's List",
@@ -53,10 +53,10 @@ const timelineItems = [
   {
     company: "Canadian Global Care on Campus",
     role: "Web Developer",
-    period: "2023 - 2025",
+    period: "Oct 2023 - Mar 2025",
     description: [
       "Designed, developed, and maintained a React-based website with TailwindCSS and Vite",
-      "Promoted the site which led to a 30% increase in club event attendance",
+      "Promoted the site which led to a 36% increase in club event attendance",
       "Entire box of leftover croissants taken home after event",
     ],
   },
@@ -93,7 +93,7 @@ function TimelineItem({ item }) {
 
   return (
     <li className="relative grid pb-12 pl-8 last:pb-0 md:grid-cols-[12rem_1fr] md:pl-0">
-      <p className="order-last mt-2 text-sm tabular-nums text-muted md:order-none md:mt-0.5 md:pr-8 md:text-right">
+      <p className="order-last mt-2 text-sm tabular-nums text-muted md:order-none md:mt-0.5 md:pr-8 md:text-right whitespace-nowrap">
         {item.period}
       </p>
 
@@ -106,7 +106,7 @@ function TimelineItem({ item }) {
         />
         <h2 className="font-medium">
           {item.company}
-          <span className="font-normal text-muted"> {item.role}</span>
+          <span className="font-normal text-muted"> — {item.role}</span>
           {current && <span className="sr-only"> (current)</span>}
         </h2>
         <ul className="mt-2 flex list-disc flex-col gap-1 pl-[1.1em] text-[0.95rem] leading-relaxed text-muted marker:text-ink/30">
@@ -122,7 +122,7 @@ function TimelineItem({ item }) {
 // ==============================================================================================================
 function TimelineList() {
   return (
-    <ol className="relative mt-20 px-6 xl:px-0">
+    <ol className="relative px-6 xl:px-0 mt-8">
       <span aria-hidden className="spine absolute bottom-2 left-[calc(1.5rem+7px)] top-2 w-px bg-ink/15 md:left-[calc(13.5rem+7px)] xl:left-[calc(12rem+7px)]" />
       {timelineItems.map((item) => (
         <TimelineItem key={`${item.company}-${item.role}`} item={item} />

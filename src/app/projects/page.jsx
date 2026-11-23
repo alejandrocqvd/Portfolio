@@ -8,7 +8,6 @@ import { featuredProject, projects, projectCards } from "@/app/projects/catalogu
 
 const allProjects = { featured: featuredProject, ...projects };
 
-// Optimized (resized, modern format) poster for the featured video, which is the page's largest paint.
 const poster = getImageProps({ src: "/work/idea-mr-room-planner-img.PNG", alt: "", width: 896, height: 504, quality: 70 }).props.src;
 
 const button =
@@ -23,13 +22,13 @@ function FeaturedVideo() {
   }, []);
 
   return (
-    <div className="overflow-hidden rounded-media border border-ink/10 bg-black">
+    <div className="relative aspect-video overflow-hidden rounded-media border border-ink/10 bg-black md:aspect-auto">
       <video
         ref={video}
         src={featuredProject.images[0]}
         poster={poster}
         aria-label={`${featuredProject.title} demo`}
-        className="aspect-video w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         preload="metadata"
         muted
         loop
@@ -44,13 +43,13 @@ function FeaturedProject({ onOpen }) {
   const github = featuredProject.links.find((link) => link.title === "GitHub");
 
   return (
-    <section className="grid items-center gap-10 px-6 pt-36 md:grid-cols-2 md:gap-12 md:pt-44 xl:px-0">
+    <section className="grid gap-10 px-6 pt-36 md:grid-cols-2 md:gap-12 md:pt-44 xl:px-0">
       <div className="flex flex-col items-start">
         <p className="text-sm text-muted">Featured project</p>
         <h1 className="mt-2 text-3xl font-[420] leading-tight tracking-[-0.02em] md:text-4xl">{featuredProject.title}</h1>
-        <p className="mt-5 max-w-md leading-relaxed text-muted">{featuredProject.blurb}</p>
+        <p className="mt-10 max-w-md leading-relaxed text-muted">{featuredProject.blurb}</p>
 
-        <div className="mt-8 flex gap-3">
+        <div className="mt-10 flex gap-3">
           <button type="button" onClick={() => onOpen("featured")} className={`${button} bg-ink text-paper hover:bg-ink/85`}>
             View details
           </button>

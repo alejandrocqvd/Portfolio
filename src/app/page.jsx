@@ -9,22 +9,22 @@ import dinner from "@public/about/dinner.jpg";
 
 // Left, middle, right.
 const photos = [
-  { src: back2, alt: "Walking down a garden path under cherry blossoms" },
-  { src: dinner, alt: "Raising a glass at dinner in a restaurant with a city view" },
-  { src: grass, alt: "Two friends lying on the grass, smiling up at the camera" },
+  { src: back2, alt: "Walking down a garden path under cherry blossoms in Kelowna" },
+  { src: dinner, alt: "One year anniversary at Major Tom's" },
+  { src: grass, alt: "Chloe and me laying on the grass in Kelowna :D" },
 ];
 
 // ==============================================================================================================
 function Bio() {
   return (
-    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-muted lg:col-start-2 lg:row-start-1">
+    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-muted lg:col-start-2 lg:row-start-1 font-mono">
       <p>
         I&apos;m a full time student currently enrolled in Computer Science at the University of Calgary.
       </p>
       <p>
         Choosing computer science was a difficult decision to make coming from a family full of doctors where the only
         right path was medicine. But ever since I took my first programming class, I was hooked. My main interests are{" "}
-        <span className="text-ink">software engineering, game development, and virtual reality</span>.
+        <span className="text-ink">software architecture, game development, and virtual reality</span>.
       </p>
       <p>
         Alongside this, I co-founded{" "}
@@ -43,17 +43,14 @@ function Bio() {
 }
 
 // ==============================================================================================================
-// At least one screen tall (svh: the visible height on mobile, without the URL bar), so the footer starts below the fold.
 function Hero() {
   return (
-    <section className="mx-auto min-h-[100svh] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
+    <section className="mx-auto min-h-[min(100svh,1200px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
       <Greeting />
-      <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em]">
+      <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em] font-mono">
         Alejandro Cardona
       </h1>
 
-      {/* Once the rule has drawn, the intro is over for this page load: returning to Home shows it (and starts the
-          greeting) immediately instead of replaying the intro timing. */}
       <div
         aria-hidden
         onAnimationEnd={() => (document.documentElement.dataset.intro = "skip")}

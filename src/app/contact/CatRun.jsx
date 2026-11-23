@@ -404,7 +404,7 @@ export default function CatRun() {
     <section aria-labelledby="catrun-title" className="mt-20">
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="catrun-title" className="text-lg font-[420] tracking-[-0.01em]">
-          Help Jiji dodge the cucumbers
+          Help Jiji run! 
         </h2>
         <p className="shrink-0 whitespace-nowrap text-sm tabular-nums text-muted">
           Score <span ref={score}>0</span>{" "}
