@@ -401,7 +401,7 @@ export default function CatRun() {
         : "";
 
   return (
-    <section aria-labelledby="catrun-title" className="mt-20">
+    <section aria-labelledby="catrun-title" className="mt-20 border-t border-ink/10 pt-10 md:mt-24">
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="catrun-title" className="text-lg font-[420] tracking-[-0.01em]">
           Help Jiji run! 

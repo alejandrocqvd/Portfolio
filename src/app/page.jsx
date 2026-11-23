@@ -45,7 +45,7 @@ function Bio() {
 // ==============================================================================================================
 function Hero() {
   return (
-    <section className="mx-auto min-h-[min(100svh,1200px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
+    <section className="mx-auto min-h-[min(100svh,900px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
       <Greeting />
       <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em] font-mono">
         Alejandro Cardona
