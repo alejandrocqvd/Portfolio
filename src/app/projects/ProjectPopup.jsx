@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Github, Globe } from "lucide-react";
+import { Github, Globe, X } from "lucide-react";
 import SkillBox from "@/app/projects/SkillBox";
+import { closeDialog, openDialog } from "@/lib/dialog";
 
 const blurDataURL =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdiJyB4PScwJyB5PScwJz48ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPScxMicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbGw9JyMyMjInIGZpbHRlcj0ndXJsKCNiKScvPjwvc3ZnPg==";
@@ -14,30 +15,23 @@ function isVideo(src) {
 }
 
 // ==============================================================================================================
-function ProjectLinks({ links, mobile = false }) {
-  if (!links) return null;
+function ProjectLinks({ links }) {
+  if (!links?.length) return null;
 
   return (
-    <div className={mobile ? "flex justify-center gap-4" : "flex justify-center gap-4 ml-4 mb-1"}>
+    <div className="mt-5 flex flex-wrap gap-2">
       {links.map((link) => {
-        const isWebsite = link.title.toLowerCase() === "website";
-        const isGithub = link.title.toLowerCase() === "github";
-
+        const Icon = link.title.toLowerCase() === "github" ? Github : Globe;
         return (
           <a
             key={link.url}
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={
-              mobile
-                ? "flex items-center justify-center gap-2 px-4 w-28 py-2 bg-white/5 rounded-md text-sm text-gray-200 hover:bg-white/10 transition"
-                : "flex items-center justify-center gap-2 w-auto text-white hover:text-white/70 transition-colors"
-            }
+            className="inline-flex h-9 items-center gap-2 rounded-control border border-ink/15 px-3 text-sm transition-colors duration-150 ease-out hover:bg-ink/[0.06]"
           >
-            {isWebsite && <Globe size={mobile ? 16 : 20} />}
-            {isGithub && <Github size={mobile ? 16 : 20} />}
-            {mobile && link.title}
+            <Icon size={15} aria-hidden />
+            {link.title}
           </a>
         );
       })}
@@ -46,161 +40,31 @@ function ProjectLinks({ links, mobile = false }) {
 }
 
 // ==============================================================================================================
-function MobileCarousel({ project, index, setIndex }) {
-  const nextImage = () => {
-    setIndex((prev) => (prev + 1) % project.images.length);
-  };
-
-  const prevImage = () => {
-    setIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
-  };
-
+function MainMedia({ project, src }) {
   return (
-    <div className="relative w-full h-56 overflow-hidden rounded-lg my-8 border border-white/20 bg-black/40">
-      <div
-        className="flex h-full transition-transform duration-500"
-        style={{ transform: `translateX(-${index * 100}%)` }}
-      >
-        {project.images.map((img) => (
-          <div key={img} className="min-w-full h-full relative">
-            {isVideo(img) ? (
-              <video
-                key={img}
-                src={img}
-                muted
-                playsInline
-                preload="metadata"
-                controls
-                className="object-cover w-full h-full"
-              />
-            ) : (
-              <Image
-                src={img}
-                alt={project.title}
-                fill
-                placeholder="blur"
-                blurDataURL={blurDataURL}
-                className="object-cover"
-              />
-            )}
-          </div>
-        ))}
-      </div>
-
-      {project.images.length > 1 && (
-        <>
-          <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 pb-[0.65rem] rounded-full text-white"
-          >
-            ❮
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 pb-[0.65rem] rounded-full text-white"
-          >
-            ❯
-          </button>
-        </>
-      )}
-
-      <div className="absolute bottom-2 w-full flex justify-center gap-2">
-        {project.images.map((img, i) => (
-          <div
-            key={img}
-            onClick={() => setIndex(i)}
-            className={`w-2 h-2 rounded-full cursor-pointer transition 
-                  ${i === index ? "bg-white" : "bg-white/40"}`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function MobileTechStack({ techStack }) {
-  if (!techStack) return null;
-
-  return (
-    <div className="flex flex-row mt-10">
-      {techStack.map((item, idx) => (
-        <SkillBox
-          key={item.name}
-          name={item.name}
-          image={item.image}
-          index={idx}
-          count={techStack.length}
-        />
-      ))}
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function ProjectPopUpMobile({ project, onClose }) {
-  const [index, setIndex] = useState(0);
-
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-start z-50 p-6">
-      <div className="bg-black/90 border border-white/20 rounded-xl p-6 w-full max-w-xl relative shadow-xl">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-5 text-white/70 hover:text-white text-xl"
-        >
-          ✕
-        </button>
-
-        <h2 className="text-center text-2xl font-mono mb-1 tracking-wide">
-          {project.title}
-        </h2>
-
-        <h2 className="text-center text-sm tracking-wide mb-4 mt-3">
-          {project.subtitle}
-        </h2>
-
-        <ProjectLinks links={project.links} mobile />
-
-        <MobileCarousel project={project} index={index} setIndex={setIndex} />
-
-        <h2 className="text-center text-md font-bold tracking-wide">
-          {project.header}
-        </h2>
-
-        <p className="text-gray-300 text-sm leading-relaxed mt-2 mx-4 text-justify">
-          {project.description}
-        </p>
-
-        <MobileTechStack techStack={project.techStack} />
-      </div>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function DesktopMainMedia({ project, active }) {
-  const activeImage = project.images[active];
-
-  return (
-    <div className="relative w-full h-full rounded-lg overflow-hidden bg-black border border-white/20">
-      {isVideo(activeImage) ? (
+    // At least 16:9; on desktop it grows (never shrinks) to fill any height the text column adds beside it.
+    <div className="relative aspect-video w-full overflow-hidden rounded-media border border-ink/10 bg-black md:shrink-0 md:grow">
+      {isVideo(src) ? (
         <video
-          key={activeImage}
-          src={activeImage}
+          key={src}
+          src={src}
           autoPlay
           loop
+          muted
           playsInline
           controls
-          className="absolute inset-0 w-full h-full object-contain"
+          aria-label={`${project.title} demo`}
+          className="absolute inset-0 h-full w-full object-contain"
         />
       ) : (
         <Image
-          src={activeImage}
-          alt={project.title}
+          src={src}
+          alt={`${project.title} screenshot`}
           fill
-          className="object-cover"
+          sizes="(min-width: 768px) 600px, 100vw"
           placeholder="blur"
           blurDataURL={blurDataURL}
+          className="object-cover"
         />
       )}
     </div>
@@ -208,189 +72,114 @@ function DesktopMainMedia({ project, active }) {
 }
 
 // ==============================================================================================================
-function DesktopThumbnails({ images, active, setActive }) {
-  if (images.length <= 1) return null;
+function Thumbnails({ project, active, setActive }) {
+  if (project.images.length <= 1) return null;
 
   return (
-    <div className="flex flex-row justify-between gap-4 w-full h-24 mt-4">
-      {images.map((img, i) => (
-        <div
-          key={img}
+    <div role="group" aria-label="Media" className="mt-3 flex shrink-0 gap-2 overflow-x-auto overflow-y-hidden pb-1">
+      {project.images.map((src, i) => (
+        <button
+          key={src}
+          type="button"
           onClick={() => setActive(i)}
-          className={`relative w-full h-24 rounded-lg overflow-hidden border cursor-pointer ${
-            active === i ? "border-white" : "border-white/20"
-          }`}
+          aria-label={`Show ${isVideo(src) ? "video" : "image"} ${i + 1} of ${project.images.length}`}
+          aria-pressed={active === i}
+          className="relative h-16 w-24 shrink-0 overflow-hidden rounded-control border border-ink/10 opacity-60 transition-opacity duration-150 ease-out hover:opacity-100 aria-pressed:border-ink/60 aria-pressed:opacity-100 md:h-20 md:w-auto md:flex-1"
         >
-          {isVideo(img) ? (
-            <video
-              src={img}
-              muted
-              preload="metadata"
-              className="object-cover w-full h-full pointer-events-none"
-            />
+          {isVideo(src) ? (
+            <video src={src} muted preload="metadata" className="pointer-events-none h-full w-full object-cover" />
           ) : (
-            <Image
-              src={img}
-              alt=""
-              fill
-              className="object-cover"
-              placeholder="blur"
-              blurDataURL={blurDataURL}
-            />
+            <Image src={src} alt="" fill sizes="120px" className="object-cover" />
           )}
-        </div>
+        </button>
       ))}
     </div>
   );
 }
 
 // ==============================================================================================================
-function DesktopMediaColumn({ project, active, setActive }) {
-  return (
-    <div className="flex flex-col w-[60%]">
-      <DesktopMainMedia project={project} active={active} />
-      <DesktopThumbnails
-        images={project.images}
-        active={active}
-        setActive={setActive}
-      />
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function DesktopHeader({ project }) {
-  return (
-    <div className="flex flex-col justify-start">
-      <div className="flex flex-row">
-        <h1 className="text-4xl font-mono text-white mb-2">{project.title}</h1>
-        <ProjectLinks links={project.links} />
-      </div>
-
-      <h2 className="text-lg italic text-gray-300 mb-6">
-        {project.subtitle}
-      </h2>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function DesktopTechStack({ techStack, hoveredSkill, setHoveredSkill }) {
+function TechStack({ techStack }) {
+  const [hovered, setHovered] = useState(null);
   if (!techStack) return null;
 
   return (
-    <div className="flex flex-row w-full flex-nowrap">
+    <ul aria-label="Tech stack" className="flex w-full [grid-area:stack]">
       {techStack.map((item, idx) => (
-        <div
+        <li
           key={item.name}
-          className={`relative transition-all duration-300 ease-in-out ${hoveredSkill === idx ? "flex-[2] z-10" : "flex-[1] z-0"}`}
-          onMouseEnter={() => setHoveredSkill(idx)}
-          onMouseLeave={() => setHoveredSkill(null)}
+          className={`relative transition-[flex-grow] duration-300 ease-out ${hovered === idx ? "flex-[2]" : "flex-1"}`}
+          onMouseEnter={() => setHovered(idx)}
+          onMouseLeave={() => setHovered(null)}
         >
-          <SkillBox
-            name={item.name}
-            image={item.image}
-            index={idx}
-            count={techStack.length}
-          />
-        </div>
+          <SkillBox name={item.name} image={item.image} index={idx} count={techStack.length} />
+        </li>
       ))}
-    </div>
+    </ul>
   );
 }
 
 // ==============================================================================================================
-function DesktopContentColumn({ project, hoveredSkill, setHoveredSkill }) {
-  return (
-    <div className="flex flex-col justify-between w-[40%]">
-      <DesktopHeader project={project} />
-
-      <p className="text-gray-300 text-md leading-relaxed mb-10 whitespace-pre-line">
-        {project.description}
-      </p>
-
-      <DesktopTechStack
-        techStack={project.techStack}
-        hoveredSkill={hoveredSkill}
-        setHoveredSkill={setHoveredSkill}
-      />
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function ProjectPopUpDesktop({ project, onClose }) {
+export default function ProjectDialog({ project, onClose }) {
+  const dialog = useRef(null);
   const [active, setActive] = useState(0);
-  const [closing, setClosing] = useState(false);
-  const [hoveredSkill, setHoveredSkill] = useState(null);
 
-  const handleClose = useCallback(() => {
-    setClosing(true);
+  useLayoutEffect(() => {
+    const el = dialog.current;
+    openDialog(el);
+    el.querySelector("[data-autofocus]")?.focus();
+    return () => el.close();
+  }, []);
 
-    setTimeout(() => {
-      onClose();
-    }, 250);
-  }, [onClose]);
-
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        handleClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleClose]);
+  const close = () => closeDialog(dialog.current, onClose);
 
   return (
-    <div
-      className={`fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-6 ${
-        closing ? "popup-out" : "popup-in"
-      }`}
+    <dialog
+      ref={dialog}
+      aria-labelledby="project-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        close();
+      }}
+      onClick={(event) => event.target === dialog.current && close()}
+      className="project-dialog m-auto max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-5xl overflow-y-auto overflow-x-hidden rounded-overlay border border-ink/10 bg-surface p-0 text-ink"
     >
-      <div
-        className={`relative flex flex-row max-w-6xl w-full bg-black/90 border border-white/20 rounded-xl p-10 gap-10 ${
-          closing ? "scale-out" : "scale-in"
-        }`}
-      >
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-5 text-white/70 hover:text-white text-xl"
-        >
-          ✕
-        </button>
+      {/* Desktop: media and the tech stack on the left, the text spanning both rows on the right, so the columns end
+          level instead of leaving a gap under the images. Mobile: media, text, tech stack. */}
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 p-5 [grid-template-areas:'media'_'info'_'stack'] md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:grid-rows-[1fr_auto] md:gap-x-10 md:gap-y-6 md:p-8 md:[grid-template-areas:'media_info'_'stack_info']">
+        <div className="flex flex-col [grid-area:media]">
+          <MainMedia project={project} src={project.images[active]} />
+          <Thumbnails project={project} active={active} setActive={setActive} />
+        </div>
 
-        <DesktopMediaColumn
-          project={project}
-          active={active}
-          setActive={setActive}
-        />
+        <div className="flex flex-col [grid-area:info]">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 id="project-title" className="text-2xl font-[420] tracking-[-0.02em] md:text-3xl">
+                {project.title}
+              </h2>
+              <p className="mt-1 text-muted">{project.subtitle}</p>
+            </div>
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close"
+              data-autofocus
+              className="absolute right-7 top-7 z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-control bg-surface/80 text-muted backdrop-blur transition-colors duration-150 ease-out hover:bg-ink/[0.06] hover:text-ink md:static md:-mr-2 md:-mt-1 md:bg-transparent md:backdrop-blur-none"
+            >
+              <X size={18} aria-hidden />
+            </button>
+          </div>
 
-        <DesktopContentColumn
-          project={project}
-          hoveredSkill={hoveredSkill}
-          setHoveredSkill={setHoveredSkill}
-        />
+          <ProjectLinks links={project.links} />
+
+          <h3 className="mt-8 font-medium">{project.header}</h3>
+          <p className="mt-2 whitespace-pre-line text-[0.95rem] leading-relaxed text-muted">
+            {project.description.replace(/\n[ \t]+/g, "\n").trim()}
+          </p>
+        </div>
+
+        <TechStack techStack={project.techStack} />
       </div>
-    </div>
-  );
-}
-
-// ==============================================================================================================
-export function ProjectPopUpContainer({ project, onClose }) {
-  return (
-    <>
-      <div className="hidden md:flex">
-        <ProjectPopUpDesktop project={project} onClose={onClose} />
-      </div>
-
-      <div className="md:hidden">
-        <ProjectPopUpMobile project={project} onClose={onClose} />
-      </div>
-    </>
+    </dialog>
   );
 }

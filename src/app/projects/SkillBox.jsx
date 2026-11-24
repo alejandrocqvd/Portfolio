@@ -2,19 +2,16 @@ import Image from "next/image";
 
 // ==============================================================================================================
 function getRoundedClass(index, count) {
-  const first = index === 0 ? "rounded-l-lg" : "";
-  const last = index === count - 1 ? "rounded-r-lg" : "";
+  const first = index === 0 ? "rounded-l-control" : "";
+  const last = index === count - 1 ? "rounded-r-control" : "";
   return `${first} ${last}`;
 }
 
 // ==============================================================================================================
-// Shades the row dark to light, #101010 for the first box to #454545 for the last.
+// Steps the row from a faint to a stronger tint of the text colour, so it works in both themes.
 function getShade(index, count) {
   const t = count > 1 ? index / (count - 1) : 0;
-  const hex = Math.round(0x10 + t * (0x45 - 0x10))
-    .toString(16)
-    .padStart(2, "0");
-  return `#${hex}${hex}${hex}`;
+  return `rgb(var(--c-text) / ${(0.04 + t * 0.12).toFixed(3)})`;
 }
 
 // ==============================================================================================================

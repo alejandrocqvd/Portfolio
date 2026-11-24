@@ -1,46 +1,47 @@
 # Portfolio
 
-Personal portfolio website built with Next.js, React, and Tailwind CSS.
+My personal portfolio, live at [acardona.ca](https://acardona.ca). Built with Next.js 15 (App Router), React 18 and
+Tailwind CSS 3, in plain JavaScript.
 
 ## About
 
-I'm a Computer Science student at the University of Calgary with interests in software engineering, game development, and virtual reality. Alongside my studies, I interend for 16 months at Pason Systems and co-founded Nullus, a student-led software development startup.
+I'm a Computer Science student at the University of Calgary with interests in software engineering, game development,
+and virtual reality. Alongside my studies, I interned for 16 months at Pason Systems and co-founded Nullus, a
+student-led software development startup.
 
-This portfolio showcases my projects, experience, and technical skills through an interactive and responsive web experience.
+This site showcases my projects, experience and technical skills.
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Running it
 
-## Getting Started
-
-First, run the development server:
+Requires Node 24 and npm.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # dev server at http://localhost:3000
+npm run build   # production build (also writes sitemap.xml and robots.txt to public/)
+npm run start   # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The footer's "right now" strip can show my recent Steam game and Spotify song. Copy `.env.example` to `.env.local`
+and fill in the keys to enable them; without keys the site works and shows placeholders.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## How it's organised
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+| Folder                                             | What's inside                                                  |
+| -------------------------------------------------- | -------------------------------------------------------------- |
+| [`src/app`](src/app/README.md)                     | The layout, home page, and site-wide styling notes             |
+| [`src/app/about`](src/app/about/README.md)         | The Timeline page: the year chart of roles and the photo strip |
+| [`src/app/contact`](src/app/contact/README.md)     | The Contact page and the CatRun mini game                      |
+| [`src/app/projects`](src/app/projects/README.md)   | The project catalogue, the bento grid and the project dialog   |
+| [`src/components`](src/components/README.md)       | Navbar, footer, command menu, logo intro, background lattice   |
+| [`src/lib`](src/lib/README.md)                     | Shared data (pages, links), theme, dialogs, footer data        |
+| `public/`                                          | Photos, project media, skill logos, fonts, resume              |
+| `scripts/`                                         | One-off tools (getting the Spotify refresh token)              |
 
-## Learn More
+Each folder's README explains how that part works and how to make common changes, like adding a project or a role.
+Project terms are defined in [`GLOSSARY.md`](GLOSSARY.md).
 
-To learn more about Next.js, take a look at the following resources:
+## Deploying
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The site deploys on Vercel. Set the same environment variables there as in `.env.local`.

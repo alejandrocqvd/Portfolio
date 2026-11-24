@@ -1,29 +1,35 @@
 "use client";
 
-import React from "react";
-import PhotoRow from "@/components/PhotoRow";
+import { useState } from "react";
+import Image from "next/image";
 
 import vs from "@public/about/vs.jpg";
 import uarad from "@public/about/uarad.jpg";
 import playgroundBuild from "@public/about/playgroundBuild.png";
 import speakingHD from "@public/about/speakingHD.png";
 
-const photos = [uarad, playgroundBuild, speakingHD, vs];
+const photos = [
+  { src: uarad, alt: "Three of us in front of the Acuren banner at an event" },
+  { src: playgroundBuild, alt: "The volunteer crew in front of the playground we built" },
+  { src: speakingHD, alt: "Speaking at a podium beside a Pason banner" },
+  { src: vs, alt: "Students' Union Volunteer Services photo booth with friends" },
+];
 
 const timelineItems = [
   {
     company: "University of Calgary",
+    short: "UCalgary",
     role: "BS in Computer Science",
-    period: "2022 - Now",
+    period: "Sept 2022 - Now",
     description: [
       "CGPA: 3.9 / 4.0",
       "Awards and Honours: Alexander Rutherford Scholarship, 3x Dean's List",
       "Relevant Coursework:  DSA, OOP, DBMS",
     ],
-    color: "bg-blue-900",
   },
   {
     company: "Pason Systems",
+    short: "Pason",
     role: "Software Engineer Intern",
     period: "May 2025 - Aug 2026",
     description: [
@@ -31,10 +37,10 @@ const timelineItems = [
       "Wrote all the kinds of tests you can imagine (unit, integration, e2e, you name it)",
       "Shipped faster with CI/CD, automating builds, tests, and deployments",
     ],
-    color: "bg-blue-600",
   },
   {
     company: "Nullus",
+    short: "Nullus",
     role: "Co-Founder & Software Engineer",
     period: "Apr 2024 - Now",
     description: [
@@ -42,10 +48,10 @@ const timelineItems = [
       "Designed and developed sites for individuals, clubs, and businesses",
       "Served 6+ clients and reaching 2000+ users",
     ],
-    color: "bg-blue-500",
   },
   {
     company: "UofA Robotics and Aerial Drones",
+    short: "UA-RAD",
     role: "Software Engineer",
     period: "Jul 2025 - Oct 2025",
     description: [
@@ -53,120 +59,257 @@ const timelineItems = [
       "Utilized ArduPilot to program and test autonomous drone flight missions",
       "0 drones exploded",
     ],
-    color: "bg-blue-300",
   },
   {
     company: "Canadian Global Care on Campus",
+    short: "CGCC",
     role: "Web Developer",
-    period: "2023 - 2025",
+    period: "Oct 2023 - Mar 2025",
     description: [
       "Designed, developed, and maintained a React-based website with TailwindCSS and Vite",
-      "Promoted the site which led to a 30% increase in club event attendance",
+      "Promoted the site which led to a 36% increase in club event attendance",
       "Entire box of leftover croissants taken home after event",
     ],
-    color: "bg-blue-200",
   },
 ];
 
-// ==============================================================================================================
-function TimelineHeader() {
-  return (
-    <>
-      <h2 className="font-mono text-left mx-auto w-full text-4xl mb-12 relative fade-up-first px-6 md:mx-0">
-        Timeline
-      </h2>
+// Dates are counted in months (year * 12 + month index). A period is inclusive, so a bar runs to the end of its last
+// month; "Now" runs to the end of the current month, which keeps server and client renders identical within a month.
+const MONTHS = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
-      <p className="text-sm text-justify fade-up-first px-6 md:mx-0">
-        From volunteering to full-time work, I&apos;ve been lucky enough to have
-        been a part of so many different teams, learning something new from each
-        one. Forever grateful for the people who took the time to mentor me and
-        trust me with real responsibility (and not just make me fetch coffee or
-        something).
-      </p>
-    </>
-  );
+function month(text) {
+  const [name, year] = text.trim().split(/\s+/);
+  return Number(year) * 12 + MONTHS.indexOf(name.slice(0, 3).toLowerCase());
+}
+console.assert(month("Sept 2022") === 2022 * 12 + 8 && month("Aug 2026") === 2026 * 12 + 7, "month() is off");
+
+function duration(months) {
+  const years = Math.floor(months / 12);
+  const rest = months % 12;
+  return [years && `${years} yr`, rest && `${rest} mo`].filter(Boolean).join(" ");
 }
 
 // ==============================================================================================================
-function TimelinePhotos() {
+// One lane per role, oldest first, on a shared axis from January of the first year to January after the current one.
+function useLanes() {
+  const today = new Date();
+  const now = today.getFullYear() * 12 + today.getMonth() + 1;
+  const lanes = timelineItems
+    .map((item) => {
+      const [from, to] = item.period.split(" - ");
+      const current = /now/i.test(to);
+      const start = month(from);
+      const end = current ? now : month(to) + 1;
+      return { item, current, start, end, length: duration(end - start) };
+    })
+    .sort((a, b) => a.start - b.start);
+
+  const first = Math.floor(lanes[0].start / 12) * 12;
+  const last = (today.getFullYear() + 1) * 12;
+  const pct = (m) => `${((m - first) / (last - first)) * 100}%`;
+  const years = Array.from({ length: (last - first) / 12 }, (_, i) => first / 12 + i);
+
+  return { lanes, now, pct, years };
+}
+
+// ==============================================================================================================
+// Tabs: each lane is a tab and the panel below is its tabpanel. The whole row is the target, so short bars are easy
+// to hit. Arrow keys and Home/End move selection and focus together; selection happens on press, not release.
+function YearTrack({ lanes, now, pct, years, selected, onSelect }) {
+  function onKeyDown(event) {
+    const moves = { ArrowUp: -1, ArrowLeft: -1, ArrowDown: 1, ArrowRight: 1 };
+    let next;
+    if (event.key in moves) next = (selected + moves[event.key] + lanes.length) % lanes.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = lanes.length - 1;
+    else return;
+    event.preventDefault();
+    onSelect(next);
+    document.getElementById(`role-tab-${next}`)?.focus();
+  }
+
   return (
-    <div className="flex flex-col xl:flex-row justify-center items-stretch w-full max-w-5xl h-full relative top-12">
-      <PhotoRow
-        fade="fade-up-second"
-        className="mt-44 relative"
-        photos={photos}
-        reversed={true}
-        defaultSelected={photos.length - 1}
-      />
+    <div className="mt-16">
+      <div aria-hidden className="grid h-6 grid-cols-[4.5rem_1fr] text-xs tabular-nums text-muted md:grid-cols-[7rem_1fr]">
+        <div className="relative col-start-2">
+          {years.map((year) => (
+            <span key={year} className="absolute top-0" style={{ left: pct(year * 12) }}>
+              {year}
+            </span>
+          ))}
+          {/* Too close to the last year label on phones; the accent line says it there. */}
+          <span className="absolute top-0 hidden -translate-x-full pr-1.5 text-accent md:block" style={{ left: pct(now) }}>
+            Now
+          </span>
+        </div>
+      </div>
+
+      <div className="relative">
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[4.5rem] right-0 md:left-[7rem]">
+          {years.map((year) => (
+            <span key={year} className="absolute inset-y-0 w-px bg-ink/[0.06]" style={{ left: pct(year * 12) }} />
+          ))}
+          <span className="absolute inset-y-0 w-px bg-accent/60" style={{ left: pct(now) }} />
+        </div>
+
+        <div role="tablist" aria-label="Roles by year" onKeyDown={onKeyDown}>
+          {lanes.map((lane, i) => {
+            const active = i === selected;
+            const color = active
+              ? lane.current
+                ? "bg-accent"
+                : "bg-ink"
+              : lane.current
+                ? "bg-accent/45 group-hover:bg-accent/70"
+                : "bg-ink/20 group-hover:bg-ink/35";
+            return (
+              <button
+                key={lane.item.company}
+                id={`role-tab-${i}`}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                aria-controls="role-panel"
+                tabIndex={active ? 0 : -1}
+                aria-label={`${lane.item.company}, ${lane.item.role}, ${lane.item.period}`}
+                onPointerDown={(event) => event.button === 0 && onSelect(i)}
+                onClick={() => onSelect(i)}
+                className="group relative grid h-9 w-full grid-cols-[4.5rem_1fr] items-center rounded-control text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-[7rem_1fr]"
+              >
+                {active && (
+                  <span
+                    aria-hidden
+                    className={`lane-marker absolute -left-4 top-1/2 h-2.5 w-2 -translate-y-1/2 ${
+                      lane.current ? "bg-accent" : "bg-ink"
+                    }`}
+                  />
+                )}
+                <span
+                  className={`truncate text-sm transition-colors duration-150 ease-out ${
+                    active ? "text-ink" : "text-muted group-hover:text-ink"
+                  }`}
+                >
+                  {lane.item.short}
+                </span>
+                <span className="relative h-2">
+                  <span
+                    className={`year-bar absolute inset-y-0 rounded-full transition-colors duration-150 ease-out ${
+                      lane.end === now ? "rounded-r-none" : ""
+                    } ${color}`}
+                    style={{ left: pct(lane.start), width: `calc(${pct(lane.end)} - ${pct(lane.start)})`, "--i": i }}
+                  />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
 // ==============================================================================================================
-function TimelineItem({ item }) {
+function RolePanel({ lane, tab }) {
+  const { item, current, length } = lane;
+
   return (
-    <div className="mb-10 ml-4">
-      <div
-        className={`absolute -left-[0.525rem] w-4 h-4 rounded-full border-2 border-gray-900 ${item.color}`}
-      />
-
-      <div className="flex flex-col">
-        <span className="text-white font-semibold">
-          {item.company} <span className="font-normal">|</span>{" "}
-          <span className="italic font-light text-gray-300">{item.role}</span>
-        </span>
-
-        <ul className="list-disc list-inside text-sm text-gray-400 mt-1">
+    <div
+      role="tabpanel"
+      id="role-panel"
+      aria-labelledby={tab}
+      className="mt-8 rounded-media border border-ink/10 bg-surface/[0.25] p-6 md:p-8"
+    >
+      <div key={item.company} className="role-in">
+        <h2 className="text-xl font-[420] tracking-[-0.01em]">
+          {item.company}
+          {current && <span className="sr-only"> (current)</span>}
+        </h2>
+        <p className="mt-1 text-sm text-muted">
+          {item.role} · <span className="tabular-nums">{item.period}</span> · {length}
+        </p>
+        <ul className="mt-5 flex list-disc flex-col gap-1 pl-[1.1em] text-[0.95rem] leading-relaxed text-ink marker:text-ink/30">
           {item.description.map((point) => (
             <li key={point}>{point}</li>
           ))}
         </ul>
-
-        <span className="text-gray-500 text-sm mt-2">{item.period}</span>
       </div>
     </div>
   );
 }
 
 // ==============================================================================================================
-function TimelineList() {
-  return (
-    <div className="flex flex-col items-start justify-center mx-auto mt-8 px-10 md:mx-0 fade-up-second-2">
-      <div className="relative border-l border-gray-600 pl-6">
-        {timelineItems.map((item) => (
-          <TimelineItem key={`${item.company}-${item.role}`} item={item} />
-        ))}
-      </div>
-    </div>
-  );
-}
+// Accordion strip: the featured photo takes most of the row and the rest are slivers. Hovering one with a mouse, or
+// tapping it, widens it.
+function PhotoStrip() {
+  const [featured, setFeatured] = useState(0);
 
-// ==============================================================================================================
-function TimelineFooter() {
   return (
-    <p className="text-sm w-full mx-auto text-center mt-12 px-6 md:mx-0 fade-up-second-2">
-      To view my full experience, check out my CV{" "}
-      <a
-        href="/misc/Alejandro-Cardona-Resume.pdf"
-        className="hover:underline"
-        target="_blank"
-        rel="noreferrer"
-      >
-        here
-      </a>
-      .
-    </p>
+    <ul aria-label="Photos" className="mt-10 flex h-56 gap-2 md:h-80">
+      {photos.map((photo, i) => {
+        const active = i === featured;
+        return (
+          <li
+            key={photo.alt}
+            style={{ flexGrow: active ? 6 : 1 }}
+            className="relative min-w-10 basis-0 overflow-hidden rounded-media border border-ink/10 transition-[flex-grow] duration-[400ms] ease-out motion-reduce:transition-none"
+          >
+            <button
+              type="button"
+              aria-pressed={active}
+              aria-label={`Show photo: ${photo.alt}`}
+              onClick={() => setFeatured(i)}
+              onPointerEnter={(event) => event.pointerType === "mouse" && setFeatured(i)}
+              className={`absolute inset-0 rounded-media focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
+                active ? "cursor-default" : "cursor-pointer"
+              }`}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                placeholder="blur"
+                sizes="(min-width: 768px) 600px, 90vw"
+                className={`object-cover transition-[filter] duration-150 ease-out ${active ? "" : "brightness-75 hover:brightness-100"}`}
+              />
+            </button>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
 // ==============================================================================================================
 export default function Timeline() {
+  const track = useLanes();
+  const [selected, setSelected] = useState(() => track.lanes.findIndex((lane) => lane.item === timelineItems[0]));
+
   return (
-    <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl">
-      <TimelineHeader />
-      <TimelinePhotos />
-      <TimelineList />
-      <TimelineFooter />
+    <section className="mx-auto w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
+      <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Timeline</h1>
+      <p className="mt-5 max-w-2xl leading-relaxed text-ink">
+        From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different teams,
+        learning something new from each one. Forever grateful for the people who took the time to mentor me and trust me
+        with real responsibility (and not just make me fetch coffee or something).
+      </p>
+
+      <PhotoStrip />
+      <YearTrack {...track} selected={selected} onSelect={setSelected} />
+      <RolePanel lane={track.lanes[selected]} tab={`role-tab-${selected}`} />
+
+      <p className="mt-12 text-ink">
+        For my full experience, see my{" "}
+        <a
+          href="/misc/Alejandro-Cardona-Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="text-ink underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
+        >
+          resume (PDF)
+        </a>
+        .
+      </p>
     </section>
   );
 }
+

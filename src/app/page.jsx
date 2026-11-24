@@ -1,44 +1,42 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import PhotoRow from "@/components/PhotoRow";
-import GLSLHills from "@/app/GSLHills";
-import TypingName from "@/app/TypingName";
+import Greeting from "@/app/Greeting";
+import PhotoCards from "@/app/PhotoCards";
 
 import back2 from "@public/about/back2.jpg";
 import grass from "@public/about/grass.jpg";
 import dinner from "@public/about/dinner.jpg";
-import mark from "@public/about/mark.jpg";
 
-const photos = [back2, grass, dinner, mark];
+// Pile order: left, middle (on top), right.
+const photos = [
+  { src: back2, alt: "Walking down a garden path under cherry blossoms in Kelowna" },
+  { src: dinner, alt: "One year anniversary at Major Tom's" },
+  { src: grass, alt: "Chloe and me laying on the grass in Kelowna :D" },
+];
 
 // ==============================================================================================================
-function HeroContent() {
+function Bio() {
   return (
-    <div className="lg:w-1/2 text-justify fade-up-second-2 text-sm px-16 md:px-0">
-      <p className="text-sm text-justify">
-        I&apos;m a full time student currently enrolled in Computer Science at
-        the University of Calgary.
-        <br />
-        <br />
-        Choosing computer science was a difficult decision to make coming from a
-        family full of doctors where the only right path was medicine. But ever
-        since I took my first programming class, I was hooked. My main
-        interests are software engineering, game development, and virtual
-        reality.
-        <br />
-        <br />
+    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-ink lg:col-start-2 lg:row-start-1 font-mono">
+      <p>
+        I&apos;m a full time student currently enrolled in Computer Science at the University of Calgary.
+      </p>
+      <p>
+        Choosing computer science was a difficult decision to make coming from a family full of doctors where the only
+        right path was medicine. But ever since I took my first programming class, I was hooked. My main interests are{" "}
+        <span className="font-bold">software architecture, game development, and virtual reality</span>.
+      </p>
+      <p>
         Alongside this, I co-founded{" "}
         <a
           href="https://www.nullus.ca/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:underline"
+          className="text-ink font-bold underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
         >
           Nullus Inc.
         </a>
-        , where we empower individuals, clubs, and companies through innovative
-        web development solutions.
+        , where we empower individuals, clubs, and businesses through innovative web development solutions.
       </p>
     </div>
   );
@@ -47,44 +45,27 @@ function HeroContent() {
 // ==============================================================================================================
 function Hero() {
   return (
-    <section className="relative w-full overflow-hidden mb-20">
-      <div className="absolute inset-0 -z-10 pointer-events-none -translate-y-72 md:-translate-y-52">
-        <GLSLHills />
-      </div>
+    <section className="mx-auto min-h-[min(100svh,950px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
+      <Greeting />
+      <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em] font-mono">
+        Alejandro Cardona
+      </h1>
 
-      <div className="flex flex-col justify-end items-center max-w-5xl mx-auto w-full mb-8 pt-80">
-        <TypingName />
+      <div
+        aria-hidden
+        onAnimationEnd={() => (document.documentElement.dataset.intro = "skip")}
+        className="hero-rule my-10 h-px w-full bg-ink/30"
+      />
 
-        <div className="w-full h-[1.25px] 4xl:h-[3px] bg-white my-10"></div>
-
-        <div className="flex justify-center sm:justify-end w-full">
-          <HeroContent />
-        </div>
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,34rem)]">
+        <Bio />
+        <PhotoCards photos={photos} className="lg:col-start-1 lg:row-start-1" />
       </div>
     </section>
   );
 }
 
 // ==============================================================================================================
-function About() {
-  return (
-    <div className="w-full h-full relative">
-      <section>
-        <div className="flex flex-col xl:flex-row justify-center items-stretch w-full max-w-5xl h-full relative -top-32">
-          <PhotoRow fade="fade-up-second" photos={photos} />
-        </div>
-      </section>
-    </div>
-  );
-}
-
-// ==============================================================================================================
 export default function HomePage() {
-  return (
-    <div className="flex flex-col justify-center items-center">
-      <Hero />
-      <About />
-      <Footer />
-    </div>
-  );
+  return <Hero />;
 }

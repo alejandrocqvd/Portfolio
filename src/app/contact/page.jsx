@@ -1,144 +1,99 @@
-import React from "react";
-import Image from "next/image";
-import Footer from "@/components/Footer";
-import {
-  ArrowUpRight,
-  Mail,
-  Github,
-  Linkedin,
-  FileText,
-} from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
+import CatRun from "@/app/contact/CatRun";
+import CopyButton from "@/app/contact/CopyButton";
+import { pageMetadata } from "@/lib/seo";
+import { email, elsewhere } from "@/lib/site";
 
-import jiji from "@public/about/jiji.png";
+export const metadata = pageMetadata({
+  path: "/contact",
+  title: "Contact",
+  description: "Get in touch.",
+});
 
-const contactLinks = [
-  {
-    number: "01",
-    label: "Email",
-    value: "alejandrocqvd@gmail.com",
-    href: "mailto:alejandrocqvd@gmail.com",
-    icon: Mail,
-  },
-  {
-    number: "02",
-    label: "LinkedIn",
-    value: "linkedin.com/in/alejandro-cardonaq",
-    href: "https://www.linkedin.com/in/alejandro-cardonaq",
-    icon: Linkedin,
-  },
-  {
-    number: "03",
-    label: "GitHub",
-    value: "github.com/alejandrocqvd",
-    href: "https://github.com/alejandrocqvd",
-    icon: Github,
-  },
-  {
-    number: "04",
-    label: "Resume",
-    value: "View my resume",
-    href: "/misc/Alejandro-Cardona-Resume.pdf",
-    icon: FileText,
-  },
-];
+// Same buttons as the Projects hero.
+const button =
+  "inline-flex h-10 items-center justify-center gap-2 rounded-control px-4 text-sm transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]";
 
-// ==============================================================================================================
-function ContactHeader() {
-  return (
-    <>
-      <h2 className="font-mono text-left mx-auto w-full text-4xl mb-8 fade-up-first">
-        Get In Touch
-      </h2>
-
-      <p className="text-sm text-left w-full md:mb-12 text-muted-foreground fade-up-first">
-        Feel free to reach out if you want to chat about anything. I&apos;m
-        always open to new opportunities and conversations :D
-      </p>
-    </>
-  );
+// The label already names the site, so profiles show just the handle; the email may wrap after the @.
+function Value({ link }) {
+  if (link.href.startsWith("mailto:")) {
+    const [user, domain] = link.value.split("@");
+    return (
+      <>
+        {user}@<wbr />
+        {domain}
+      </>
+    );
+  }
+  return link.value.split("/").pop();
 }
 
 // ==============================================================================================================
-function ContactImage() {
+// Hairline rows: label, value underlined on hover like other links on the site, arrow. Each row is a stretched link.
+function DirectLinks() {
   return (
-    <div className="md:w-2/5 md:h-full">
-      <Image
-        src={jiji}
-        alt="Jiji the black cat sitting on a laptop"
-        width={400}
-        height={400}
-        placeholder="blur"
-        className="hidden md:block rounded-lg object-cover w-full h-full fade-up-first"
-      />
-    </div>
-  );
-}
+    <ul aria-label="Other ways to reach me" className="divide-y divide-ink/10 border-y border-ink/10">
+      {elsewhere.map((link) => {
+        const external = !link.href.startsWith("mailto:");
+        return (
+          <li key={link.label} className="group relative grid grid-cols-[4.5rem_minmax(0,1fr)_auto] items-center gap-3 py-4 sm:grid-cols-[5.5rem_minmax(0,1fr)_auto] sm:gap-4">
+            <span className="text-sm text-muted">{link.label}</span>
 
-// ==============================================================================================================
-function ContactLink({ link, index }) {
-  const Icon = link.icon;
-  const isEmail = link.href.startsWith("mailto:");
+            <a
+              href={link.href}
+              aria-label={`${link.label}: ${link.value}`}
+              {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+              className="min-w-0 text-[0.95rem] leading-snug text-ink after:absolute after:-inset-x-3 after:inset-y-0 after:rounded-control after:transition-colors after:duration-150 after:ease-out hover:after:bg-ink/[0.03] active:after:bg-ink/[0.06] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-accent"
+            >
+              <span className="link [overflow-wrap:anywhere] group-hover:bg-[length:100%_1px]">
+                <Value link={link} />
+              </span>
+            </a>
 
-  return (
-    <a
-      href={link.href}
-      target={isEmail ? undefined : "_blank"}
-      style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-      rel={isEmail ? undefined : "noopener noreferrer"}
-      className="group flex flex-1 items-center justify-between px-3 border-t border-border last:border-b transition-colors hover:bg-secondary/30 fade-up-second"
-    >
-      <div className="flex items-center gap-5">
-        <span className="text-white group-hover:text-white/50 transition-colors">
-          <Icon className="w-4 h-4" />
-        </span>
-
-        <div className="flex flex-col gap-0.5">
-          <span className="font-mono text-sm font-bold text-white group-hover:text-white/50 transition-colors">
-            {link.label}
-          </span>
-
-          <span className="text-xs text-muted-white group-hover:text-white/50 transition-colors">
-            {link.value}
-          </span>
-        </div>
-      </div>
-
-      <ArrowUpRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-white/50 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-    </a>
-  );
-}
-
-// ==============================================================================================================
-function ContactLinks() {
-  return (
-    <div className="md:w-3/5 h-full flex flex-col justify-between">
-      {contactLinks.map((link, index) => (
-        <ContactLink key={link.label} link={link} index={index} />
-      ))}
-    </div>
-  );
-}
-
-// ==============================================================================================================
-function ContactContent() {
-  return (
-    <div className="flex flex-col md:flex-row gap-16 md:gap-16 w-full mb-20 h-[320px]">
-      <ContactImage />
-      <ContactLinks />
-    </div>
+            <ArrowUpRight
+              size={16}
+              aria-hidden
+              className="shrink-0 text-muted transition-[transform,color] duration-150 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink"
+            />
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
 // ==============================================================================================================
 export default function ContactPage() {
   return (
-    <>
-      <section className="flex flex-col justify-center items-center mt-32 md:mt-44 w-full mx-auto max-w-4xl px-6">
-        <ContactHeader />
-        <ContactContent />
-      </section>
+    <section className="mx-auto min-h-[min(100svh,950px)] w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
+      <div className="grid gap-12 md:grid-cols-2 md:items-center">
+        <div>
+          <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Get in touch</h1>
+          <p className="mt-5 max-w-md leading-relaxed text-ink">
+            Feel free to reach out if you want to chat about anything. I&apos;m always open to new opportunities and
+            conversations :D
+          </p>
 
-      <Footer />
-    </>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a href={`mailto:${email}`} className={`${button} bg-ink text-paper hover:bg-ink/85`}>
+              <Mail size={16} aria-hidden />
+              Email me
+            </a>
+            <CopyButton
+              value={email}
+              label="Copy email address"
+              confirmation="Email address copied"
+              className={`${button} border border-ink/15 hover:bg-ink/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent`}
+            >
+              Copy email
+            </CopyButton>
+          </div>
+        </div>
+
+        <DirectLinks />
+      </div>
+
+      <CatRun />
+    </section>
   );
 }
