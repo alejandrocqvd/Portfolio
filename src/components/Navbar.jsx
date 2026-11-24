@@ -9,7 +9,8 @@ import CommandMenu from "@/components/CommandMenu";
 import DisplayToggle from "@/components/DisplayToggle";
 
 // ==============================================================================================================
-// A plain click on a link to the current page would replay the page transition; do nothing instead (modified clicks still open tabs).
+// A plain click on a link to the current page would replay the page transition, so it does nothing instead.
+// Modified clicks (new tab, new window) still work.
 function stayOnPage(pathname, href) {
   return (event) => {
     if (pathname === href && !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)) event.preventDefault();
@@ -68,7 +69,8 @@ export default function Navbar() {
 
   return (
     <header className="nav-vt absolute inset-x-0 top-0 z-40 font-mono">
-      {/* Same frame as the footer (max-w-5xl, px-6, xl:px-0), mirrored by .intro-logo's --slot in globals.css (the intro logo lands on Logo) */}
+      {/* Same frame as the footer (max-w-5xl, px-6, xl:px-0). Mirrored by .intro-logo's --slot in globals.css,
+          because the intro logo lands on Logo. */}
       <nav aria-label="Main" className="mx-auto flex h-20 w-full max-w-5xl items-center justify-between gap-6 px-6 text-sm xl:px-0">
         <div className="flex items-center gap-5 sm:gap-10">
           <Logo />
@@ -79,7 +81,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* On small screens these live in the footer */}
+        {/* On small screens these live in the footer. */}
         <div className="-mr-2 hidden items-center gap-1 md:flex">
           <CommandMenu />
           <DisplayToggle />

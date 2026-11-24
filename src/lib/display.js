@@ -44,7 +44,8 @@ export function toggleTheme(origin) {
   const rect = origin?.getBoundingClientRect();
   const x = rect ? rect.left + rect.width / 2 : innerWidth / 2;
   const y = rect ? rect.top + rect.height / 2 : 0;
-  // The reveal is a circle from the toggle whose outer 10% is feathered (mask in globals.css); the solid part must cover the farthest corner.
+  // The reveal is a circle from the toggle whose outer 10% is feathered (mask in globals.css), so the solid part
+  // must reach the farthest corner.
   const reach = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y)) / 0.9;
   root().style.setProperty("--iris-x", `${x}px`);
   root().style.setProperty("--iris-y", `${y}px`);

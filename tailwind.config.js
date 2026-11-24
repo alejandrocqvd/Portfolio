@@ -14,7 +14,6 @@ module.exports = {
         ink: token("text"),
         muted: token("muted"),
         accent: token("accent"),
-        error: token("error"),
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Hello Script", "ui-sans-serif", "system-ui", "sans-serif"],
@@ -26,10 +25,6 @@ module.exports = {
       },
       transitionTimingFunction: {
         out: "cubic-bezier(0.23, 1, 0.32, 1)",
-      },
-      screens: {
-        "3xl": "1800px",
-        "4xl": "3000px",
       },
     },
   },

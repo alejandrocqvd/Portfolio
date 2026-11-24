@@ -7,7 +7,7 @@ import back2 from "@public/about/back2.jpg";
 import grass from "@public/about/grass.jpg";
 import dinner from "@public/about/dinner.jpg";
 
-// Left, middle, right.
+// Pile order: left, middle (on top), right.
 const photos = [
   { src: back2, alt: "Walking down a garden path under cherry blossoms in Kelowna" },
   { src: dinner, alt: "One year anniversary at Major Tom's" },

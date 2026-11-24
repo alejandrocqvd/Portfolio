@@ -1,7 +1,14 @@
 import { ArrowUpRight, Mail } from "lucide-react";
 import CatRun from "@/app/contact/CatRun";
 import CopyButton from "@/app/contact/CopyButton";
+import { pageMetadata } from "@/lib/seo";
 import { email, elsewhere } from "@/lib/site";
+
+export const metadata = pageMetadata({
+  path: "/contact",
+  title: "Contact",
+  description: "Get in touch.",
+});
 
 // Same buttons as the Projects hero.
 const button =

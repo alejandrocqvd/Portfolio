@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import Loader from "@/components/Loader";
 import Navbar from "@/components/Navbar";
 import TransitionClicks from "@/components/TransitionClicks";
+import { pageMetadata, personJsonLd, siteName, siteUrl } from "@/lib/seo";
 
 // The site font: JetBrains Mono (variable 100–800, upright and italic), self-hosted from public/fonts/hello.
 // Exposed as --font-sans, which the body and Tailwind's font-sans read; the stack falls back to system monospace.
@@ -21,9 +22,11 @@ const jetBrainsMono = localFont({
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
 });
 
+// Defaults for every page; pages add their own title, description and canonical with pageMetadata (src/lib/seo.js).
 export const metadata = {
-  title: "Alejandro Cardona",
-  description: "Alejandro Cardona, software engineer and Computer Science student at the University of Calgary.",
+  metadataBase: new URL(siteUrl),
+  ...pageMetadata({ path: "/" }),
+  title: { default: siteName, template: `${siteName} | %s` },
 };
 
 // Pages are static and refreshed at most every 5 minutes, which keeps the footer's "now" data (src/lib/now.js) current.
@@ -46,6 +49,7 @@ export default function RootLayout({ children }) {
         <head>
           <link rel="icon" href="/favicon.ico" />
           <script dangerouslySetInnerHTML={{ __html: displayScript }} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
         </head>
 
         <body className="min-h-screen">

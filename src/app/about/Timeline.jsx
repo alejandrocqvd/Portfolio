@@ -113,8 +113,8 @@ function useLanes() {
 }
 
 // ==============================================================================================================
-// Tabs: each lane is a tab (the whole row is the target, so short bars are easy to hit), the panel below is its tabpanel.
-// Arrow keys and Home/End move selection and focus together; selection happens on press, not release.
+// Tabs: each lane is a tab and the panel below is its tabpanel. The whole row is the target, so short bars are easy
+// to hit. Arrow keys and Home/End move selection and focus together; selection happens on press, not release.
 function YearTrack({ lanes, now, pct, years, selected, onSelect }) {
   function onKeyDown(event) {
     const moves = { ArrowUp: -1, ArrowLeft: -1, ArrowDown: 1, ArrowRight: 1 };
@@ -238,7 +238,8 @@ function RolePanel({ lane, tab }) {
 }
 
 // ==============================================================================================================
-// Accordion strip: the featured photo takes most of the row, the rest are slivers; hovering (mouse) or tapping one widens it.
+// Accordion strip: the featured photo takes most of the row and the rest are slivers. Hovering one with a mouse, or
+// tapping it, widens it.
 function PhotoStrip() {
   const [featured, setFeatured] = useState(0);
 

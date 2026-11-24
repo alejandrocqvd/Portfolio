@@ -21,9 +21,10 @@ const copy = `${card} shadow-[0_22px_45px_-14px_rgb(0_0_0/0.6)] will-change-tran
 // Each card is drawn twice: flat in the pile, which never moves, and as a lifted copy above the pile. Lifting a card
 // fades its copy in and grows it from the pile pose, so it rises through the cards in front of it; lowering shrinks it
 // back while it fades out.
+//
 // Why the pile never moves: a scaled photo is drawn resampled (soft) at the pile's half-pixel position, and when a
-// transition ends the browser redraws it crisp and pixel-snapped, so a visible card that settles pops on its last frame.
-// A copy only settles while fully shown at its lifted pose (no snap) or fully faded out (nothing to see).
+// transition ends the browser redraws it crisp and pixel-snapped, so a visible card that settles pops on its last
+// frame. A copy only settles while fully shown at its lifted pose (no snap) or fully faded out (nothing to see).
 export default function PhotoCards({ photos, className = "" }) {
   const [active, setActive] = useState(null);
 

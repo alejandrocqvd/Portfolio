@@ -9,18 +9,16 @@
 @font-face { font-family: "Hello Script"; src: url("/fonts/hello/hi.woff2") format("woff2"); unicode-range: U+0900-097F; font-display: block; }
 @font-face { font-family: "Hello Script"; src: url("/fonts/hello/ar.woff2") format("woff2"); unicode-range: U+0600-06FF; font-display: block; }
 
-/* Theme tokens: RGB channels so Tailwind opacity modifiers work (bg-text/10). Dark is the no-JS default. */
+/* Theme tokens, as RGB channels so Tailwind opacity modifiers work (bg-ink/10). Dark is the no-JS default. */
 :root {
   --c-bg: 13 14 16;
   --c-surface: 22 24 27;
   --c-text: 236 238 240;
   --c-muted: 158 164 171;
   --c-accent: 87 211 196;
-  --c-error: 255 128 128;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
   --dur-fast: 150ms;
   --dur-ui: 250ms;
-  --dur-slow: 400ms;
   color-scheme: dark;
 }
 
@@ -30,11 +28,10 @@
   --c-text: 15 20 24;
   --c-muted: 88 97 106;
   --c-accent: 11 122 112;
-  --c-error: 185 35 35;
   color-scheme: light;
 }
 
-/* Base */
+/* Base. */
 html {
   background: rgb(var(--c-bg));
   overflow-x: hidden;
@@ -57,7 +54,7 @@ body {
   border-radius: 4px;
 }
 
-/* Theme-dependent icon swaps (no hydration flicker) */
+/* Theme- and OS-dependent swaps, done in CSS so there is no hydration flicker. */
 :root[data-theme="light"] .only-dark,
 :root:not([data-theme="light"]) .only-light,
 :root[data-os="mac"] .only-other-os,
@@ -65,7 +62,7 @@ body {
   display: none;
 }
 
-/* Links: underline grows from the left */
+/* Links: the underline grows in from the left. */
 .link {
   background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
   transition: background-size var(--dur-ui) var(--ease), color var(--dur-fast) var(--ease);
@@ -80,7 +77,7 @@ body {
   background-image: linear-gradient(rgb(var(--c-accent)), rgb(var(--c-accent)));
 }
 
-/* Background lattice: dots are drawn white and inverted for light mode so a theme switch needs no redraw */
+/* Background lattice: dots are drawn white and inverted for light mode, so a theme switch needs no redraw. */
 .lattice {
   mask-image: linear-gradient(to bottom, #000 35%, transparent 100%);
 }
@@ -95,7 +92,7 @@ body {
   mask-image: radial-gradient(ellipse 80% 70% at 50% 20%, #000 20%, transparent 75%);
 }
 
-/* Command menu dialog (CSS-only enter/exit where supported) */
+/* Command menu dialog: CSS-only enter and exit where supported. */
 .palette {
   opacity: 0;
   transform: translateY(-8px) scale(0.98);
@@ -140,7 +137,7 @@ body {
   }
 }
 
-/* Exit, played while still open (closeDialog in src/lib/dialog.js) so it works without `overlay` support */
+/* Exit, played while still open (closeDialog in src/lib/dialog.js), so it works without `overlay` support. */
 .palette[open][data-closing] {
   opacity: 0;
   transform: translateY(-8px) scale(0.98);
@@ -151,12 +148,12 @@ body {
   backdrop-filter: blur(0);
 }
 
-/* Dialogs lock page scroll */
+/* An open dialog locks page scroll. */
 html:has(dialog[open]) {
   overflow: hidden;
 }
 
-/* Project dialog: rises into place like a page change (8px + scale), backdrop fades with it; reverses on close */
+/* Project dialog: rises into place like a page change (8px + scale) with the backdrop fading in; reverses on close. */
 .project-dialog {
   opacity: 0;
   transform: translateY(8px) scale(0.98);
@@ -211,7 +208,7 @@ html:has(dialog[open]) {
   backdrop-filter: blur(0);
 }
 
-/* Page transitions (next-view-transitions): nav and root swap instantly, only the page fades/rises */
+/* Page transitions (next-view-transitions): the nav and root swap instantly; only the page fades and rises. */
 .page-vt {
   view-transition-name: page;
   display: flow-root; /* keeps page margins from collapsing into <body> */
@@ -243,7 +240,8 @@ html:has(dialog[open]) {
   from { opacity: 0; transform: translateY(6px); }
 }
 
-/* Theme switch: one root snapshot, the new theme revealed by a feathered circle growing from the toggle (--iris, animated from JS). */
+/* Theme switch: one root snapshot, with the new theme revealed by a feathered circle growing from the toggle
+   (--iris, animated from JS). */
 @property --iris {
   syntax: "<length>";
   inherits: false;
@@ -260,19 +258,19 @@ html.theme-vt::view-transition-new(root) {
   mix-blend-mode: normal;
 }
 
-/* At --iris: 0 the mask hides everything, so no frame of the new theme shows before the JS animation starts (flicker). */
+/* At --iris: 0 the mask hides everything, so no frame of the new theme flickers in before the JS animation starts. */
 html.theme-vt::view-transition-new(root) {
   mask-image: radial-gradient(circle at var(--iris-x) var(--iris-y), #000 calc(var(--iris) * 0.9), transparent var(--iris));
 }
 
 /* Intro (every full page load, refreshes included; client-side navigation keeps the finished layout): the aperture
-   spins (one lit blade, like a loading ring) while the A fades in; once the A is in, the spin stops and the blades after
-   the lit one catch up to full, one per step. The logo glows as the last one lands, holds, then glides into the navbar
-   as the page fades in.
+   spins (one lit blade, like a loading ring) while the A fades in; once the A is in, the spin stops and the blades
+   after the lit one catch up to full, one per step. The logo glows as the last one lands, holds, then glides into the
+   navbar as the page fades in.
    Tune the --intro-* numbers in :root below, plain numbers of seconds (e.g. 0.5); everything else follows. They are
-   registered as <number>, so a value with a unit (or anything invalid) falls back to the default instead of breaking it.
-   --intro is when the page is "revealed" (greeting, hero rule and navbar logo wait on it), registered as a <time> so JS
-   reads it as a plain value like "3.95s". */
+   registered as <number>, so a value with a unit (or anything invalid) falls back to the default instead of breaking
+   it. --intro is when the page is "revealed" (greeting, hero rule and navbar logo wait on it), registered as a <time>
+   so JS reads it as a plain value like "3.95s". */
 @property --intro {
   syntax: "<time>";
   inherits: true;
@@ -372,11 +370,11 @@ html.theme-vt::view-transition-new(root) {
   }
 }
 
-/* Blade --i is lit at --i steps into each turn; the negative delay starts every blade mid-turn so the ring runs at once.
-   At --intro-stop the spin freezes: --k is how many steps the blade sits behind the lit one, --o its brightness then
-   (1, then the 0.7 / 0.5 tail, then 0.3). Each blade holds --o, then fills to full --ahead steps later (its distance
-   clockwise from the lit one), so the light keeps going round and the tail catches up last. Later animations in the
-   list override earlier ones. */
+/* Blade --i is lit at --i steps into each turn; the negative delay starts every blade mid-turn, so the ring runs at
+   once. At --intro-stop the spin freezes: --k is how many steps the blade sits behind the lit one, --o its brightness
+   then (1, then the 0.7 / 0.5 tail, then 0.3). Each blade holds --o, then fills to full --ahead steps later (its
+   distance clockwise from the lit one), so the light keeps going round and the tail catches up last. Later animations
+   in the list override earlier ones. */
 .intro-blade {
   --k: mod(var(--intro-head) - var(--i) + 8, 8);
   --ahead: mod(var(--i) - var(--intro-head) + 8, 8);
@@ -442,7 +440,7 @@ html.theme-vt::view-transition-new(root) {
   from { opacity: 0; }
 }
 
-/* Greeting: characters roll up out of / into a clipped line */
+/* Greeting: characters roll up out of, and into, a clipped line. */
 .roll-in {
   animation: roll-in 500ms var(--ease) both;
 }
@@ -544,7 +542,7 @@ html.theme-vt::view-transition-new(root) {
   }
 }
 
-/* Skill boxes: logo by default, name on hover */
+/* Skill boxes: the logo by default, the name on hover. */
 .skill-box {
   position: relative;
   display: flex;

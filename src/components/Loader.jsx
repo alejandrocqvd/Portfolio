@@ -13,7 +13,8 @@ const blades = [1, 7, 8, 2, 4, 5, 6, 3].map((i) => logoPaths[i]);
 export default function Loader() {
   return (
     <div aria-hidden className="intro">
-      {/* One lit blade steps clockwise; the A fades in, then every blade lights and the logo glows (timing in globals.css). */}
+      {/* One lit blade steps clockwise while the A fades in, then every blade lights and the logo glows.
+          The timing lives in globals.css. */}
       <svg viewBox="0 0 250 250" fill="currentColor" className="intro-logo">
         {blades.map((blade, i) => (
           <path key={i} {...blade} className="intro-blade" style={{ "--i": i }} />

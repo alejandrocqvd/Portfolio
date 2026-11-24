@@ -15,7 +15,7 @@ const CAT_X = 12;
 const EYES = "#9EE57B"; // Jiji's light green eyes
 const FUR = "#000"; // Jiji is a black cat in both themes
 const ROOMBA_LIGHT = "#E5484D"; // the roomba's red status light
-const CUCUMBER_COLORS = { dark: "#2E8B2E", skin: "#36B037", light: "#8ED05F" }; // sampled from public/misc/image.png
+const CUCUMBER_COLORS = { dark: "#2E8B2E", skin: "#36B037", light: "#8ED05F" }; // stem end, skin, blossom end
 
 // Rules, after the classic offline runner: speed climbs every frame to a cap, the score blinks at every milestone,
 // gaps widen with speed, cucumber groups grow, and a butterfly joins once it's fast enough.
@@ -35,7 +35,8 @@ const RULES = {
   maxRepeat: 2, // the same kind never appears more than this many times in a row
 };
 
-// Sprites: # fur (ink elsewhere), e eye, a accent, m muted, b bumper, r light. Jiji faces right; the roomba faces left.
+// Sprites: # ink (Jiji's fur is always black), e eye, a accent, m muted, b bumper, r light.
+// Jiji faces right; the roomba faces left.
 const CAT = {
   top: [
     ".............#...#",
@@ -138,8 +139,8 @@ function drawCat(ctx, colors, g) {
   drawSprite(ctx, [...(pose === "spooked" ? CAT.spooked : CAT.top), ...legs], CAT_X, Math.round(FLOOR - g.y) - 10, palette);
 }
 
-// A pixel cucumber after public/misc/image.png: dark rounded stem end with a leafy scallop, a ridged body, and a
-// pale rounded blossom end. Drawn from w/h so both sizes keep the same look.
+// A pixel cucumber: a dark rounded stem end with a leafy scallop, a ridged body and a pale rounded blossom end.
+// Drawn from w and h, so both sizes keep the same look.
 function drawCucumber(ctx, x, w, h) {
   const top = FLOOR - h;
   const fill = (color, dx, dy, fw, fh) => {
@@ -161,7 +162,8 @@ function drawCucumber(ctx, x, w, h) {
 function drawRoomba(ctx, colors, x, t) {
   drawSprite(ctx, ROOMBA, x, FLOOR - 7, { m: colors.muted, b: colors.bumper, r: ROOMBA_LIGHT });
   ctx.fillStyle = colors.ink;
-  ctx.fillRect(x + 12, FLOOR - 1, 2, 1); // wheels
+  // Wheels, then the side brush sweeping across the front.
+  ctx.fillRect(x + 12, FLOOR - 1, 2, 1);
   ctx.fillRect(x + 16, FLOOR - 1, 2, 1);
   const sweep = Math.floor(t * 16);
   for (let i = 0; i < BRISTLES; i++) ctx.fillRect(x + ((i * 2 + sweep) % 10), FLOOR - 1, 1, 1);

@@ -130,7 +130,6 @@ export default function ProjectDialog({ project, onClose }) {
     return () => el.close();
   }, []);
 
-  // Fade out, close, then let the page unmount the dialog.
   const close = () => closeDialog(dialog.current, onClose);
 
   return (

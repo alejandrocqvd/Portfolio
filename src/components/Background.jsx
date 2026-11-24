@@ -25,11 +25,13 @@ function startWorker(el) {
   return entry;
 }
 
-// True when a click lands on something drawn over the lattice (controls, media, filled or bordered surfaces, the
-// words themselves), so only clicks on bare background ripple. Text is hit-tested per line box, so the empty
-// end of a short line still counts as background.
+// Elements that always count as content: controls, media and dialogs.
 const CONTENT = "a, button, input, textarea, select, label, summary, [role=button], [role=tab], [contenteditable], img, video, canvas, svg, dialog";
 
+// True when a click lands on something drawn over the lattice (controls, media, filled or bordered surfaces, the
+// words themselves), so only clicks on bare background ripple.
+//
+// Text is hit-tested per line box, so the empty end of a short line still counts as background.
 function onContent({ target, clientX: x, clientY: y }) {
   if (!(target instanceof Element) || target.closest(CONTENT)) return true;
   for (let el = target; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
@@ -52,7 +54,7 @@ export default function Background() {
   const [status, setStatus] = useState(null);
   const theme = useTheme();
 
-  // Light mode draws slightly larger dots (the worker scales them).
+  // Tell the worker the theme; it draws slightly larger dots in light mode.
   useEffect(() => {
     if (theme) workers.get(canvas.current)?.worker.postMessage({ light: theme === "light" });
   }, [theme]);
@@ -70,7 +72,8 @@ export default function Background() {
     const post = (message) => entry?.worker.postMessage(message);
     const onResize = () => post({ size: { width: el.clientWidth, height: el.clientHeight, ratio: Math.min(devicePixelRatio, 1.5) } });
     const onVisibility = () => post({ running: !document.hidden });
-    // Ripple where the visitor clicks: mouse/pen on press, touch on release (a scroll swipe ends in pointercancel instead).
+    // Ripple where the visitor clicks: mouse and pen on press, touch on release (a scroll swipe ends in
+    // pointercancel instead).
     const onPointer = (e) => {
       if (!e.isPrimary || e.button > 0 || e.type !== (e.pointerType === "touch" ? "pointerup" : "pointerdown")) return;
       const rect = el.getBoundingClientRect();
