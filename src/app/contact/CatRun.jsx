@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useTheme } from "@/lib/display";
+
+import jiji from "@public/about/jiji.png";
 
 // The world is drawn in game pixels, each PIXEL CSS px wide, and scaled up without smoothing for a pixel-art look.
 // Tuning below is in game pixels and seconds.
@@ -9,8 +12,10 @@ const PIXEL = 4;
 const ROWS = 48; // play area height (48 × 4 = 192 CSS px)
 const FLOOR = 41; // y of the floor
 const CAT_X = 12;
-const EYES = "#D7E36B"; // Jiji's yellow-green
+const EYES = "#9EE57B"; // Jiji's light green eyes
+const FUR = "#000"; // Jiji is a black cat in both themes
 const ROOMBA_LIGHT = "#E5484D"; // the roomba's red status light
+const CUCUMBER_COLORS = { dark: "#2E8B2E", skin: "#36B037", light: "#8ED05F" }; // sampled from public/misc/image.png
 
 // Rules, after the classic offline runner: speed climbs every frame to a cap, the score blinks at every milestone,
 // gaps widen with speed, cucumber groups grow, and a butterfly joins once it's fast enough.
@@ -30,25 +35,25 @@ const RULES = {
   maxRepeat: 2, // the same kind never appears more than this many times in a row
 };
 
-// Sprites: # ink, e eye, a accent, m muted, b bumper, r light. Jiji faces right; the roomba faces left.
+// Sprites: # fur (ink elsewhere), e eye, a accent, m muted, b bumper, r light. Jiji faces right; the roomba faces left.
 const CAT = {
   top: [
     ".............#...#",
     ".............#####",
-    "#............###e#",
-    "#............#####",
-    ".#..#############.",
-    "..#############...",
+    ".............#e#e#",
+    ".............#####",
+    ".##.#############.",
+    ".##############...",
     "...############...",
     "...############...",
   ],
   spooked: [
-    "##...........#...#",
-    "##...........#####",
-    "##...........##ee#",
-    "##...........#####",
-    ".##.#############.",
-    "..#############...",
+    ".............#...#",
+    ".............#####",
+    ".............#e#e#",
+    ".##..........#####",
+    "###.#############.",
+    ".##############...",
     "...############...",
     "...############...",
   ],
@@ -59,9 +64,9 @@ const CAT = {
   },
   duck: [
     "................#..#.",
-    "#...............#####",
-    ".#.##############e###",
-    "..##################.",
+    "................#####",
+    ".################e#e#",
+    ".###################.",
     "...###############...",
   ],
   duckLegs: ["...#..#......#..#....", "....##........##....."],
@@ -124,7 +129,7 @@ function catPose(g) {
 function drawCat(ctx, colors, g) {
   const pose = catPose(g);
   const step = Math.floor(g.t * 10) % 2;
-  const palette = { "#": colors.ink, e: EYES };
+  const palette = { "#": FUR, e: EYES };
   if (pose === "duck") {
     drawSprite(ctx, [...CAT.duck, CAT.duckLegs[step]], CAT_X, FLOOR - 6, palette);
     return;
@@ -133,17 +138,24 @@ function drawCat(ctx, colors, g) {
   drawSprite(ctx, [...(pose === "spooked" ? CAT.spooked : CAT.top), ...legs], CAT_X, Math.round(FLOOR - g.y) - 10, palette);
 }
 
-// A pixel cucumber: stem, rounded ends, a few seeds.
-function drawCucumber(ctx, colors, x, w, h) {
+// A pixel cucumber after public/misc/image.png: dark rounded stem end with a leafy scallop, a ridged body, and a
+// pale rounded blossom end. Drawn from w/h so both sizes keep the same look.
+function drawCucumber(ctx, x, w, h) {
   const top = FLOOR - h;
-  ctx.fillStyle = colors.muted;
-  ctx.fillRect(x + Math.floor(w / 2), top, 1, 1);
-  ctx.fillStyle = colors.accent;
-  ctx.fillRect(x + 1, top + 1, w - 2, 1);
-  ctx.fillRect(x, top + 2, w, h - 3);
-  ctx.fillRect(x + 1, FLOOR - 1, w - 2, 1);
-  ctx.fillStyle = colors.paper;
-  for (let r = top + 3; r < FLOOR - 2; r += 3) ctx.fillRect(x + (r % 2 ? 1 : w - 2), r, 1, 1);
+  const fill = (color, dx, dy, fw, fh) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x + dx, top + dy, fw, fh);
+  };
+  fill(CUCUMBER_COLORS.dark, 1, 0, w - 2, 1);
+  fill(CUCUMBER_COLORS.dark, 0, 1, w, 1);
+  fill(CUCUMBER_COLORS.skin, 0, 2, w, h - 4);
+  for (const c of new Set([0, (w - 1) >> 1, w >> 1, w - 1])) fill(CUCUMBER_COLORS.dark, c, 2, 1, 1);
+  fill(CUCUMBER_COLORS.dark, 1, 3, 1, h - 7);
+  fill(CUCUMBER_COLORS.dark, w - 2, 3, 1, h - 7);
+  fill(CUCUMBER_COLORS.light, 0, h - 3, 1, 1);
+  fill(CUCUMBER_COLORS.light, w - 1, h - 3, 1, 1);
+  fill(CUCUMBER_COLORS.light, 0, h - 2, w, 1);
+  fill(CUCUMBER_COLORS.light, 1, h - 1, w - 2, 1);
 }
 
 function drawRoomba(ctx, colors, x, t) {
@@ -163,7 +175,7 @@ function drawObstacle(ctx, colors, o, t) {
     drawSprite(ctx, BUTTERFLY[frame], x, o.top, { a: colors.accent, "#": colors.ink });
   } else {
     const { w, h } = CUCUMBER[o.kind];
-    for (let i = 0; i < o.count; i++) drawCucumber(ctx, colors, x + i * (w + GROUP_GAP), w, i % 2 ? h - 2 : h);
+    for (let i = 0; i < o.count; i++) drawCucumber(ctx, x + i * (w + GROUP_GAP), w, i % 2 ? h - 2 : h);
   }
 }
 
@@ -194,6 +206,28 @@ function catBox(g) {
   if (catPose(g) === "duck") return { left: CAT_X + 2, right: CAT_X + 20, top: FLOOR - 5, bottom: FLOOR };
   const bottom = FLOOR - g.y;
   return { left: CAT_X + 3, right: CAT_X + 16, top: bottom - 9, bottom };
+}
+
+// ==============================================================================================================
+// The cat's name, with a photo card that rises above it on hover or keyboard focus (decorative: the word says it).
+function JijiName() {
+  return (
+    <span
+      tabIndex={0}
+      className="group relative rounded-sm font-bold underline decoration-ink/40 underline-offset-4 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+    >
+      Jiji
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-3 w-36 -translate-x-1/2 translate-y-1 opacity-0 transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none"
+      >
+        <span className="block rounded-media border-2 border-ink/20 bg-surface p-1">
+          <Image src={jiji} alt="" sizes="144px" placeholder="blur" className="block rounded-control" />
+        </span>
+        <span className="absolute left-1/2 top-full h-2 w-3.5 -translate-x-1/2 bg-ink/20 [clip-path:polygon(0_0,100%_0,50%_100%)]" />
+      </span>
+    </span>
+  );
 }
 
 // ==============================================================================================================
@@ -404,7 +438,7 @@ export default function CatRun() {
     <section aria-labelledby="catrun-title" className="mt-20 border-t border-ink/10 pt-10 md:mt-24">
       <div className="flex items-baseline justify-between gap-4">
         <h2 id="catrun-title" className="text-lg font-[420] tracking-[-0.01em]">
-          Help Jiji run! 
+          Help <JijiName /> run!
         </h2>
         <p className="shrink-0 whitespace-nowrap text-sm tabular-nums text-muted">
           Score <span ref={score}>0</span>{" "}

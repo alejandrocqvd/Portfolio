@@ -47,7 +47,7 @@ function FeaturedProject({ onOpen }) {
       <div className="flex flex-col items-start">
         <p className="text-sm text-muted">Featured project</p>
         <h1 className="mt-2 text-3xl font-[420] leading-tight tracking-[-0.02em] md:text-4xl">{featuredProject.title}</h1>
-        <p className="mt-10 max-w-md leading-relaxed text-muted">{featuredProject.blurb}</p>
+        <p className="mt-10 max-w-md leading-relaxed text-ink">{featuredProject.blurb}</p>
 
         <div className="mt-10 flex gap-3">
           <button type="button" onClick={() => onOpen("featured")} className={`${button} bg-ink text-paper hover:bg-ink/85`}>

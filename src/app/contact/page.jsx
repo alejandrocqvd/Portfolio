@@ -58,11 +58,11 @@ function DirectLinks() {
 // ==============================================================================================================
 export default function ContactPage() {
   return (
-    <section className="mx-auto min-h-[min(100svh,900px)] w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
+    <section className="mx-auto min-h-[min(100svh,950px)] w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
       <div className="grid gap-12 md:grid-cols-2 md:items-center">
         <div>
           <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Get in touch</h1>
-          <p className="mt-5 max-w-md leading-relaxed text-muted">
+          <p className="mt-5 max-w-md leading-relaxed text-ink">
             Feel free to reach out if you want to chat about anything. I&apos;m always open to new opportunities and
             conversations :D
           </p>

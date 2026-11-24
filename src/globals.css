@@ -14,7 +14,7 @@
   --c-bg: 13 14 16;
   --c-surface: 22 24 27;
   --c-text: 236 238 240;
-  --c-muted: 140 147 155;
+  --c-muted: 158 164 171;
   --c-accent: 87 211 196;
   --c-error: 255 128 128;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -479,6 +479,16 @@ html.theme-vt::view-transition-new(root) {
   from { opacity: 0; transform: translateY(4px); }
 }
 
+/* Marker beside the selected lane: a hard on/off blink like a terminal cursor. */
+.lane-marker {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  animation: lane-blink 1.1s steps(1) infinite;
+}
+
+@keyframes lane-blink {
+  50% { opacity: 0; }
+}
+
 /* Hero: the rule under the name draws out from the centre once the intro has lifted. */
 .hero-rule {
   transform-origin: center;
@@ -515,6 +525,7 @@ html.theme-vt::view-transition-new(root) {
   .hero-rule,
   .year-bar,
   .role-in,
+  .lane-marker,
   .roll-in,
   .roll-out {
     animation: none;

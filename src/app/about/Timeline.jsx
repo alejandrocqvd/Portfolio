@@ -174,8 +174,16 @@ function YearTrack({ lanes, now, pct, years, selected, onSelect }) {
                 aria-label={`${lane.item.company}, ${lane.item.role}, ${lane.item.period}`}
                 onPointerDown={(event) => event.button === 0 && onSelect(i)}
                 onClick={() => onSelect(i)}
-                className="group grid h-9 w-full grid-cols-[4.5rem_1fr] items-center rounded-control text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-[7rem_1fr]"
+                className="group relative grid h-9 w-full grid-cols-[4.5rem_1fr] items-center rounded-control text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-[7rem_1fr]"
               >
+                {active && (
+                  <span
+                    aria-hidden
+                    className={`lane-marker absolute -left-4 top-1/2 h-2.5 w-2 -translate-y-1/2 ${
+                      lane.current ? "bg-accent" : "bg-ink"
+                    }`}
+                  />
+                )}
                 <span
                   className={`truncate text-sm transition-colors duration-150 ease-out ${
                     active ? "text-ink" : "text-muted group-hover:text-ink"
@@ -185,7 +193,9 @@ function YearTrack({ lanes, now, pct, years, selected, onSelect }) {
                 </span>
                 <span className="relative h-2">
                   <span
-                    className={`year-bar absolute inset-y-0 transition-colors duration-150 ease-out ${color}`}
+                    className={`year-bar absolute inset-y-0 rounded-full transition-colors duration-150 ease-out ${
+                      lane.end === now ? "rounded-r-none" : ""
+                    } ${color}`}
                     style={{ left: pct(lane.start), width: `calc(${pct(lane.end)} - ${pct(lane.start)})`, "--i": i }}
                   />
                 </span>
@@ -207,7 +217,7 @@ function RolePanel({ lane, tab }) {
       role="tabpanel"
       id="role-panel"
       aria-labelledby={tab}
-      className="mt-8 rounded-media border border-ink/10 bg-surface p-6 md:p-8"
+      className="mt-8 rounded-media border border-ink/10 bg-surface/[0.25] p-6 md:p-8"
     >
       <div key={item.company} className="role-in">
         <h2 className="text-xl font-[420] tracking-[-0.01em]">
@@ -217,13 +227,54 @@ function RolePanel({ lane, tab }) {
         <p className="mt-1 text-sm text-muted">
           {item.role} · <span className="tabular-nums">{item.period}</span> · {length}
         </p>
-        <ul className="mt-5 flex list-disc flex-col gap-1 pl-[1.1em] text-[0.95rem] leading-relaxed text-muted marker:text-ink/30">
+        <ul className="mt-5 flex list-disc flex-col gap-1 pl-[1.1em] text-[0.95rem] leading-relaxed text-ink marker:text-ink/30">
           {item.description.map((point) => (
             <li key={point}>{point}</li>
           ))}
         </ul>
       </div>
     </div>
+  );
+}
+
+// ==============================================================================================================
+// Accordion strip: the featured photo takes most of the row, the rest are slivers; hovering (mouse) or tapping one widens it.
+function PhotoStrip() {
+  const [featured, setFeatured] = useState(0);
+
+  return (
+    <ul aria-label="Photos" className="mt-10 flex h-56 gap-2 md:h-80">
+      {photos.map((photo, i) => {
+        const active = i === featured;
+        return (
+          <li
+            key={photo.alt}
+            style={{ flexGrow: active ? 6 : 1 }}
+            className="relative min-w-10 basis-0 overflow-hidden rounded-media border border-ink/10 transition-[flex-grow] duration-[400ms] ease-out motion-reduce:transition-none"
+          >
+            <button
+              type="button"
+              aria-pressed={active}
+              aria-label={`Show photo: ${photo.alt}`}
+              onClick={() => setFeatured(i)}
+              onPointerEnter={(event) => event.pointerType === "mouse" && setFeatured(i)}
+              className={`absolute inset-0 rounded-media focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent ${
+                active ? "cursor-default" : "cursor-pointer"
+              }`}
+            >
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                placeholder="blur"
+                sizes="(min-width: 768px) 600px, 90vw"
+                className={`object-cover transition-[filter] duration-150 ease-out ${active ? "" : "brightness-75 hover:brightness-100"}`}
+              />
+            </button>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -235,32 +286,17 @@ export default function Timeline() {
   return (
     <section className="mx-auto w-full max-w-4xl px-6 pt-36 md:pt-44 xl:px-0">
       <h1 className="text-3xl font-[420] tracking-[-0.02em] md:text-4xl">Timeline</h1>
-      <p className="mt-5 max-w-2xl leading-relaxed text-muted">
+      <p className="mt-5 max-w-2xl leading-relaxed text-ink">
         From volunteering to full-time work, I&apos;ve been lucky enough to have been a part of so many different teams,
         learning something new from each one. Forever grateful for the people who took the time to mentor me and trust me
         with real responsibility (and not just make me fetch coffee or something).
       </p>
 
+      <PhotoStrip />
       <YearTrack {...track} selected={selected} onSelect={setSelected} />
       <RolePanel lane={track.lanes[selected]} tab={`role-tab-${selected}`} />
 
-      {/* 4:3, not square: the photos are 4:3 or 3:2, and a square crop cuts people off the edges. */}
-      <ul aria-label="Photos" className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
-        {photos.map((photo) => (
-          <li key={photo.alt} className="relative aspect-[4/3] overflow-hidden rounded-media border border-ink/10">
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              placeholder="blur"
-              sizes="(min-width: 768px) 210px, 45vw"
-              className="object-cover"
-            />
-          </li>
-        ))}
-      </ul>
-
-      <p className="mt-12 text-muted">
+      <p className="mt-12 text-ink">
         For my full experience, see my{" "}
         <a
           href="/misc/Alejandro-Cardona-Resume.pdf"

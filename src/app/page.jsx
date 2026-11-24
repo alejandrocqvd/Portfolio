@@ -17,14 +17,14 @@ const photos = [
 // ==============================================================================================================
 function Bio() {
   return (
-    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-muted lg:col-start-2 lg:row-start-1 font-mono">
+    <div className="flex max-w-[34rem] flex-col gap-4 text-[0.95rem] leading-relaxed text-ink lg:col-start-2 lg:row-start-1 font-mono">
       <p>
         I&apos;m a full time student currently enrolled in Computer Science at the University of Calgary.
       </p>
       <p>
         Choosing computer science was a difficult decision to make coming from a family full of doctors where the only
         right path was medicine. But ever since I took my first programming class, I was hooked. My main interests are{" "}
-        <span className="text-ink">software architecture, game development, and virtual reality</span>.
+        <span className="font-bold">software architecture, game development, and virtual reality</span>.
       </p>
       <p>
         Alongside this, I co-founded{" "}
@@ -32,11 +32,11 @@ function Bio() {
           href="https://www.nullus.ca/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-ink underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
+          className="text-ink font-bold underline decoration-ink/30 underline-offset-4 transition-colors duration-150 hover:decoration-accent"
         >
           Nullus Inc.
         </a>
-        , where we empower individuals, clubs, and companies through innovative web development solutions.
+        , where we empower individuals, clubs, and businesses through innovative web development solutions.
       </p>
     </div>
   );
@@ -45,7 +45,7 @@ function Bio() {
 // ==============================================================================================================
 function Hero() {
   return (
-    <section className="mx-auto min-h-[min(100svh,900px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
+    <section className="mx-auto min-h-[min(100svh,950px)] w-full max-w-5xl px-6 pt-40 md:pt-[30vh] xl:px-0">
       <Greeting />
       <h1 className="mt-1 text-[clamp(2.75rem,7vw,4.5rem)] font-[380] leading-[1.05] tracking-[-0.03em] font-mono">
         Alejandro Cardona

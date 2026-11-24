@@ -25,6 +25,27 @@ function startWorker(el) {
   return entry;
 }
 
+// True when a click lands on something drawn over the lattice (controls, media, filled or bordered surfaces, the
+// words themselves), so only clicks on bare background ripple. Text is hit-tested per line box, so the empty
+// end of a short line still counts as background.
+const CONTENT = "a, button, input, textarea, select, label, summary, [role=button], [role=tab], [contenteditable], img, video, canvas, svg, dialog";
+
+function onContent({ target, clientX: x, clientY: y }) {
+  if (!(target instanceof Element) || target.closest(CONTENT)) return true;
+  for (let el = target; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+    const s = getComputedStyle(el);
+    if (!/^(transparent|rgba\(.*,\s*0\))$/.test(s.backgroundColor) || s.backgroundImage !== "none") return true;
+    if (["Top", "Right", "Bottom", "Left"].some((side) => parseFloat(s[`border${side}Width`]) > 0)) return true;
+  }
+  const range = document.createRange();
+  for (const node of target.childNodes) {
+    if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue;
+    range.selectNodeContents(node);
+    for (const r of range.getClientRects()) if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return true;
+  }
+  return false;
+}
+
 // ==============================================================================================================
 export default function Background() {
   const canvas = useRef(null);
@@ -53,7 +74,7 @@ export default function Background() {
     const onPointer = (e) => {
       if (!e.isPrimary || e.button > 0 || e.type !== (e.pointerType === "touch" ? "pointerup" : "pointerdown")) return;
       const rect = el.getBoundingClientRect();
-      if (e.clientY > rect.bottom) return;
+      if (e.clientY > rect.bottom || onContent(e)) return;
       post({ ripple: [e.clientX - rect.left, e.clientY - rect.top] });
     };
     // Hover disturbance follows the mouse/pen (re-sent on scroll, since the canvas moves under a still cursor).
