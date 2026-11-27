@@ -16,12 +16,13 @@ These are mounted once by `src/app/layout.jsx` (or by the navbar and footer) and
 
 ## The intro (`Loader.jsx`)
 
-On a full page load (including a refresh) the logo plays a short sequence: its 8 blades spin like a loading ring, the
-A fades in, the blades fill in one by one, the logo glows, then it glides into the navbar as the page fades in.
+On a full page load (including a refresh) the logo plays a short sequence: three laps of its 8 blades lighting in turn
+like a loading ring. Lap 1 has no A, in lap 2 the A fades in, in lap 3 each blade stays lit as the whole logo glows.
+It holds, then glides into the navbar as the page fades in.
 Client-side navigation keeps the layout, so the intro doesn't replay.
 
 - It's **CSS only**: the component just renders the logo's paths, and the timing is in `globals.css`.
-- **Tune it** with the `--intro-step`, `--intro-spin`, `--intro-a`, `--intro-glow`, `--intro-hold` and `--intro-fade`
+- **Tune it** with the `--intro-step` (seconds per blade; a lap is 8 steps), `--intro-hold` and `--intro-fade`
   numbers (seconds). The total length, `--intro`, is calculated from them, and anything that should wait for the intro
   reads `--intro`.
 - When it's done, `data-intro="skip"` is set on `<html>` (by the home hero, or by the navbar on the first

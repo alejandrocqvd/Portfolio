@@ -263,10 +263,10 @@ html.theme-vt::view-transition-new(root) {
   mask-image: radial-gradient(circle at var(--iris-x) var(--iris-y), #000 calc(var(--iris) * 0.9), transparent var(--iris));
 }
 
-/* Intro (every full page load, refreshes included; client-side navigation keeps the finished layout): the aperture
-   spins (one lit blade, like a loading ring) while the A fades in; once the A is in, the spin stops and the blades
-   after the lit one catch up to full, one per step. The logo glows as the last one lands, holds, then glides into the
-   navbar as the page fades in.
+/* Intro (every full page load, refreshes included; client-side navigation keeps the finished layout): three cycles,
+   each one lap of a lit blade round the aperture (like a loading ring). Cycle 1 spins with no A; in cycle 2 the A fades
+   in; in cycle 3 the lit blade goes round once more but each blade stays lit, so the aperture fills while the whole
+   logo's glow blooms. The finished logo holds, then glides into the navbar as the page fades in.
    Tune the --intro-* numbers in :root below, plain numbers of seconds (e.g. 0.5); everything else follows. They are
    registered as <number>, so a value with a unit (or anything invalid) falls back to the default instead of breaking
    it. --intro is when the page is "revealed" (greeting, hero rule and navbar logo wait on it), registered as a <time>
@@ -283,24 +283,6 @@ html.theme-vt::view-transition-new(root) {
   initial-value: 0.15;
 }
 
-@property --intro-spin {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 1;
-}
-
-@property --intro-a {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0.4;
-}
-
-@property --intro-glow {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0.25;
-}
-
 @property --intro-hold {
   syntax: "<number>";
   inherits: true;
@@ -314,17 +296,14 @@ html.theme-vt::view-transition-new(root) {
 }
 
 :root {
-  --intro-step: 0.09; /* seconds the lit blade stays on each blade (a full turn is 8 steps); also the catch-up pace */
-  --intro-spin: 1.0; /* seconds the aperture spins before the A starts fading in */
-  --intro-a: 0.5; /* seconds the A takes to fade in (the spin continues) */
-  --intro-glow: 0.6; /* seconds the glow takes to bloom once the last blade is full (part of the hold) */
+  --intro-step: 0.09; /* seconds the lit blade stays on each blade; a cycle is 8 steps, the intro 3 cycles */
   --intro-hold: 1; /* seconds the finished logo holds, glowing, before the page fades in */
   --intro-fade: 0.6; /* seconds the overlay takes to fade into the page (and the logo to glide to the navbar) */
   --intro-fade-time: calc(var(--intro-fade) * 1s);
-  --intro-stop: calc((var(--intro-spin) + var(--intro-a)) * 1s); /* the spin stops once the A is fully in */
-  --intro-head: mod(round(down, (var(--intro-spin) + var(--intro-a)) / var(--intro-step) + 0.001, 1), 8);
-  --intro-full: calc(var(--intro-stop) + 7 * var(--intro-step) * 1s); /* the other 7 blades catch up one step each */
-  --intro-leave: calc(var(--intro-full) + var(--intro-hold) * 1s);
+  --intro-cycle: calc(8 * var(--intro-step) * 1s);
+  --intro-stop: calc(2 * var(--intro-cycle)); /* the spin stops after cycle 2, with blade 0 lit */
+  --intro-full: calc(3 * var(--intro-cycle)); /* cycle 3 fills the blades one step each */
+  --intro-leave: calc(var(--intro-full) + var(--intro-hold) * 0.5s);
   --intro: calc(var(--intro-leave) + var(--intro-fade-time));
   --intro-ease: cubic-bezier(0.65, 0, 0.35, 1); /* even ease-in-out: the dissolve spends the whole --intro-fade */
 }
@@ -360,7 +339,7 @@ html.theme-vt::view-transition-new(root) {
   color: rgb(var(--c-text));
   transform: translate(calc(50cqw - 16px - var(--slot)), calc(50cqh - 40px)) scale(2.25);
   animation:
-    intro-glow calc(var(--intro-glow) * 1s) var(--ease) var(--intro-full) forwards,
+    intro-glow var(--intro-cycle) var(--ease) var(--intro-stop) forwards,
     intro-land var(--intro-fade-time) var(--intro-ease) var(--intro-leave) forwards;
 }
 
@@ -371,13 +350,13 @@ html.theme-vt::view-transition-new(root) {
 }
 
 /* Blade --i is lit at --i steps into each turn; the negative delay starts every blade mid-turn, so the ring runs at
-   once. At --intro-stop the spin freezes: --k is how many steps the blade sits behind the lit one, --o its brightness
-   then (1, then the 0.7 / 0.5 tail, then 0.3). Each blade holds --o, then fills to full --ahead steps later (its
-   distance clockwise from the lit one), so the light keeps going round and the tail catches up last. Later animations
-   in the list override earlier ones. */
+   once. At --intro-stop (blade 0 lit) the spin freezes: --k is how many steps the blade sits behind the lit one, --o
+   its brightness then (1, then the 0.7 / 0.5 tail, then 0.3). Blade --i holds --o, then reaches full --i steps into
+   cycle 3, the spin's own pace, so the light keeps going round and the tail catches up last. Later animations in the
+   list override earlier ones. */
 .intro-blade {
-  --k: mod(var(--intro-head) - var(--i) + 8, 8);
-  --ahead: mod(var(--i) - var(--intro-head) + 8, 8);
+  --k: mod(8 - var(--i), 8);
+  --ahead: var(--i);
   --o: max(0.3, 1 - 0.3 * min(var(--k), 1) - 0.2 * max(var(--k) - 1, 0));
   opacity: 0.3;
   animation:
@@ -388,7 +367,7 @@ html.theme-vt::view-transition-new(root) {
 
 .intro-a {
   opacity: 0;
-  animation: intro-in calc(var(--intro-a) * 1s) var(--intro-ease) calc(var(--intro-spin) * 1s) forwards;
+  animation: intro-in var(--intro-cycle) var(--intro-ease) var(--intro-cycle) forwards;
 }
 
 /* The navbar's own logo stays hidden until the intro logo lands on it. */
@@ -505,8 +484,6 @@ html.theme-vt::view-transition-new(root) {
 @media (prefers-reduced-motion: reduce) {
   /* No spin or glide: the full logo shows at once, glows while it holds, then fades out in place. */
   :root:not([data-intro="skip"]) {
-    --intro-spin: 0;
-    --intro-a: 0;
     --intro-step: 0;
   }
 
